@@ -2,15 +2,15 @@
 gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
-status: planning
-stopped_at: Phase 1 context gathered
-last_updated: "2026-05-05T20:29:07.536Z"
-last_activity: 2026-05-05 — Roadmap created; 40 requirements mapped to 4 coarse phases
+status: executing
+stopped_at: Completed 01-01-workspace-skeleton-PLAN.md
+last_updated: "2026-05-05T22:10:16.758Z"
+last_activity: 2026-05-05
 progress:
   total_phases: 4
   completed_phases: 0
-  total_plans: 0
-  completed_plans: 0
+  total_plans: 6
+  completed_plans: 2
   percent: 0
 ---
 
@@ -21,14 +21,14 @@ progress:
 See: .planning/PROJECT.md (updated 2026-05-05)
 
 **Core value:** Un holder StartOS puede pegar un descriptor multisig y obtener un `.bed` cifrado (binario, armored o QR) sin instalar ni compilar nada, y luego recuperarlo pegando `.bed` + cualquier xpub cosigner — todo local, sobre Tor, sin telemetría.
-**Current focus:** Phase 1 — Crypto Core + HTTP API
+**Current focus:** Phase 01 — crypto-core-http-api
 
 ## Current Position
 
-Phase: 1 of 4 (Crypto Core + HTTP API)
-Plan: 0 of ? in current phase
-Status: Ready to plan
-Last activity: 2026-05-05 — Roadmap created; 40 requirements mapped to 4 coarse phases
+Phase: 01 (crypto-core-http-api) — EXECUTING
+Plan: 3 of 6
+Status: Ready to execute
+Last activity: 2026-05-05
 
 Progress: [░░░░░░░░░░] 0%
 
@@ -52,6 +52,7 @@ Progress: [░░░░░░░░░░] 0%
 - Trend: —
 
 *Updated after each plan completion*
+| Phase 01-crypto-core-http-api P01 | 12 | 3 tasks | 10 files |
 
 ## Accumulated Context
 
@@ -63,6 +64,9 @@ Recent decisions affecting current work:
 - Roadmap: 4 coarse phases derived from SUMMARY.md build order (steps 1+2 merged, steps 3+4 merged, step 5 standalone, steps 6+7 merged)
 - Phase 4 (StartOS s9pk) flagged `needs_research: true` — SDK 0.4.0 still in beta; invoke `start9-packaging` skill before planning
 - Phase 2 (SPA) flagged `UI hint: yes` — Svelte 5 + Vite 6 frontend work
+- [Phase 01-crypto-core-http-api]: wildcards=allow in deny.toml bans: cargo-deny 0.19.4 flags git rev= deps and path deps as wildcards; security maintained via Cargo.lock
+- [Phase 01-crypto-core-http-api]: MITNFA added to license allowlist: required by hex_lit 0.1.1 (transitive via bitcoin -> miniscript)
+- [Phase 01-crypto-core-http-api]: bitcoin-encrypted-backup license exception: no Cargo.toml license field in git dep; upstream has MIT in repo LICENSE file
 
 ### Pending Todos
 
@@ -75,6 +79,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-05-05T20:29:07.533Z
-Stopped at: Phase 1 context gathered
-Resume file: .planning/phases/01-crypto-core-http-api/01-CONTEXT.md
+Last session: 2026-05-05T22:10:16.752Z
+Stopped at: Completed 01-01-workspace-skeleton-PLAN.md
+Resume file: None

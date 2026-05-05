@@ -7,11 +7,11 @@
 
 ### Crypto Core
 
-- [ ] **CORE-01**: La crate `bitcoin-encrypted-backup` se importa con features `miniscript_12_3_5`, `rand`, `base64` y NO con `devices`/`cli`/`tokio`, pinneada a un commit/rev exacto
+- [x] **CORE-01**: La crate `bitcoin-encrypted-backup` se importa con features `miniscript_12_3_5`, `rand`, `base64` y NO con `devices`/`cli`/`tokio`, pinneada a un commit/rev exacto
 - [ ] **CORE-02**: Existe round-trip determinista (encrypt → decrypt con xpub válida) cubierto por test automatizado
 - [ ] **CORE-03**: La capa core valida que el descriptor usa derivación `<0;1>/*` y rechaza descriptors sin esa wildcard con error tipado
 - [ ] **CORE-04**: El descriptor en claro se envuelve en `secrecy::SecretString` desde el punto de parse y se zeroiza tras la operación
-- [ ] **CORE-05**: No existe `unwrap()`/`expect()` en el path de request; un panic hook genérico evita filtrar variables locales en backtraces
+- [x] **CORE-05**: No existe `unwrap()`/`expect()` en el path de request; un panic hook genérico evita filtrar variables locales en backtraces
 
 ### Encryption Flow
 
@@ -48,7 +48,7 @@
 
 - [ ] **SEC-01**: TraceLayer configurado con `skip_all` en handlers sensibles; test asegura que un descriptor conocido no aparece en logs capturados
 - [ ] **SEC-02**: Servidor binda en `127.0.0.1:8080`, no en `0.0.0.0` (StartOS gestiona el routing externo)
-- [ ] **SEC-03**: El proyecto usa `rustls` en todo lugar; `cargo deny` en CI rechaza dependencias con `openssl-sys` o `native-tls`
+- [x] **SEC-03**: El proyecto usa `rustls` en todo lugar; `cargo deny` en CI rechaza dependencias con `openssl-sys` o `native-tls`
 
 ### Packaging — Docker / GHCR
 
@@ -112,11 +112,11 @@
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| CORE-01 | Phase 1 | Pending |
+| CORE-01 | Phase 1 | Complete |
 | CORE-02 | Phase 1 | Pending |
 | CORE-03 | Phase 1 | Pending |
 | CORE-04 | Phase 1 | Pending |
-| CORE-05 | Phase 1 | Pending |
+| CORE-05 | Phase 1 | Complete |
 | ENC-01 | Phase 1 | Pending |
 | ENC-02 | Phase 1 | Pending |
 | ENC-03 | Phase 1 | Pending |
@@ -129,7 +129,7 @@
 | DEC-05 | Phase 1 | Pending |
 | SEC-01 | Phase 1 | Pending |
 | SEC-02 | Phase 1 | Pending |
-| SEC-03 | Phase 1 | Pending |
+| SEC-03 | Phase 1 | Complete |
 | CI-01 | Phase 1 | Pending |
 | CI-02 | Phase 1 | Pending |
 | UI-01 | Phase 2 | Pending |
