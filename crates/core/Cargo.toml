@@ -1,0 +1,24 @@
+[package]
+name = "bed-core"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+
+[dependencies]
+zeroize.workspace = true
+thiserror.workspace = true
+base64.workspace = true
+qrcode.workspace = true
+image.workspace = true
+
+[dependencies.bitcoin-encrypted-backup]
+git = "https://github.com/pythcoiner/encrypted_backup"
+# Pinned to HEAD on master as of 2026-05-05 (verified via GitHub Atom + REST):
+#   commit "pin clap version" — 17b69b71cd1e005f80f5e81147795df0d11db027
+rev = "17b69b71cd1e005f80f5e81147795df0d11db027"
+default-features = false
+features = ["miniscript_12_3_5", "rand", "base64"]
+# DO NOT enable: "devices" (USB doesn't reach StartOS), "cli" (pulls clap), "tokio"
+
+[lints]
+workspace = true
