@@ -1,3 +1,5 @@
+#![allow(clippy::panic)]
+
 use bed_core::armored::{decode_armored, encode_armored, ArmoredError, ARMOR_BEGIN, ARMOR_END};
 
 const PAYLOAD: &[u8] = b"the quick brown fox jumps over the lazy dog 0123456789 ABCDEFGHIJKLMNOPQRSTUVWXYZ";
