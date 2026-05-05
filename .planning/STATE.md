@@ -3,14 +3,14 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: executing
-stopped_at: Completed 01-04-core-armored-qr-encrypt-PLAN.md
-last_updated: "2026-05-05T22:19:44.222Z"
+stopped_at: Completed 01-05-server-axum-handlers-PLAN.md
+last_updated: "2026-05-05T22:28:56.521Z"
 last_activity: 2026-05-05
 progress:
   total_phases: 4
   completed_phases: 0
   total_plans: 6
-  completed_plans: 4
+  completed_plans: 5
   percent: 0
 ---
 
@@ -26,7 +26,7 @@ See: .planning/PROJECT.md (updated 2026-05-05)
 ## Current Position
 
 Phase: 01 (crypto-core-http-api) — EXECUTING
-Plan: 5 of 6
+Plan: 6 of 6
 Status: Ready to execute
 Last activity: 2026-05-05
 
@@ -56,6 +56,7 @@ Progress: [░░░░░░░░░░] 0%
 | Phase 01-crypto-core-http-api P02 | 4 | 1 tasks | 1 files |
 | Phase 01-crypto-core-http-api P03 | 8 | 2 tasks | 6 files |
 | Phase 01-crypto-core-http-api P04 | 18 | 2 tasks | 9 files |
+| Phase 01-crypto-core-http-api P05 | 5 | 2 tasks | 7 files |
 
 ## Accumulated Context
 
@@ -75,6 +76,8 @@ Recent decisions affecting current work:
 - [Phase 01-crypto-core-http-api]: paths() accessor usado directamente en miniscript 12.3.6 (no fallback Display)
 - [Phase 01-crypto-core-http-api]: #[allow(clippy::panic)] requerido en test helpers — workspace lint panic=deny se aplica a test targets
 - [Phase 01-crypto-core-http-api]: Normalize h/apostrophe in round-trip assertions: miniscript re-serializes 48h as 48'; both BIP-380 valid; comparison normalizes both sides
+- [Phase 01-crypto-core-http-api]: QrTooLarge message uses 'Usa' (Castilian) not 'Usá' (Argentine) per feedback_castellano_no_argentino.md
+- [Phase 01-crypto-core-http-api]: base64 added to bed-server Cargo.toml — required for bed_b64/qr_png_b64 JSON fields in encrypt handler
 
 ### Pending Todos
 
@@ -87,6 +90,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-05-05T22:19:44.217Z
-Stopped at: Completed 01-04-core-armored-qr-encrypt-PLAN.md
+Last session: 2026-05-05T22:28:56.516Z
+Stopped at: Completed 01-05-server-axum-handlers-PLAN.md
 Resume file: None

@@ -35,7 +35,7 @@ Plans:
 - [x] 01-02-github-actions-ci-PLAN.md — GitHub Actions CI con 5 jobs (fmt, clippy, test, audit, deny)
 - [x] 01-03-core-validate-zeroize-PLAN.md — CoreError, ZeroizingDescriptor, validate::require_multipath_0_1
 - [x] 01-04-core-armored-qr-encrypt-PLAN.md — Armored encoder/decoder, encrypt_descriptor, decrypt_payload, QR generator, round-trip
-- [ ] 01-05-server-axum-handlers-PLAN.md — AppError, IntoResponse, handlers POST /api/encrypt y /api/decrypt
+- [x] 01-05-server-axum-handlers-PLAN.md — AppError, IntoResponse, handlers POST /api/encrypt y /api/decrypt
 - [ ] 01-06-integration-tests-PLAN.md — Integration tests round_trip + validation + no_leak (SEC-01)
 **UI hint**: no
 
@@ -82,7 +82,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1. Crypto Core + HTTP API | 3/6 | In Progress|  |
+| 1. Crypto Core + HTTP API | 5/6 | In Progress|  |
 | 2. SPA Frontend + History | 0/? | Not started | - |
 | 3. Docker + GHCR | 0/? | Not started | - |
 | 4. StartOS Packaging + Docs | 0/? | Not started | - |

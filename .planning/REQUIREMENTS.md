@@ -15,18 +15,18 @@
 
 ### Encryption Flow
 
-- [ ] **ENC-01**: Endpoint `POST /api/encrypt` (JSON) acepta un descriptor y devuelve los tres formatos disponibles
-- [ ] **ENC-02**: Salida binaria `.bed` descargable desde la UI
+- [x] **ENC-01**: Endpoint `POST /api/encrypt` (JSON) acepta un descriptor y devuelve los tres formatos disponibles
+- [x] **ENC-02**: Salida binaria `.bed` descargable desde la UI
 - [x] **ENC-03**: Salida armored estilo PGP con cabeceras `-----BEGIN BITCOIN ENCRYPTED BACKUP-----` y botón "copiar al portapapeles"
 - [x] **ENC-04**: Salida QR PNG descargable generada del armored base64; si excede capacidad QR ECC-L (~2,900 B) devuelve error descriptivo en vez de QR ilegible
-- [ ] **ENC-05**: La UI muestra errores de validación (descriptor inválido, sin `<0;1>/*`, parsing fallido) inline y específicos
+- [x] **ENC-05**: La UI muestra errores de validación (descriptor inválido, sin `<0;1>/*`, parsing fallido) inline y específicos
 
 ### Decryption Flow
 
-- [ ] **DEC-01**: Endpoint `POST /api/decrypt` (multipart) acepta `.bed` (binario o armored pegado) + xpub (texto o archivo) y devuelve el descriptor en claro
-- [ ] **DEC-02**: La UI permite pegar armored o subir archivo binario indistintamente para el mismo flujo
-- [ ] **DEC-03**: La UI permite pegar xpub o subir archivo con xpub
-- [ ] **DEC-04**: El descriptor recuperado se muestra con botón "copiar al portapapeles" y nunca se persiste
+- [x] **DEC-01**: Endpoint `POST /api/decrypt` (multipart) acepta `.bed` (binario o armored pegado) + xpub (texto o archivo) y devuelve el descriptor en claro
+- [x] **DEC-02**: La UI permite pegar armored o subir archivo binario indistintamente para el mismo flujo
+- [x] **DEC-03**: La UI permite pegar xpub o subir archivo con xpub
+- [x] **DEC-04**: El descriptor recuperado se muestra con botón "copiar al portapapeles" y nunca se persiste
 - [x] **DEC-05**: El parser tolera espacios en blanco/indentación en el armored pegado
 
 ### History Mode (Opt-In)
@@ -46,8 +46,8 @@
 
 ### Security Hygiene
 
-- [ ] **SEC-01**: TraceLayer configurado con `skip_all` en handlers sensibles; test asegura que un descriptor conocido no aparece en logs capturados
-- [ ] **SEC-02**: Servidor binda en `127.0.0.1:8080`, no en `0.0.0.0` (StartOS gestiona el routing externo)
+- [x] **SEC-01**: TraceLayer configurado con `skip_all` en handlers sensibles; test asegura que un descriptor conocido no aparece en logs capturados
+- [x] **SEC-02**: Servidor binda en `127.0.0.1:8080`, no en `0.0.0.0` (StartOS gestiona el routing externo)
 - [x] **SEC-03**: El proyecto usa `rustls` en todo lugar; `cargo deny` en CI rechaza dependencias con `openssl-sys` o `native-tls`
 
 ### Packaging — Docker / GHCR
@@ -117,18 +117,18 @@
 | CORE-03 | Phase 1 | Complete |
 | CORE-04 | Phase 1 | Complete |
 | CORE-05 | Phase 1 | Complete |
-| ENC-01 | Phase 1 | Pending |
-| ENC-02 | Phase 1 | Pending |
+| ENC-01 | Phase 1 | Complete |
+| ENC-02 | Phase 1 | Complete |
 | ENC-03 | Phase 1 | Complete |
 | ENC-04 | Phase 1 | Complete |
-| ENC-05 | Phase 1 | Pending |
-| DEC-01 | Phase 1 | Pending |
-| DEC-02 | Phase 1 | Pending |
-| DEC-03 | Phase 1 | Pending |
-| DEC-04 | Phase 1 | Pending |
+| ENC-05 | Phase 1 | Complete |
+| DEC-01 | Phase 1 | Complete |
+| DEC-02 | Phase 1 | Complete |
+| DEC-03 | Phase 1 | Complete |
+| DEC-04 | Phase 1 | Complete |
 | DEC-05 | Phase 1 | Complete |
-| SEC-01 | Phase 1 | Pending |
-| SEC-02 | Phase 1 | Pending |
+| SEC-01 | Phase 1 | Complete |
+| SEC-02 | Phase 1 | Complete |
 | SEC-03 | Phase 1 | Complete |
 | CI-01 | Phase 1 | Complete |
 | CI-02 | Phase 1 | Pending |
