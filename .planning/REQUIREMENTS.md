@@ -8,7 +8,7 @@
 ### Crypto Core
 
 - [x] **CORE-01**: La crate `bitcoin-encrypted-backup` se importa con features `miniscript_12_3_5`, `rand`, `base64` y NO con `devices`/`cli`/`tokio`, pinneada a un commit/rev exacto
-- [ ] **CORE-02**: Existe round-trip determinista (encrypt → decrypt con xpub válida) cubierto por test automatizado
+- [x] **CORE-02**: Existe round-trip determinista (encrypt → decrypt con xpub válida) cubierto por test automatizado
 - [x] **CORE-03**: La capa core valida que el descriptor usa derivación `<0;1>/*` y rechaza descriptors sin esa wildcard con error tipado
 - [x] **CORE-04**: El descriptor en claro se envuelve en `secrecy::SecretString` desde el punto de parse y se zeroiza tras la operación
 - [x] **CORE-05**: No existe `unwrap()`/`expect()` en el path de request; un panic hook genérico evita filtrar variables locales en backtraces
@@ -17,8 +17,8 @@
 
 - [ ] **ENC-01**: Endpoint `POST /api/encrypt` (JSON) acepta un descriptor y devuelve los tres formatos disponibles
 - [ ] **ENC-02**: Salida binaria `.bed` descargable desde la UI
-- [ ] **ENC-03**: Salida armored estilo PGP con cabeceras `-----BEGIN BITCOIN ENCRYPTED BACKUP-----` y botón "copiar al portapapeles"
-- [ ] **ENC-04**: Salida QR PNG descargable generada del armored base64; si excede capacidad QR ECC-L (~2,900 B) devuelve error descriptivo en vez de QR ilegible
+- [x] **ENC-03**: Salida armored estilo PGP con cabeceras `-----BEGIN BITCOIN ENCRYPTED BACKUP-----` y botón "copiar al portapapeles"
+- [x] **ENC-04**: Salida QR PNG descargable generada del armored base64; si excede capacidad QR ECC-L (~2,900 B) devuelve error descriptivo en vez de QR ilegible
 - [ ] **ENC-05**: La UI muestra errores de validación (descriptor inválido, sin `<0;1>/*`, parsing fallido) inline y específicos
 
 ### Decryption Flow
@@ -27,7 +27,7 @@
 - [ ] **DEC-02**: La UI permite pegar armored o subir archivo binario indistintamente para el mismo flujo
 - [ ] **DEC-03**: La UI permite pegar xpub o subir archivo con xpub
 - [ ] **DEC-04**: El descriptor recuperado se muestra con botón "copiar al portapapeles" y nunca se persiste
-- [ ] **DEC-05**: El parser tolera espacios en blanco/indentación en el armored pegado
+- [x] **DEC-05**: El parser tolera espacios en blanco/indentación en el armored pegado
 
 ### History Mode (Opt-In)
 
@@ -113,20 +113,20 @@
 | Requirement | Phase | Status |
 |-------------|-------|--------|
 | CORE-01 | Phase 1 | Complete |
-| CORE-02 | Phase 1 | Pending |
+| CORE-02 | Phase 1 | Complete |
 | CORE-03 | Phase 1 | Complete |
 | CORE-04 | Phase 1 | Complete |
 | CORE-05 | Phase 1 | Complete |
 | ENC-01 | Phase 1 | Pending |
 | ENC-02 | Phase 1 | Pending |
-| ENC-03 | Phase 1 | Pending |
-| ENC-04 | Phase 1 | Pending |
+| ENC-03 | Phase 1 | Complete |
+| ENC-04 | Phase 1 | Complete |
 | ENC-05 | Phase 1 | Pending |
 | DEC-01 | Phase 1 | Pending |
 | DEC-02 | Phase 1 | Pending |
 | DEC-03 | Phase 1 | Pending |
 | DEC-04 | Phase 1 | Pending |
-| DEC-05 | Phase 1 | Pending |
+| DEC-05 | Phase 1 | Complete |
 | SEC-01 | Phase 1 | Pending |
 | SEC-02 | Phase 1 | Pending |
 | SEC-03 | Phase 1 | Complete |

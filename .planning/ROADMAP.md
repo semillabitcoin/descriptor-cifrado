@@ -34,7 +34,7 @@ Plans:
 - [x] 01-01-workspace-skeleton-PLAN.md — Cargo workspace skeleton, crates/{core,server} con pin exacto, deny.toml
 - [x] 01-02-github-actions-ci-PLAN.md — GitHub Actions CI con 5 jobs (fmt, clippy, test, audit, deny)
 - [x] 01-03-core-validate-zeroize-PLAN.md — CoreError, ZeroizingDescriptor, validate::require_multipath_0_1
-- [ ] 01-04-core-armored-qr-encrypt-PLAN.md — Armored encoder/decoder, encrypt_descriptor, decrypt_payload, QR generator, round-trip
+- [x] 01-04-core-armored-qr-encrypt-PLAN.md — Armored encoder/decoder, encrypt_descriptor, decrypt_payload, QR generator, round-trip
 - [ ] 01-05-server-axum-handlers-PLAN.md — AppError, IntoResponse, handlers POST /api/encrypt y /api/decrypt
 - [ ] 01-06-integration-tests-PLAN.md — Integration tests round_trip + validation + no_leak (SEC-01)
 **UI hint**: no
