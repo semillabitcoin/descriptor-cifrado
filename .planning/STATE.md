@@ -3,8 +3,8 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: executing
-stopped_at: Completed 01-01-workspace-skeleton-PLAN.md
-last_updated: "2026-05-05T22:10:16.758Z"
+stopped_at: Completed 01-02-github-actions-ci-PLAN.md
+last_updated: "2026-05-05T22:11:15.756Z"
 last_activity: 2026-05-05
 progress:
   total_phases: 4
@@ -53,6 +53,7 @@ Progress: [░░░░░░░░░░] 0%
 
 *Updated after each plan completion*
 | Phase 01-crypto-core-http-api P01 | 12 | 3 tasks | 10 files |
+| Phase 01-crypto-core-http-api P02 | 4 | 1 tasks | 1 files |
 
 ## Accumulated Context
 
@@ -67,6 +68,8 @@ Recent decisions affecting current work:
 - [Phase 01-crypto-core-http-api]: wildcards=allow in deny.toml bans: cargo-deny 0.19.4 flags git rev= deps and path deps as wildcards; security maintained via Cargo.lock
 - [Phase 01-crypto-core-http-api]: MITNFA added to license allowlist: required by hex_lit 0.1.1 (transitive via bitcoin -> miniscript)
 - [Phase 01-crypto-core-http-api]: bitcoin-encrypted-backup license exception: no Cargo.toml license field in git dep; upstream has MIT in repo LICENSE file
+- [Phase 01-crypto-core-http-api]: Actions versions pinned to canonical stable: checkout@v4, rust-toolchain@stable, rust-cache@v2, audit-check@v2, cargo-deny-action@v2
+- [Phase 01-crypto-core-http-api]: CI: No Rust version matrix — stable only. No release/publish job — deferred to Phase 3
 
 ### Pending Todos
 
@@ -79,6 +82,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-05-05T22:10:16.752Z
-Stopped at: Completed 01-01-workspace-skeleton-PLAN.md
+Last session: 2026-05-05T22:11:15.752Z
+Stopped at: Completed 01-02-github-actions-ci-PLAN.md
 Resume file: None
