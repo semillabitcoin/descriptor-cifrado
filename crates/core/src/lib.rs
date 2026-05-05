@@ -5,3 +5,10 @@
 //! a separate `miniscript` dep (would risk version unification break).
 
 pub use bitcoin_encrypted_backup::miniscript;
+
+pub mod error;
+pub mod validate;
+pub mod zeroize;
+
+pub use error::CoreError;
+pub use zeroize::ZeroizingDescriptor;
