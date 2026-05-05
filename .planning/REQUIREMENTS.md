@@ -112,13 +112,54 @@
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| (To be populated by roadmapper) | — | Pending |
+| CORE-01 | Phase 1 | Pending |
+| CORE-02 | Phase 1 | Pending |
+| CORE-03 | Phase 1 | Pending |
+| CORE-04 | Phase 1 | Pending |
+| CORE-05 | Phase 1 | Pending |
+| ENC-01 | Phase 1 | Pending |
+| ENC-02 | Phase 1 | Pending |
+| ENC-03 | Phase 1 | Pending |
+| ENC-04 | Phase 1 | Pending |
+| ENC-05 | Phase 1 | Pending |
+| DEC-01 | Phase 1 | Pending |
+| DEC-02 | Phase 1 | Pending |
+| DEC-03 | Phase 1 | Pending |
+| DEC-04 | Phase 1 | Pending |
+| DEC-05 | Phase 1 | Pending |
+| SEC-01 | Phase 1 | Pending |
+| SEC-02 | Phase 1 | Pending |
+| SEC-03 | Phase 1 | Pending |
+| CI-01 | Phase 1 | Pending |
+| CI-02 | Phase 1 | Pending |
+| UI-01 | Phase 2 | Pending |
+| UI-02 | Phase 2 | Pending |
+| UI-03 | Phase 2 | Pending |
+| HIST-01 | Phase 2 | Pending |
+| HIST-02 | Phase 2 | Pending |
+| HIST-03 | Phase 2 | Pending |
+| HIST-04 | Phase 2 | Pending |
+| HIST-05 | Phase 2 | Pending |
+| HIST-06 | Phase 2 | Pending |
+| PKG-01 | Phase 3 | Pending |
+| PKG-02 | Phase 3 | Pending |
+| PKG-03 | Phase 3 | Pending |
+| PKG-04 | Phase 3 | Pending |
+| S9-01 | Phase 4 | Pending |
+| S9-02 | Phase 4 | Pending |
+| S9-03 | Phase 4 | Pending |
+| S9-04 | Phase 4 | Pending |
+| S9-05 | Phase 4 | Pending |
+| DOC-01 | Phase 4 | Pending |
+| DOC-02 | Phase 4 | Pending |
 
 **Coverage:**
-- v1 requirements: 36 total
-- Mapped to phases: 0 (pending roadmap)
-- Unmapped: 36 ⚠️
+- v1 requirements: 40 total (5 CORE + 5 ENC + 5 DEC + 6 HIST + 3 UI + 3 SEC + 4 PKG + 5 S9 + 2 DOC + 2 CI)
+- Mapped to phases: 40/40
+- Unmapped: 0
+
+Note: The REQUIREMENTS.md header stated 36 requirements; actual count by category is 40. All 40 are mapped.
 
 ---
 *Requirements defined: 2026-05-05*
-*Last updated: 2026-05-05 after initial definition*
+*Last updated: 2026-05-05 — traceability populated by roadmapper*
