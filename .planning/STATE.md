@@ -3,14 +3,14 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: executing
-stopped_at: Completed 01-02-github-actions-ci-PLAN.md
-last_updated: "2026-05-05T22:11:15.756Z"
+stopped_at: Completed 01-03-core-validate-zeroize-PLAN.md
+last_updated: "2026-05-05T22:17:15.404Z"
 last_activity: 2026-05-05
 progress:
   total_phases: 4
   completed_phases: 0
   total_plans: 6
-  completed_plans: 2
+  completed_plans: 3
   percent: 0
 ---
 
@@ -26,7 +26,7 @@ See: .planning/PROJECT.md (updated 2026-05-05)
 ## Current Position
 
 Phase: 01 (crypto-core-http-api) — EXECUTING
-Plan: 3 of 6
+Plan: 4 of 6
 Status: Ready to execute
 Last activity: 2026-05-05
 
@@ -54,6 +54,7 @@ Progress: [░░░░░░░░░░] 0%
 *Updated after each plan completion*
 | Phase 01-crypto-core-http-api P01 | 12 | 3 tasks | 10 files |
 | Phase 01-crypto-core-http-api P02 | 4 | 1 tasks | 1 files |
+| Phase 01-crypto-core-http-api P03 | 8 | 2 tasks | 6 files |
 
 ## Accumulated Context
 
@@ -70,6 +71,8 @@ Recent decisions affecting current work:
 - [Phase 01-crypto-core-http-api]: bitcoin-encrypted-backup license exception: no Cargo.toml license field in git dep; upstream has MIT in repo LICENSE file
 - [Phase 01-crypto-core-http-api]: Actions versions pinned to canonical stable: checkout@v4, rust-toolchain@stable, rust-cache@v2, audit-check@v2, cargo-deny-action@v2
 - [Phase 01-crypto-core-http-api]: CI: No Rust version matrix — stable only. No release/publish job — deferred to Phase 3
+- [Phase 01-crypto-core-http-api]: paths() accessor usado directamente en miniscript 12.3.6 (no fallback Display)
+- [Phase 01-crypto-core-http-api]: #[allow(clippy::panic)] requerido en test helpers — workspace lint panic=deny se aplica a test targets
 
 ### Pending Todos
 
@@ -82,6 +85,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-05-05T22:11:15.752Z
-Stopped at: Completed 01-02-github-actions-ci-PLAN.md
+Last session: 2026-05-05T22:17:15.398Z
+Stopped at: Completed 01-03-core-validate-zeroize-PLAN.md
 Resume file: None
