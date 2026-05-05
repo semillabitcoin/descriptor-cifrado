@@ -174,6 +174,21 @@ pub async fn post_encrypt(
 - AppError with typed variants ready for Phase 2 SPA to display inline error messages
 - Bind address 127.0.0.1:8080 unchanged (from Plan 01); StartOS routes externally
 
+## Self-Check: PASSED
+
+All files verified present. All commits verified in git log.
+
+- FOUND: crates/server/src/error.rs
+- FOUND: crates/server/src/state.rs
+- FOUND: crates/server/src/routes/mod.rs
+- FOUND: crates/server/src/routes/encrypt.rs
+- FOUND: crates/server/src/routes/decrypt.rs
+- FOUND: crates/server/src/lib.rs
+- FOUND: .planning/phases/01-crypto-core-http-api/01-05-server-axum-handlers-SUMMARY.md
+- FOUND commit: 567445d (Task 1)
+- FOUND commit: 6e002a0 (Task 2)
+- FOUND commit: 23790bf (metadata)
+
 ---
 *Phase: 01-crypto-core-http-api*
 *Completed: 2026-05-05*
