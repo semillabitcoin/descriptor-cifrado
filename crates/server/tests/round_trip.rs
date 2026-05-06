@@ -94,8 +94,11 @@ async fn encrypt_then_decrypt_roundtrip() {
 
 #[tokio::test]
 async fn decrypt_with_binary_bed_works() {
-    // Use bed_b64 (raw base64 of binary, no PEM headers) to verify the
-    // crate's auto-detect path (set_encrypted_payload base64 branch).
+    // Cifrar para obtener bed_b64, decodificar a binario crudo y enviarlo sin
+    // cabeceras PEM. En v0.0.2 la crate NO acepta base64 suelto — solo binario
+    // con magic BEB. El servidor pasa el binario tal cual a set_encrypted_payload.
+    use base64::{engine::general_purpose::STANDARD, Engine};
+
     let app = bed_server::router();
 
     let body = json!({ "descriptor": FIXTURE_DESC.trim() }).to_string();
@@ -119,15 +122,28 @@ async fn decrypt_with_binary_bed_works() {
         .unwrap_or_else(|| panic!("no bed_b64"))
         .to_string();
 
-    // Send bed_b64 raw text (not armored) — handler should pass to crate
-    // whose set_encrypted_payload decodes base64 automatically.
+    // Decodificar bed_b64 → binario crudo con magic BEB y enviar como bytes.
+    // El handler lo pasa directo a set_encrypted_payload (path no-armored).
+    let bed_binary = STANDARD
+        .decode(bed_b64.trim())
+        .unwrap_or_else(|e| panic!("base64 decode: {e}"));
+
     let boundary = "----b";
-    let body = format!(
-        "--{b}\r\nContent-Disposition: form-data; name=\"bed\"\r\n\r\n{d}\r\n--{b}\r\nContent-Disposition: form-data; name=\"xpub\"\r\n\r\n{x}\r\n--{b}--\r\n",
+    // Construir multipart con contenido binario crudo (no texto).
+    let mut multipart_body = Vec::new();
+    let preamble = format!(
+        "--{b}\r\nContent-Disposition: form-data; name=\"bed\"\r\n\r\n",
         b = boundary,
-        d = bed_b64,
+    );
+    multipart_body.extend_from_slice(preamble.as_bytes());
+    multipart_body.extend_from_slice(&bed_binary);
+    let xpub_part = format!(
+        "\r\n--{b}\r\nContent-Disposition: form-data; name=\"xpub\"\r\n\r\n{x}\r\n--{b}--\r\n",
+        b = boundary,
         x = FIXTURE_XPUB.trim(),
     );
+    multipart_body.extend_from_slice(xpub_part.as_bytes());
+
     let req = Request::builder()
         .method("POST")
         .uri("/api/decrypt")
@@ -135,7 +151,7 @@ async fn decrypt_with_binary_bed_works() {
             "content-type",
             format!("multipart/form-data; boundary={boundary}"),
         )
-        .body(Body::from(body))
+        .body(Body::from(multipart_body))
         .unwrap_or_else(|e| panic!("req: {e}"));
     let resp = app
         .oneshot(req)

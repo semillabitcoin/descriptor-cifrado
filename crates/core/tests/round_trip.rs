@@ -49,10 +49,10 @@ fn round_trip_fixture() {
     let mut cleartext = Zeroizing::new(original.clone());
     let out = encrypt_descriptor(&mut cleartext).unwrap_or_else(|e| panic!("encrypt failed: {e}"));
 
-    // Sanity: bed_bytes start with "BIPXXX" magic (verified at /tmp/bed-test/encrypted_backup/src/lib.rs)
+    // Sanity: bed_bytes empiezan con magic "BEB" (bitcoin-encrypted-backup v0.0.2).
     assert!(
-        out.bed_bytes.starts_with(b"BIPXXX"),
-        "bed must start with BIPXXX magic"
+        out.bed_bytes.starts_with(b"BEB"),
+        "bed debe empezar con magic BEB"
     );
 
     // Sanity: armored has the right headers
