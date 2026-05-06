@@ -5,6 +5,7 @@
   import ThreatModel from './components/ThreatModel.svelte';
   import TabBar from './components/TabBar.svelte';
   import TabCifrar from './components/TabCifrar.svelte';
+  import TabDescifrar from './components/TabDescifrar.svelte';
 
   onMount(() => {
     initFromStorage();
@@ -33,8 +34,7 @@
     class="panel"
     hidden={appState.activeTab !== 'descifrar'}
   >
-    <!-- Plan 02-05 monta TabDescifrar aquí -->
-    <p class="placeholder">Tab Descifrar — pendiente de plan 02-05.</p>
+    <TabDescifrar />
   </section>
   {#if appState.historyEnabled}
     <!-- svelte-ignore a11y_no_noninteractive_element_to_interactive_role -->
