@@ -3,14 +3,14 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: executing
-stopped_at: Completed 02-04-tab-cifrar-PLAN.md
-last_updated: "2026-05-06T16:33:42.981Z"
+stopped_at: Completed 02-05-tab-descifrar-PLAN.md
+last_updated: "2026-05-06T16:41:29.551Z"
 last_activity: 2026-05-06
 progress:
   total_phases: 4
   completed_phases: 1
   total_plans: 12
-  completed_plans: 10
+  completed_plans: 11
   percent: 0
 ---
 
@@ -26,7 +26,7 @@ See: .planning/PROJECT.md (updated 2026-05-05)
 ## Current Position
 
 Phase: 02 (spa-frontend-history) — EXECUTING
-Plan: 5 of 6
+Plan: 6 of 6
 Status: Ready to execute
 Last activity: 2026-05-06
 
@@ -62,6 +62,7 @@ Progress: [░░░░░░░░░░] 0%
 | Phase 02-spa-frontend-history P02 | 6 | 3 tasks | 10 files |
 | Phase 02-spa-frontend-history P03 | 4 | 3 tasks | 14 files |
 | Phase 02-spa-frontend-history P04 | 5 | 2 tasks | 4 files |
+| Phase 02-spa-frontend-history P05-tab-descifrar | 3 | 2 tasks | 7 files |
 
 ## Accumulated Context
 
@@ -96,6 +97,9 @@ Recent decisions affecting current work:
 - [Phase 02-spa-frontend-history]: TabCifrar dual copy feedback: toast 3s + button label 'Copiado ✓' reverting after 1500ms (D-34); QR rendered inline via data:image/png;base64 from backend (no client-side qrcode lib needed for cifrar)
 - [Phase 02-spa-frontend-history]: Fire-and-warn POST /api/history when historyEnabled toggle ON: encryption result preserved on persistence failure (toast 'Cifrado OK, pero no se guardó en historial')
 - [Phase 02-spa-frontend-history]: Bundle JS+CSS gzipped post-TabCifrar = 23,546 bytes (46% del budget 50 KB; ~28 KB libres para 02-05/02-06)
+- [Phase 02-spa-frontend-history]: TabDescifrar: lazy import bbqr@1.2.0 + qrcode@1.5.4 → chunks dinámicos 57.8 KB gzipped separados (bundle inicial 27,636 B / 54% del budget 50 KB)
+- [Phase 02-spa-frontend-history]: STATIC_QR_THRESHOLD 500 chars: descriptors multisig 2-de-3 caben en QR estático, multisig 5+ requieren BBQR animado (frame rotation 600ms)
+- [Phase 02-spa-frontend-history]: validateXpub regex ^([xyzt]pub|tpub)[A-Za-z0-9]{100,}$ rechaza descriptor-style con [fingerprint/path] prefix — backend /api/decrypt espera xpub bare; smoke test confirma round-trip cifrar→descifrar
 
 ### Pending Todos
 
@@ -108,6 +112,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-05-06T16:33:34.201Z
-Stopped at: Completed 02-04-tab-cifrar-PLAN.md
+Last session: 2026-05-06T16:41:29.539Z
+Stopped at: Completed 02-05-tab-descifrar-PLAN.md
 Resume file: None
