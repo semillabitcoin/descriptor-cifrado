@@ -55,17 +55,17 @@ mod tests {
     #[test]
     fn validate_history_id_rejects_wrong_length() {
         assert!(!validate_history_id(""));
-        assert!(!validate_history_id("a3f7b2c"));     // 7
-        assert!(!validate_history_id("a3f7b2c1x"));   // 9
+        assert!(!validate_history_id("a3f7b2c")); // 7
+        assert!(!validate_history_id("a3f7b2c1x")); // 9
         assert!(!validate_history_id("a3f7b2c1a3f7b2c1")); // 16
     }
 
     #[test]
     fn validate_history_id_rejects_non_hex() {
-        assert!(!validate_history_id("a3f7b2g1"));    // g no es hex
-        assert!(!validate_history_id("a3f7-2c1"));    // guión
-        assert!(!validate_history_id("../etc/p"));    // path traversal
-        assert!(!validate_history_id("a3f7 2c1"));    // espacio
+        assert!(!validate_history_id("a3f7b2g1")); // g no es hex
+        assert!(!validate_history_id("a3f7-2c1")); // guión
+        assert!(!validate_history_id("../etc/p")); // path traversal
+        assert!(!validate_history_id("a3f7 2c1")); // espacio
     }
 
     #[test]

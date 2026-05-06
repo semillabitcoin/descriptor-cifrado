@@ -56,7 +56,9 @@ async fn round_trip_post_list_get_delete() {
     assert_eq!(st, StatusCode::OK);
     let id = body["id"].as_str().unwrap().to_string();
     assert_eq!(id.len(), 8);
-    assert!(id.chars().all(|c| c.is_ascii_hexdigit() && !c.is_uppercase()));
+    assert!(id
+        .chars()
+        .all(|c| c.is_ascii_hexdigit() && !c.is_uppercase()));
 
     // GET /api/history list
     let resp = app
@@ -142,7 +144,10 @@ async fn invalid_id_returns_422() {
             .unwrap();
         let (st, body) = json_body(resp).await;
         assert_eq!(st, StatusCode::UNPROCESSABLE_ENTITY, "id={bad}");
-        assert_eq!(body["error"]["code"].as_str().unwrap(), "HISTORY_INVALID_ID");
+        assert_eq!(
+            body["error"]["code"].as_str().unwrap(),
+            "HISTORY_INVALID_ID"
+        );
     }
 }
 

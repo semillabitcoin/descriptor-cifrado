@@ -38,7 +38,10 @@ async fn get_root_returns_spa_html() {
     let body = std::str::from_utf8(&bytes).expect("utf8");
 
     // Marcas mínimas de la SPA Svelte
-    assert!(body.contains("<div id=\"app\">"), "missing root mount point");
+    assert!(
+        body.contains("<div id=\"app\">"),
+        "missing root mount point"
+    );
     // Vite emite hashed assets bajo /assets/
     assert!(
         body.contains("/assets/index-"),
@@ -49,14 +52,8 @@ async fn get_root_returns_spa_html() {
         !body.contains("https://"),
         "external https:// reference detected in index.html"
     );
-    assert!(
-        !body.contains("//fonts."),
-        "external font URL detected"
-    );
-    assert!(
-        !body.contains("googleapis"),
-        "googleapis reference leaked"
-    );
+    assert!(!body.contains("//fonts."), "external font URL detected");
+    assert!(!body.contains("googleapis"), "googleapis reference leaked");
     assert!(
         !body.contains("googleusercontent"),
         "google reference leaked"

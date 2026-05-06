@@ -211,7 +211,9 @@ pub async fn get_history_id(
     if !validate_history_id(&id) {
         return Err(AppError::HistoryInvalidId);
     }
-    let path = find_file_by_id(&id).await?.ok_or(AppError::HistoryNotFound)?;
+    let path = find_file_by_id(&id)
+        .await?
+        .ok_or(AppError::HistoryNotFound)?;
     let bytes = fs::read(&path).await.map_err(|_| AppError::Internal)?;
     let bed_b64 = B64.encode(&bytes);
     let armored = bed_core::encode_armored(&bytes);
@@ -230,7 +232,9 @@ pub async fn delete_history(Path(id): Path<String>) -> Result<StatusCode, AppErr
     if !validate_history_id(&id) {
         return Err(AppError::HistoryInvalidId);
     }
-    let path = find_file_by_id(&id).await?.ok_or(AppError::HistoryNotFound)?;
+    let path = find_file_by_id(&id)
+        .await?
+        .ok_or(AppError::HistoryNotFound)?;
     fs::remove_file(&path)
         .await
         .map_err(|_| AppError::Internal)?;
