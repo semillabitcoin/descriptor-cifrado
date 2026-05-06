@@ -116,10 +116,10 @@ None yet.
 
 ### Quick Tasks Completed
 
-| # | Description | Date | Commit | Directory |
-|---|-------------|------|--------|-----------|
-| 260506-rx9 | fix xpub interop con Liana (normalizar descriptor-style → bare en frontend) | 2026-05-06 | eedaa33 | [260506-rx9-260506-rgb-fix-xpub-interop-con-liana](./quick/260506-rx9-260506-rgb-fix-xpub-interop-con-liana/) |
-| 260506-sr7 | migrar bitcoin-encrypted-backup a v0.0.2 (interop Liana, magic BEB, AES-256-GCM) | 2026-05-06 | 8d9d2f0 | [260506-sr7-migrar-bitcoin-encrypted-backup-a-v0-0-2](./quick/260506-sr7-migrar-bitcoin-encrypted-backup-a-v0-0-2/) |
+| # | Description | Date | Commit | Status | Directory |
+|---|-------------|------|--------|--------|-----------|
+| 260506-rx9 | fix xpub interop con Liana (normalizar descriptor-style → bare en frontend) | 2026-05-06 | eedaa33 | | [260506-rx9-260506-rgb-fix-xpub-interop-con-liana](./quick/260506-rx9-260506-rgb-fix-xpub-interop-con-liana/) |
+| 260506-sr7 | migrar bitcoin-encrypted-backup a v0.0.2 (interop Liana, magic BEB, AES-256-GCM) | 2026-05-06 | 8d9d2f0 | Verified | [260506-sr7-migrar-bitcoin-encrypted-backup-a-v0-0-2](./quick/260506-sr7-migrar-bitcoin-encrypted-backup-a-v0-0-2/) |
 
 ## Session Continuity
 
