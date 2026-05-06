@@ -49,10 +49,8 @@ pub async fn post_decrypt(mut form: Multipart) -> Result<Json<DecryptResponse>, 
         }
     }
 
-    let bed_bytes =
-        bed.ok_or_else(|| AppError::BadRequest("missing 'bed' field".to_string()))?;
-    let xpub_str =
-        xpub.ok_or_else(|| AppError::BadRequest("missing 'xpub' field".to_string()))?;
+    let bed_bytes = bed.ok_or_else(|| AppError::BadRequest("missing 'bed' field".to_string()))?;
+    let xpub_str = xpub.ok_or_else(|| AppError::BadRequest("missing 'xpub' field".to_string()))?;
 
     // Auto-detect armored: if bytes start with "-----BEGIN", strip PEM headers
     // via decode_armored. Otherwise pass raw bytes to crate (which auto-detects
@@ -60,8 +58,7 @@ pub async fn post_decrypt(mut form: Multipart) -> Result<Json<DecryptResponse>, 
     let payload: Vec<u8> = if bed_bytes.starts_with(b"-----BEGIN") {
         let text = std::str::from_utf8(&bed_bytes)
             .map_err(|_| AppError::BadRequest("invalid utf-8 in armored".to_string()))?;
-        bed_core::decode_armored(text)
-            .map_err(|e| AppError::BadRequest(format!("armored: {e}")))?
+        bed_core::decode_armored(text).map_err(|e| AppError::BadRequest(format!("armored: {e}")))?
     } else {
         bed_bytes
     };

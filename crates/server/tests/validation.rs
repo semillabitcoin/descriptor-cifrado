@@ -1,3 +1,6 @@
+#![allow(clippy::panic)]
+#![allow(clippy::unwrap_used)]
+
 use axum::{
     body::{to_bytes, Body},
     http::{Request, StatusCode},
@@ -27,15 +30,17 @@ async fn encrypt_with_bare_xpub_returns_422() {
     let bytes = to_bytes(resp.into_body(), 64 * 1024)
         .await
         .unwrap_or_else(|e| panic!("bytes: {e}"));
-    let parsed: Value =
-        serde_json::from_slice(&bytes).unwrap_or_else(|e| panic!("json: {e}"));
+    let parsed: Value = serde_json::from_slice(&bytes).unwrap_or_else(|e| panic!("json: {e}"));
     assert_eq!(
         parsed["error"]["code"].as_str(),
         Some("MISSING_MULTIPATH_WILDCARD")
     );
     // Castellano message check (D-09):
     let msg = parsed["error"]["message"].as_str().unwrap_or("");
-    assert!(msg.contains("<0;1>/*"), "message must mention <0;1>/*: {msg}");
+    assert!(
+        msg.contains("<0;1>/*"),
+        "message must mention <0;1>/*: {msg}"
+    );
     assert!(
         msg.contains("xpub on-chain"),
         "message must mention xpub on-chain: {msg}"
@@ -77,8 +82,7 @@ async fn decrypt_with_wrong_xpub_returns_422() {
     let bytes = to_bytes(resp.into_body(), 1024 * 1024)
         .await
         .unwrap_or_else(|e| panic!("bytes: {e}"));
-    let parsed: Value =
-        serde_json::from_slice(&bytes).unwrap_or_else(|e| panic!("json: {e}"));
+    let parsed: Value = serde_json::from_slice(&bytes).unwrap_or_else(|e| panic!("json: {e}"));
     let armored = parsed["armored"]
         .as_str()
         .unwrap_or_else(|| panic!("no armored"))
@@ -108,8 +112,7 @@ async fn decrypt_with_wrong_xpub_returns_422() {
     let bytes = to_bytes(resp.into_body(), 64 * 1024)
         .await
         .unwrap_or_else(|e| panic!("bytes: {e}"));
-    let parsed: Value =
-        serde_json::from_slice(&bytes).unwrap_or_else(|e| panic!("json: {e}"));
+    let parsed: Value = serde_json::from_slice(&bytes).unwrap_or_else(|e| panic!("json: {e}"));
     assert_eq!(parsed["error"]["code"].as_str(), Some("XPUB_MISMATCH"));
 }
 

@@ -53,9 +53,10 @@ struct ErrorEnvelope {
 impl IntoResponse for AppError {
     fn into_response(self) -> Response {
         let (status, code): (StatusCode, &'static str) = match &self {
-            AppError::MissingMultipathWildcard => {
-                (StatusCode::UNPROCESSABLE_ENTITY, "MISSING_MULTIPATH_WILDCARD")
-            }
+            AppError::MissingMultipathWildcard => (
+                StatusCode::UNPROCESSABLE_ENTITY,
+                "MISSING_MULTIPATH_WILDCARD",
+            ),
             AppError::DescriptorParse => (StatusCode::UNPROCESSABLE_ENTITY, "DESCRIPTOR_PARSE"),
             AppError::XpubMismatch => (StatusCode::UNPROCESSABLE_ENTITY, "XPUB_MISMATCH"),
             AppError::QrTooLarge { .. } => (StatusCode::UNPROCESSABLE_ENTITY, "QR_TOO_LARGE"),

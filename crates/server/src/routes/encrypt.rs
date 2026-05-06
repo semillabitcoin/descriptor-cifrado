@@ -23,9 +23,7 @@ pub struct EncryptResponse {
 /// Encrypt handler. The `descriptor` field is moved into `Zeroizing<String>`
 /// on the FIRST line (D-10, PITFALLS #4) before any `?` early-return.
 #[tracing::instrument(skip_all)]
-pub async fn post_encrypt(
-    Json(req): Json<EncryptRequest>,
-) -> Result<impl IntoResponse, AppError> {
+pub async fn post_encrypt(Json(req): Json<EncryptRequest>) -> Result<impl IntoResponse, AppError> {
     // STEP 1 (D-10): wrap immediately; req.descriptor is moved INTO Zeroizing
     // on this line. Any subsequent access is via &mut, never by value.
     let mut cleartext: Zeroizing<String> = Zeroizing::new(req.descriptor);

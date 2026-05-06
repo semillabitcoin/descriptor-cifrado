@@ -57,7 +57,10 @@ fn rejects_mixed_one_good_one_bad() {
 #[test]
 fn accepts_valid_fixture() {
     let d = parse(VALID_FIXTURE.trim());
-    assert!(require_multipath_0_1(&d).is_ok(), "valid fixture should pass");
+    assert!(
+        require_multipath_0_1(&d).is_ok(),
+        "valid fixture should pass"
+    );
 }
 
 #[test]

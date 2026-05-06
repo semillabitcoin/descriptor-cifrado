@@ -2,7 +2,8 @@
 
 use bed_core::armored::{decode_armored, encode_armored, ArmoredError, ARMOR_BEGIN, ARMOR_END};
 
-const PAYLOAD: &[u8] = b"the quick brown fox jumps over the lazy dog 0123456789 ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+const PAYLOAD: &[u8] =
+    b"the quick brown fox jumps over the lazy dog 0123456789 ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
 #[test]
 fn round_trip_identity() {
@@ -24,8 +25,14 @@ fn line_wrap_64_chars() {
     let big = vec![0xABu8; 200];
     let armored = encode_armored(&big);
     for line in armored.lines() {
-        if line.starts_with("-----") { continue; }
-        assert!(line.len() <= 64, "line too long: {} chars: {line}", line.len());
+        if line.starts_with("-----") {
+            continue;
+        }
+        assert!(
+            line.len() <= 64,
+            "line too long: {} chars: {line}",
+            line.len()
+        );
     }
 }
 
@@ -61,11 +68,17 @@ fn tolerates_bom() {
 #[test]
 fn rejects_wrong_header() {
     let bad = "-----BEGIN PGP MESSAGE-----\nQUJD\n-----END PGP MESSAGE-----\n";
-    assert!(matches!(decode_armored(bad), Err(ArmoredError::WrongHeader)));
+    assert!(matches!(
+        decode_armored(bad),
+        Err(ArmoredError::WrongHeader)
+    ));
 }
 
 #[test]
 fn rejects_empty_payload() {
     let empty = format!("{ARMOR_BEGIN}\n{ARMOR_END}\n");
-    assert!(matches!(decode_armored(&empty), Err(ArmoredError::EmptyPayload)));
+    assert!(matches!(
+        decode_armored(&empty),
+        Err(ArmoredError::EmptyPayload)
+    ));
 }

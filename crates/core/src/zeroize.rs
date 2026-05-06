@@ -19,7 +19,9 @@ impl ZeroizingDescriptor {
     /// Wrap an owned String. The original buffer is moved into Zeroizing
     /// at this single boundary (per D-10).
     pub fn new(s: String) -> Self {
-        Self { inner: Zeroizing::new(s) }
+        Self {
+            inner: Zeroizing::new(s),
+        }
     }
 
     /// Read-only borrow. Use sparingly — caller must not log or clone the

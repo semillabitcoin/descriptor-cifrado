@@ -52,7 +52,9 @@ pub fn decode_armored(input: &str) -> Result<Vec<u8>, ArmoredError> {
     let mut in_block = false;
     for raw_line in s.lines() {
         let line = raw_line.trim();
-        if line.is_empty() { continue; }
+        if line.is_empty() {
+            continue;
+        }
         if line.starts_with("-----BEGIN") {
             if line == ARMOR_BEGIN {
                 in_block = true;

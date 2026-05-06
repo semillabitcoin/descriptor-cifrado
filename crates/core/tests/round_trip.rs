@@ -25,7 +25,11 @@ fn normalize_desc(s: &str) -> String {
         let c = chars[i];
         if c == 'h' && i > 0 {
             let prev = chars[i - 1];
-            let next = if i + 1 < chars.len() { chars[i + 1] } else { '\0' };
+            let next = if i + 1 < chars.len() {
+                chars[i + 1]
+            } else {
+                '\0'
+            };
             // hardened `h` marker: after digit, before `/` or `]`
             if prev.is_ascii_digit() && (next == '/' || next == ']') {
                 out.push('\'');
@@ -43,15 +47,21 @@ fn normalize_desc(s: &str) -> String {
 fn round_trip_fixture() {
     let original = FIXTURE_DESC.trim().to_string();
     let mut cleartext = Zeroizing::new(original.clone());
-    let out = encrypt_descriptor(&mut cleartext)
-        .unwrap_or_else(|e| panic!("encrypt failed: {e}"));
+    let out = encrypt_descriptor(&mut cleartext).unwrap_or_else(|e| panic!("encrypt failed: {e}"));
 
     // Sanity: bed_bytes start with "BIPXXX" magic (verified at /tmp/bed-test/encrypted_backup/src/lib.rs)
-    assert!(out.bed_bytes.starts_with(b"BIPXXX"), "bed must start with BIPXXX magic");
+    assert!(
+        out.bed_bytes.starts_with(b"BIPXXX"),
+        "bed must start with BIPXXX magic"
+    );
 
     // Sanity: armored has the right headers
-    assert!(out.armored.starts_with("-----BEGIN BITCOIN ENCRYPTED BACKUP-----\n"));
-    assert!(out.armored.ends_with("-----END BITCOIN ENCRYPTED BACKUP-----\n"));
+    assert!(out
+        .armored
+        .starts_with("-----BEGIN BITCOIN ENCRYPTED BACKUP-----\n"));
+    assert!(out
+        .armored
+        .ends_with("-----END BITCOIN ENCRYPTED BACKUP-----\n"));
 
     // Sanity: qr_png is a real PNG
     assert!(out.qr_png.starts_with(b"\x89PNG"), "qr_png must be PNG");
@@ -71,8 +81,7 @@ fn round_trip_fixture() {
 fn decrypt_with_wrong_xpub_fails() {
     let original = FIXTURE_DESC.trim().to_string();
     let mut cleartext = Zeroizing::new(original);
-    let out = encrypt_descriptor(&mut cleartext)
-        .unwrap_or_else(|e| panic!("encrypt failed: {e}"));
+    let out = encrypt_descriptor(&mut cleartext).unwrap_or_else(|e| panic!("encrypt failed: {e}"));
 
     // Use an unrelated xpub — must not decrypt
     let wrong = "xpub6BgBgsespWvERF3LHQu6CnqdvfEvtMcQjYrcRzx53QJjSxarj2afYWcLteoGVky7D3UKDP9QyrLprQ3VCECoY49yfdDEHGCtMMj92pReUsQ";
@@ -98,5 +107,11 @@ fn qr_too_large_returns_error() {
     use bed_core::{render_qr_png, CoreError};
     let big = "x".repeat(3000);
     let err = render_qr_png(&big).unwrap_err();
-    assert!(matches!(err, CoreError::QrTooLarge { size: 3000, max: 2900 }));
+    assert!(matches!(
+        err,
+        CoreError::QrTooLarge {
+            size: 3000,
+            max: 2900
+        }
+    ));
 }

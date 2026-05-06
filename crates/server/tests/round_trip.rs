@@ -1,3 +1,6 @@
+#![allow(clippy::panic)]
+#![allow(clippy::unwrap_used)]
+
 use axum::{
     body::{to_bytes, Body},
     http::{Request, StatusCode},
@@ -28,14 +31,16 @@ async fn encrypt_then_decrypt_roundtrip() {
     let bytes = to_bytes(resp.into_body(), 1024 * 1024)
         .await
         .unwrap_or_else(|e| panic!("body: {e}"));
-    let parsed: Value =
-        serde_json::from_slice(&bytes).unwrap_or_else(|e| panic!("json: {e}"));
+    let parsed: Value = serde_json::from_slice(&bytes).unwrap_or_else(|e| panic!("json: {e}"));
     let armored = parsed["armored"]
         .as_str()
         .unwrap_or_else(|| panic!("no armored field: {parsed}"))
         .to_string();
     assert!(parsed["bed_b64"].is_string(), "bed_b64 must be string");
-    assert!(parsed["qr_png_b64"].is_string(), "qr_png_b64 must be string");
+    assert!(
+        parsed["qr_png_b64"].is_string(),
+        "qr_png_b64 must be string"
+    );
 
     // Multipart with armored bed + xpub
     let boundary = "----testboundary";
@@ -62,8 +67,7 @@ async fn encrypt_then_decrypt_roundtrip() {
     let bytes = to_bytes(resp.into_body(), 1024 * 1024)
         .await
         .unwrap_or_else(|e| panic!("body: {e}"));
-    let parsed: Value =
-        serde_json::from_slice(&bytes).unwrap_or_else(|e| panic!("json: {e}"));
+    let parsed: Value = serde_json::from_slice(&bytes).unwrap_or_else(|e| panic!("json: {e}"));
 
     // Normalize h/apostrophe: miniscript re-serializes 48h as 48', both BIP-380 valid.
     // Strip the trailing checksum (#xxxxxxxx) before comparing: miniscript may
@@ -109,8 +113,7 @@ async fn decrypt_with_binary_bed_works() {
     let bytes = to_bytes(resp.into_body(), 1024 * 1024)
         .await
         .unwrap_or_else(|e| panic!("bytes: {e}"));
-    let parsed: Value =
-        serde_json::from_slice(&bytes).unwrap_or_else(|e| panic!("json: {e}"));
+    let parsed: Value = serde_json::from_slice(&bytes).unwrap_or_else(|e| panic!("json: {e}"));
     let bed_b64 = parsed["bed_b64"]
         .as_str()
         .unwrap_or_else(|| panic!("no bed_b64"))
