@@ -6,6 +6,7 @@
   import TabBar from './components/TabBar.svelte';
   import TabCifrar from './components/TabCifrar.svelte';
   import TabDescifrar from './components/TabDescifrar.svelte';
+  import TabHistorial from './components/TabHistorial.svelte';
 
   onMount(() => {
     initFromStorage();
@@ -45,8 +46,7 @@
       class="panel"
       hidden={appState.activeTab !== 'historial'}
     >
-      <!-- Plan 02-06 monta TabHistorial aquí -->
-      <p class="placeholder">Tab Historial — pendiente de plan 02-06.</p>
+      <TabHistorial />
     </section>
   {/if}
 </main>
@@ -63,11 +63,5 @@
   }
   @media (min-width: 1024px) {
     .panel { padding-left: 0; padding-right: 0; }
-  }
-  .placeholder {
-    color: var(--color-text-secondary);
-    font-size: var(--font-size-body);
-    text-align: center;
-    padding: var(--space-2xl) 0;
   }
 </style>
