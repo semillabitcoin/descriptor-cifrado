@@ -2,15 +2,15 @@
 gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
-status: executing
-stopped_at: Completed 01-05-server-axum-handlers-PLAN.md
-last_updated: "2026-05-05T22:28:56.521Z"
-last_activity: 2026-05-05
+status: verifying
+stopped_at: Completed 01-06-integration-tests-PLAN.md
+last_updated: "2026-05-06T04:49:43.258Z"
+last_activity: 2026-05-06
 progress:
   total_phases: 4
-  completed_phases: 0
+  completed_phases: 1
   total_plans: 6
-  completed_plans: 5
+  completed_plans: 6
   percent: 0
 ---
 
@@ -27,8 +27,8 @@ See: .planning/PROJECT.md (updated 2026-05-05)
 
 Phase: 01 (crypto-core-http-api) — EXECUTING
 Plan: 6 of 6
-Status: Ready to execute
-Last activity: 2026-05-05
+Status: Phase complete — ready for verification
+Last activity: 2026-05-06
 
 Progress: [░░░░░░░░░░] 0%
 
@@ -57,6 +57,7 @@ Progress: [░░░░░░░░░░] 0%
 | Phase 01-crypto-core-http-api P03 | 8 | 2 tasks | 6 files |
 | Phase 01-crypto-core-http-api P04 | 18 | 2 tasks | 9 files |
 | Phase 01-crypto-core-http-api P05 | 5 | 2 tasks | 7 files |
+| Phase 01-crypto-core-http-api P06 | 27 | 2 tasks | 6 files |
 
 ## Accumulated Context
 
@@ -78,6 +79,8 @@ Recent decisions affecting current work:
 - [Phase 01-crypto-core-http-api]: Normalize h/apostrophe in round-trip assertions: miniscript re-serializes 48h as 48'; both BIP-380 valid; comparison normalizes both sides
 - [Phase 01-crypto-core-http-api]: QrTooLarge message uses 'Usa' (Castilian) not 'Usá' (Argentine) per feedback_castellano_no_argentino.md
 - [Phase 01-crypto-core-http-api]: base64 added to bed-server Cargo.toml — required for bed_b64/qr_png_b64 JSON fields in encrypt handler
+- [Phase 01-crypto-core-http-api]: Strip BIP-380 checksum before round-trip comparison: miniscript re-computes checksum after canonical normalization
+- [Phase 01-crypto-core-http-api]: #![allow(clippy::panic)] required in integration test files: workspace lint panic=warn + -D warnings in CI
 
 ### Pending Todos
 
@@ -90,6 +93,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-05-05T22:28:56.516Z
-Stopped at: Completed 01-05-server-axum-handlers-PLAN.md
+Last session: 2026-05-06T04:49:43.254Z
+Stopped at: Completed 01-06-integration-tests-PLAN.md
 Resume file: None

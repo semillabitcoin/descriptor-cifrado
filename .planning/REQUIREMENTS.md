@@ -70,7 +70,7 @@
 - [ ] **DOC-01**: README documenta el modelo de amenazas explícito (lo que protege y lo que NO protege)
 - [ ] **DOC-02**: README incluye el aviso clave: "ninguna ubicación debe contener simultáneamente el `.bed` y una xpub del multisig"
 - [x] **CI-01**: Pipeline de CI corre `cargo audit` + `cargo deny` y falla en vulnerabilidades / licencias prohibidas
-- [ ] **CI-02**: Pipeline de CI corre el test de round-trip y el test de no-leak (descriptor no aparece en logs ni en archivos persistidos)
+- [x] **CI-02**: Pipeline de CI corre el test de round-trip y el test de no-leak (descriptor no aparece en logs ni en archivos persistidos)
 
 ## v2 Requirements
 
@@ -131,7 +131,7 @@
 | SEC-02 | Phase 1 | Complete |
 | SEC-03 | Phase 1 | Complete |
 | CI-01 | Phase 1 | Complete |
-| CI-02 | Phase 1 | Pending |
+| CI-02 | Phase 1 | Complete |
 | UI-01 | Phase 2 | Pending |
 | UI-02 | Phase 2 | Pending |
 | UI-03 | Phase 2 | Pending |
