@@ -2,15 +2,15 @@
 gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
-status: executing
-stopped_at: Completed 02-05-tab-descifrar-PLAN.md
-last_updated: "2026-05-06T16:41:29.551Z"
+status: verifying
+stopped_at: Completed 02-06-tab-historial-and-rust-embed-PLAN.md (Phase 2 closed)
+last_updated: "2026-05-06T16:56:35.180Z"
 last_activity: 2026-05-06
 progress:
   total_phases: 4
-  completed_phases: 1
+  completed_phases: 2
   total_plans: 12
-  completed_plans: 11
+  completed_plans: 12
   percent: 0
 ---
 
@@ -27,7 +27,7 @@ See: .planning/PROJECT.md (updated 2026-05-05)
 
 Phase: 02 (spa-frontend-history) — EXECUTING
 Plan: 6 of 6
-Status: Ready to execute
+Status: Phase complete — ready for verification
 Last activity: 2026-05-06
 
 Progress: [░░░░░░░░░░] 0%
@@ -63,6 +63,7 @@ Progress: [░░░░░░░░░░] 0%
 | Phase 02-spa-frontend-history P03 | 4 | 3 tasks | 14 files |
 | Phase 02-spa-frontend-history P04 | 5 | 2 tasks | 4 files |
 | Phase 02-spa-frontend-history P05-tab-descifrar | 3 | 2 tasks | 7 files |
+| Phase 02-spa-frontend-history P06-tab-historial-and-rust-embed | 11 | 2 tasks | 11 files |
 
 ## Accumulated Context
 
@@ -100,6 +101,9 @@ Recent decisions affecting current work:
 - [Phase 02-spa-frontend-history]: TabDescifrar: lazy import bbqr@1.2.0 + qrcode@1.5.4 → chunks dinámicos 57.8 KB gzipped separados (bundle inicial 27,636 B / 54% del budget 50 KB)
 - [Phase 02-spa-frontend-history]: STATIC_QR_THRESHOLD 500 chars: descriptors multisig 2-de-3 caben en QR estático, multisig 5+ requieren BBQR animado (frame rotation 600ms)
 - [Phase 02-spa-frontend-history]: validateXpub regex ^([xyzt]pub|tpub)[A-Za-z0-9]{100,}$ rechaza descriptor-style con [fingerprint/path] prefix — backend /api/decrypt espera xpub bare; smoke test confirma round-trip cifrar→descifrar
+- [Phase 02-spa-frontend-history]: Plan 02-06: rust-embed feature 'axum' confirmed (8.11.0); mime_guess 2.0.5 added for Content-Type resolution on .woff2/.css; Cache-Control split (assets/* immutable 1y, index.html no-cache)
+- [Phase 02-spa-frontend-history]: Plan 02-06: Static routes registered AFTER /api/* in axum 0.8 router; static handler uses uri.path().trim_start_matches('/') so rust-embed receives 'assets/index-...' path
+- [Phase 02-spa-frontend-history]: Plan 02-06: Bundle JS+CSS gzipped post-TabHistorial = 30,045 bytes (60% del budget 50 KB); binary release 5.8 MB (within STACK target 5-10 MB); Phase 2 closed 9/9 requirements
 
 ### Pending Todos
 
@@ -112,6 +116,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-05-06T16:41:29.539Z
-Stopped at: Completed 02-05-tab-descifrar-PLAN.md
+Last session: 2026-05-06T16:56:25.392Z
+Stopped at: Completed 02-06-tab-historial-and-rust-embed-PLAN.md (Phase 2 closed)
 Resume file: None

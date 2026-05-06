@@ -36,7 +36,7 @@
 - [x] **HIST-03**: El descriptor en claro NUNCA se persiste en disco (test de CI hace grep del descriptor sobre archivos guardados)
 - [x] **HIST-04**: Endpoint `GET /api/history` lista entradas vía directory scan de `/data/encrypted/`
 - [x] **HIST-05**: Endpoint `DELETE /api/history/:id` borra una entrada
-- [ ] **HIST-06**: La UI lista y permite borrar entradas del historial
+- [x] **HIST-06**: La UI lista y permite borrar entradas del historial
 
 ### Frontend
 
@@ -140,7 +140,7 @@
 | HIST-03 | Phase 2 | Complete |
 | HIST-04 | Phase 2 | Complete |
 | HIST-05 | Phase 2 | Complete |
-| HIST-06 | Phase 2 | Pending |
+| HIST-06 | Phase 2 | Complete |
 | PKG-01 | Phase 3 | Pending |
 | PKG-02 | Phase 3 | Pending |
 | PKG-03 | Phase 3 | Pending |
