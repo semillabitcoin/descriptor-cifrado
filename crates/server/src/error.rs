@@ -37,6 +37,15 @@ pub enum AppError {
 
     #[error("solicitud inválida: {0}")]
     BadRequest(String),
+
+    #[error("Entrada de historial no encontrada.")]
+    HistoryNotFound,
+
+    #[error("No se pudo escribir en el historial.")]
+    HistoryWriteFailed,
+
+    #[error("ID de historial inválido.")]
+    HistoryInvalidId,
 }
 
 #[derive(Serialize)]
@@ -62,6 +71,11 @@ impl IntoResponse for AppError {
             AppError::QrTooLarge { .. } => (StatusCode::UNPROCESSABLE_ENTITY, "QR_TOO_LARGE"),
             AppError::BadRequest(_) => (StatusCode::BAD_REQUEST, "BAD_REQUEST"),
             AppError::Internal => (StatusCode::INTERNAL_SERVER_ERROR, "INTERNAL"),
+            AppError::HistoryNotFound => (StatusCode::NOT_FOUND, "HISTORY_NOT_FOUND"),
+            AppError::HistoryWriteFailed => {
+                (StatusCode::INTERNAL_SERVER_ERROR, "HISTORY_WRITE_FAILED")
+            }
+            AppError::HistoryInvalidId => (StatusCode::UNPROCESSABLE_ENTITY, "HISTORY_INVALID_ID"),
         };
         let body = ErrorEnvelope {
             error: ErrorBody {
