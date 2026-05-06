@@ -1,11 +1,12 @@
 ---
 phase: 2
 slug: spa-frontend-history
-status: draft
+status: approved
 shadcn_initialized: false
 preset: none
 created: 2026-05-06
 revised: 2026-05-06
+reviewed_at: 2026-05-06
 revision_reason: "Fix BLOCK typography (weights 4→2, sizes 5→4+mono exception) and BLOCK spacing (off-grid padding values)"
 ---
 
