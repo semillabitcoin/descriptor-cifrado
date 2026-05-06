@@ -8,6 +8,8 @@ App s9pk para StartOS 0.4.0 que cifra y descifra descriptors de Bitcoin siguiend
 
 Un holder StartOS puede pegar un descriptor multisig y obtener un `.bed` cifrado (binario, armored o QR) sin instalar ni compilar nada, y luego recuperar ese descriptor pegando el `.bed` + cualquier xpub cosigner — todo local, sobre Tor, sin telemetría.
 
+**Compatibilidad de formato:** los `.bed` producidos por esta app son cripto-compatibles con Liana producción (crate `bitcoin-encrypted-backup` v0.0.2, AES-256-GCM, magic `BEB`). Un `.bed` exportado desde Liana se descifra aquí y viceversa. Si Liana en el futuro bumpea a un release distinto del crate, abriremos un nuevo ciclo de migración — no perseguimos HEAD master del autor.
+
 ## Requirements
 
 ### Validated
@@ -55,8 +57,9 @@ Un holder StartOS puede pegar un descriptor multisig y obtener un `.bed` cifrado
 ## Constraints
 
 - **Tech stack**: Rust + axum + tokio — importar la crate `bitcoin-encrypted-backup` directamente (NO shellear la CLI `beb`)
+- **Crate pin**: `bitcoin-encrypted-backup` tag `v0.0.2` (rev `cd7ee382bf5ca0798d4f81697e2f9efb5e32fe40`) — único release publicado, compat con Liana producción. NUNCA HEAD master (formato cripto distinto: ChaCha20-Poly1305 vs AES-256-GCM, magic `BIPXXX` vs `BEB`)
 - **Tech stack**: Frontend SPA mínima vanilla JS o Svelte servida desde el mismo backend — sin CDN externo, sin telemetría, sin fonts remotas
-- **Compatibilidad**: miniscript v0.12.x (la crate soporta features `miniscript_12_0` y `miniscript_12_3_5`)
+- **Compatibilidad**: miniscript v0.12.x (la crate soporta features `miniscript_12_0` y `miniscript_12_3_5`); features de la crate = `miniscript_12_3_5` + `rand` (NO `base64`/`devices`/`cli`/`tokio`)
 - **BIP**: descriptors deben usar derivación `<0;1>/*`; sin esto, gastar desde dirección 0 expone la xpub on-chain y rompe el cifrado
 - **Plataforma**: solo StartOS 0.4.0 — invocar skill `start9-packaging` cuando llegue empaquetado
 - **Imagen**: build con `rust:slim`, runtime con `distroless/cc`, target ~5–10 MB
@@ -79,7 +82,7 @@ Un holder StartOS puede pegar un descriptor multisig y obtener un `.bed` cifrado
 | Hardware wallet fuera de scope | USB no llega al contenedor StartOS 0.4.0 | — Pending |
 | Solo StartOS 0.4.0 en v1 | Foco; cross-platform a Umbrel es follow-up | — Pending |
 | Tor onion + LAN, sin clearnet | App maneja descriptors; clearnet aumenta superficie sin beneficio | — Pending |
-| Crate `bitcoin-encrypted-backup` pinneada exact en rev `17b69b71` | No está en crates.io; pin exacto previene breaking changes silenciosos | ✓ Phase 1 |
+| Crate `bitcoin-encrypted-backup` pinneada exact al tag `v0.0.2` (rev `cd7ee382`) | Único release publicado del crate; compat cripto con Liana producción (AES-256-GCM, magic `BEB`); HEAD master usa ChaCha20-Poly1305 + magic `BIPXXX` placeholder y rompe interop. Pin original `17b69b71` (HEAD) se sustituyó por `cd7ee382` (tag v0.0.2) en quick task `260506-sr7` tras detectar incompatibilidad con `.bed` real de Liana | ✓ Phase 1 + sesión 7 |
 | Workspace lints `unwrap_used = "deny"` + `expect_used = "deny"` | Garantiza no-panic en request path; clippy `-D warnings` lo enforce | ✓ Phase 1 |
 | Bind 127.0.0.1:8080 (no clearnet binding) | StartOS rutea externamente vía Tor + LAN; binding privado evita exposure accidental | ✓ Phase 1 |
 | Bans cargo-deny: openssl-sys, native-tls, async-hwi | TLS lo termina StartOS; rustls everywhere para distroless | ✓ Phase 1 |
@@ -102,4 +105,4 @@ This document evolves at phase transitions and milestone boundaries.
 4. Update Context with current state
 
 ---
-*Last updated: 2026-05-06 — Phase 2 complete (SPA frontend Svelte 5 + history opt-in + rust-embed binario único)*
+*Last updated: 2026-05-06 — Phase 2 complete + crate pivot a v0.0.2 (interop Liana confirmada por UAT)*

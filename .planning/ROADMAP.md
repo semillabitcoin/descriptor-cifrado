@@ -13,7 +13,7 @@ Four coarse phases take the project from a verified crypto core to a live StartO
 Decimal phases appear between their surrounding integers in numeric order.
 
 - [x] **Phase 1: Crypto Core + HTTP API** - Establish round-trip encryption/decryption, BIP invariants, memory safety, and stable axum endpoints (completed 2026-05-06)
-- [ ] **Phase 2: SPA Frontend + History** - Svelte UI for encrypt/decrypt flows, opt-in history mode with list and delete
+- [x] **Phase 2: SPA Frontend + History** - Svelte UI for encrypt/decrypt flows, opt-in history mode with list and delete (completed 2026-05-06; interop Liana v0.0.2 verificada por UAT)
 - [ ] **Phase 3: Docker + GHCR** - Multi-stage distroless image, multi-arch build, public GHCR push with CI audits
 - [ ] **Phase 4: StartOS Packaging + Docs** - s9pk manifest, health check, real-device test, threat model documentation
 
@@ -90,6 +90,6 @@ Phases execute in numeric order: 1 → 2 → 3 → 4
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
 | 1. Crypto Core + HTTP API | 6/6 | Complete   | 2026-05-06 |
-| 2. SPA Frontend + History | 0/6 | Not started | - |
+| 2. SPA Frontend + History | 6/6 | Complete   | 2026-05-06 |
 | 3. Docker + GHCR | 0/? | Not started | - |
 | 4. StartOS Packaging + Docs | 0/? | Not started | - |

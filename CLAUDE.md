@@ -33,7 +33,7 @@ App s9pk para StartOS 0.4.0 que cifra y descifra descriptors de Bitcoin siguiend
 | `axum` | 0.8.x (0.8.8 as of Jan 2026) | HTTP router and handler framework | Maintained by the Tokio team, 191M+ crates.io downloads, zero unsafe code, macro-free routing, composable with Tower middleware. Standard choice for Rust HTTP services in 2026. |
 | `tokio` | 1.52.x (LTS 1.51.x until Mar 2027) | Async runtime | The only viable async runtime for axum; use LTS 1.51.x for stability if pinning a minor. Feature `rt-multi-thread` + `macros` is sufficient (avoid `full` in production to reduce compile surface). |
 | `tower-http` | 0.6.x (0.6.8 latest) | HTTP middleware: ServeDir, compression, tracing | Provides `ServeDir` for dev-mode file serving, `CompressionLayer` (gzip/zstd), and `TraceLayer`. Co-maintained with axum; version tracks axum 0.8.x. |
-| `bitcoin-encrypted-backup` | 1.0.0 (git dep — not on crates.io) | BIP-1951 encrypt/decrypt logic | Import as git dependency; use features `miniscript_12_3_5` + `rand` + `base64`; disable `devices` and `cli`. This is the only dependency that implements the BIP draft. |
+| `bitcoin-encrypted-backup` | 0.0.2 (tag `v0.0.2`, rev `cd7ee382bf5ca0798d4f81697e2f9efb5e32fe40` — único release publicado, no en crates.io) | Encrypt/decrypt logic compatible con Liana producción (AES-256-GCM, magic `BEB`) | Import as git dependency; use features `miniscript_12_3_5` + `rand`; disable `devices`, `cli`, `tokio`. Feature `base64` NO existe en 0.0.2. Pin exacto al tag — HEAD master cambia formato cripto y rompe interop con Liana. |
 | `rust-embed` | 8.x (8.8.0 latest) | Embed compiled frontend assets into binary | Embeds HTML/CSS/JS at compile time; dev mode reads from filesystem. Official axum integration example exists (`--features axum-ex`). Produces truly self-contained binary — no filesystem assets needed at runtime. |
 ### Frontend
 | Technology | Version | Purpose | Why Recommended |
@@ -112,7 +112,7 @@ App s9pk para StartOS 0.4.0 que cifra y descifra descriptors de Bitcoin siguiend
 |---------|-----------------|-------|
 | `axum` 0.8.x | `tower-http` 0.6.x | Must match; axum 0.8 requires tower-http 0.6 |
 | `axum` 0.8.x | `tokio` 1.x | Any tokio 1.x works; pin to LTS 1.51.x |
-| `bitcoin-encrypted-backup` 1.0.0 | `miniscript` 0.12.3.5 (via feature) | Use feature `miniscript_12_3_5` (= `miniscript_latest`); do NOT mix with a separate `miniscript` dep at a different version or Cargo will unify incorrectly |
+| `bitcoin-encrypted-backup` 0.0.2 | `miniscript` 0.12.3.5 (via feature) | Use feature `miniscript_12_3_5` (= `miniscript_latest`); do NOT mix with a separate `miniscript` dep at a different version or Cargo will unify incorrectly |
 | `qrcode` 0.14.x | `image` 0.25.x | `qrcode` default features require `image`; pin `image` to 0.25 to match documented working combination |
 | `rust-embed` 8.x | `axum` 0.8.x | rust-embed `axum-ex` feature targets axum 0.8; verify feature flag when bumping either |
 | `redb` 4.x | No system deps | Pure Rust; compatible with distroless runtime |
@@ -122,7 +122,7 @@ App s9pk para StartOS 0.4.0 que cifra y descifra descriptors de Bitcoin siguiend
 - axum 0.8.8 — [crates.io/crates/axum](https://crates.io/crates/axum), [github.com/tokio-rs/axum](https://github.com/tokio-rs/axum) — HIGH confidence
 - tokio 1.52.1 / LTS 1.51.x — [tokio.rs](https://tokio.rs), [docs.rs/crate/tokio/latest](https://docs.rs/crate/tokio/latest/source/README.md) — HIGH confidence
 - tower-http 0.6.8 — [docs.rs/crate/tower-http/latest](https://docs.rs/crate/tower-http/latest) — HIGH confidence
-- bitcoin-encrypted-backup 1.0.0, feature flags — [github.com/pythcoiner/encrypted_backup/blob/master/Cargo.toml](https://github.com/pythcoiner/encrypted_backup/blob/master/Cargo.toml) (fetched directly) — HIGH confidence
+- bitcoin-encrypted-backup v0.0.2, feature flags — [github.com/pythcoiner/encrypted_backup/blob/v0.0.2/Cargo.toml](https://github.com/pythcoiner/encrypted_backup/blob/v0.0.2/Cargo.toml) (tag `v0.0.2`, rev `cd7ee382`, único release publicado por el autor) — HIGH confidence. Pin exacto al tag; HEAD master usa ChaCha20-Poly1305 + magic `BIPXXX` y rompe interop con Liana producción
 - rust-embed 8.8.0 — [crates.io/crates/rust-embed](https://crates.io/crates/rust-embed) — HIGH confidence
 - redb 4.1.0 — [github.com/cberner/redb](https://github.com/cberner/redb), [redb.org](https://www.redb.org/) — HIGH confidence
 - sled abandonment — multiple Rust forum threads and ecosystem surveys 2024-2025 — HIGH confidence

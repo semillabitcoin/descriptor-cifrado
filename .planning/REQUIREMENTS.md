@@ -7,7 +7,7 @@
 
 ### Crypto Core
 
-- [x] **CORE-01**: La crate `bitcoin-encrypted-backup` se importa con features `miniscript_12_3_5`, `rand`, `base64` y NO con `devices`/`cli`/`tokio`, pinneada a un commit/rev exacto
+- [x] **CORE-01**: La crate `bitcoin-encrypted-backup` se importa con features `miniscript_12_3_5` + `rand` y NO con `devices`/`cli`/`tokio`/`base64`, pinneada exact al tag `v0.0.2` (rev `cd7ee382bf5ca0798d4f81697e2f9efb5e32fe40` — único release publicado; compat Liana producción)
 - [x] **CORE-02**: Existe round-trip determinista (encrypt → decrypt con xpub válida) cubierto por test automatizado
 - [x] **CORE-03**: La capa core valida que el descriptor usa derivación `<0;1>/*` y rechaza descriptors sin esa wildcard con error tipado
 - [x] **CORE-04**: El descriptor en claro se envuelve en `secrecy::SecretString` desde el punto de parse y se zeroiza tras la operación
