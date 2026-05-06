@@ -2,15 +2,15 @@
 gsd_state_version: 1.0
 milestone: v0.0.2
 milestone_name: milestone
-status: verifying
-stopped_at: Phase 3 context gathered (auto-mode)
-last_updated: "2026-05-06T20:15:55.078Z"
-last_activity: "2026-05-06 - Completed quick task 260506-rx9: fix xpub interop con Liana"
+status: executing
+stopped_at: Completed 03-docker-ghcr/03-01-PLAN.md
+last_updated: "2026-05-06T21:09:13.336Z"
+last_activity: 2026-05-06
 progress:
   total_phases: 4
   completed_phases: 2
-  total_plans: 12
-  completed_plans: 12
+  total_plans: 14
+  completed_plans: 13
   percent: 0
 ---
 
@@ -21,14 +21,14 @@ progress:
 See: .planning/PROJECT.md (updated 2026-05-05)
 
 **Core value:** Un holder StartOS puede pegar un descriptor multisig y obtener un `.bed` cifrado (binario, armored o QR) sin instalar ni compilar nada, y luego recuperarlo pegando `.bed` + cualquier xpub cosigner — todo local, sobre Tor, sin telemetría.
-**Current focus:** Phase 02 — spa-frontend-history
+**Current focus:** Phase 03 — docker-ghcr
 
 ## Current Position
 
-Phase: 3
-Plan: Not started
-Status: Phase complete — ready for verification
-Last activity: 2026-05-06 - Completed quick task 260506-rx9: fix xpub interop con Liana
+Phase: 03 (docker-ghcr) — EXECUTING
+Plan: 2 of 2
+Status: Ready to execute
+Last activity: 2026-05-06
 
 Progress: [░░░░░░░░░░] 0%
 
@@ -64,6 +64,7 @@ Progress: [░░░░░░░░░░] 0%
 | Phase 02-spa-frontend-history P04 | 5 | 2 tasks | 4 files |
 | Phase 02-spa-frontend-history P05-tab-descifrar | 3 | 2 tasks | 7 files |
 | Phase 02-spa-frontend-history P06-tab-historial-and-rust-embed | 11 | 2 tasks | 11 files |
+| Phase 03-docker-ghcr P01 | 16 | 4 tasks | 3 files |
 
 ## Accumulated Context
 
@@ -104,6 +105,8 @@ Recent decisions affecting current work:
 - [Phase 02-spa-frontend-history]: Plan 02-06: rust-embed feature 'axum' confirmed (8.11.0); mime_guess 2.0.5 added for Content-Type resolution on .woff2/.css; Cache-Control split (assets/* immutable 1y, index.html no-cache)
 - [Phase 02-spa-frontend-history]: Plan 02-06: Static routes registered AFTER /api/* in axum 0.8 router; static handler uses uri.path().trim_start_matches('/') so rust-embed receives 'assets/index-...' path
 - [Phase 02-spa-frontend-history]: Plan 02-06: Bundle JS+CSS gzipped post-TabHistorial = 30,045 bytes (60% del budget 50 KB); binary release 5.8 MB (within STACK target 5-10 MB); Phase 2 closed 9/9 requirements
+- [Phase 03-docker-ghcr]: rust:1-slim-bookworm (not rust:1-slim) for Debian 12 glibc alignment with distroless/cc-debian12; rust:1-slim → Trixie since Mar 2026
+- [Phase 03-docker-ghcr]: Dockerfile COPY layer order: workspace config → crate manifests → frontend/dist → source code for maximal cache reuse
 
 ### Pending Todos
 
@@ -123,6 +126,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-05-06T20:15:55.073Z
-Stopped at: Phase 3 context gathered (auto-mode)
-Resume file: .planning/phases/03-docker-ghcr/03-CONTEXT.md
+Last session: 2026-05-06T21:09:13.330Z
+Stopped at: Completed 03-docker-ghcr/03-01-PLAN.md
+Resume file: None

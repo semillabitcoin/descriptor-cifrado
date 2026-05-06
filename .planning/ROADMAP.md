@@ -68,7 +68,7 @@ Plans:
   3. CI `ldd` check on the release binary exits 0 only if no `libssl` or non-distroless lib appears; the final image is at or below 25 MB compressed
 **Plans**: 2 plans
 Plans:
-- [ ] 03-01-PLAN.md — Cargo.toml [profile.release] + Dockerfile multi-stage 3 stages + .dockerignore (PKG-01)
+- [x] 03-01-PLAN.md — Cargo.toml [profile.release] + Dockerfile multi-stage 3 stages + .dockerignore (PKG-01)
 - [ ] 03-02-PLAN.md — .github/workflows/docker.yml con 3 jobs (build-and-push multi-arch, ldd-check, make-public) (PKG-02, PKG-03, PKG-04)
 **UI hint**: no
 
@@ -94,5 +94,5 @@ Phases execute in numeric order: 1 → 2 → 3 → 4
 |-------|----------------|--------|-----------|
 | 1. Crypto Core + HTTP API | 6/6 | Complete   | 2026-05-06 |
 | 2. SPA Frontend + History | 6/6 | Complete   | 2026-05-06 |
-| 3. Docker + GHCR | 0/2 | Not started | - |
+| 3. Docker + GHCR | 1/2 | In Progress|  |
 | 4. StartOS Packaging + Docs | 0/? | Not started | - |
