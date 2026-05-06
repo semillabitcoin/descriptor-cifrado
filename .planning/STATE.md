@@ -3,14 +3,14 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: executing
-stopped_at: Completed 02-02-backend-history-endpoints-PLAN.md (parallel wave-1 with 02-01)
-last_updated: "2026-05-06T13:25:26.693Z"
+stopped_at: Completed 02-03-shell-and-shared-components-PLAN.md
+last_updated: "2026-05-06T13:32:00.929Z"
 last_activity: 2026-05-06
 progress:
   total_phases: 4
   completed_phases: 1
   total_plans: 12
-  completed_plans: 8
+  completed_plans: 9
   percent: 0
 ---
 
@@ -26,7 +26,7 @@ See: .planning/PROJECT.md (updated 2026-05-05)
 ## Current Position
 
 Phase: 02 (spa-frontend-history) — EXECUTING
-Plan: 3 of 6
+Plan: 4 of 6
 Status: Ready to execute
 Last activity: 2026-05-06
 
@@ -60,6 +60,7 @@ Progress: [░░░░░░░░░░] 0%
 | Phase 01-crypto-core-http-api P06 | 27 | 2 tasks | 6 files |
 | Phase 02-spa-frontend-history P01 | 3 | 3 tasks | 13 files |
 | Phase 02-spa-frontend-history P02 | 6 | 3 tasks | 10 files |
+| Phase 02-spa-frontend-history P03 | 4 | 3 tasks | 14 files |
 
 ## Accumulated Context
 
@@ -88,6 +89,9 @@ Recent decisions affecting current work:
 - [Phase 02-spa-frontend-history]: Directory scan persistence (no redb): Phase 2 v1 solo necesita list/delete con .bed cifrado en BED_DATA_DIR; redb diferido hasta queries más ricas
 - [Phase 02-spa-frontend-history]: Filename sortable <YYYYMMDDTHHMMSSZ>-<8hex>.bed: lex sort = chronological sort; validate_history_id es único guard anti path traversal
 - [Phase 02-spa-frontend-history]: HIST-03 enforced by design: POST /api/history acepta solo bed_b64 cifrado; descriptor cleartext nunca cruza el módulo de history (test no_leak verifica con fixture multisig real)
+- [Phase 02-spa-frontend-history]: Svelte a11y warnings 'no_noninteractive_element_to_interactive_role' suprimidos con svelte-ignore en <nav role=tablist> y <section role=tabpanel>: pattern WAI-ARIA estándar, falso positivo del linter
+- [Phase 02-spa-frontend-history]: Tab Historial NO se renderiza en DOM cuando historyEnabled=false (no solo hidden) — must_haves enforce 'NO solo hidden'
+- [Phase 02-spa-frontend-history]: Bundle JS+CSS gzipped post-shell = 18,439 bytes (36% del budget 50 KB; 32 KB libres para planes 04/05/06)
 
 ### Pending Todos
 
@@ -100,6 +104,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-05-06T13:25:26.682Z
-Stopped at: Completed 02-02-backend-history-endpoints-PLAN.md (parallel wave-1 with 02-01)
+Last session: 2026-05-06T13:32:00.923Z
+Stopped at: Completed 02-03-shell-and-shared-components-PLAN.md
 Resume file: None

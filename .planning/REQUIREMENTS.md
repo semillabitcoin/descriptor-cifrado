@@ -31,7 +31,7 @@
 
 ### History Mode (Opt-In)
 
-- [ ] **HIST-01**: Toggle en la UI activa modo "guardar historial"; default es ephemeral (cifra → entrega → olvida)
+- [x] **HIST-01**: Toggle en la UI activa modo "guardar historial"; default es ephemeral (cifra → entrega → olvida)
 - [x] **HIST-02**: Con toggle activo, los `.bed` resultantes se persisten en `/data/encrypted/<timestamp>-<short-id>.bed`
 - [x] **HIST-03**: El descriptor en claro NUNCA se persiste en disco (test de CI hace grep del descriptor sobre archivos guardados)
 - [x] **HIST-04**: Endpoint `GET /api/history` lista entradas vía directory scan de `/data/encrypted/`
@@ -41,8 +41,8 @@
 ### Frontend
 
 - [x] **UI-01**: SPA Svelte 5 + Vite 6 servida desde el binario vía `rust-embed`, sin CDN externo, sin telemetría, sin fonts remotas
-- [ ] **UI-02**: La UI presenta dos pestañas/secciones simétricas: "Cifrar" y "Descifrar"
-- [ ] **UI-03**: La UI muestra modelo de amenazas resumido visible (no solo en README)
+- [x] **UI-02**: La UI presenta dos pestañas/secciones simétricas: "Cifrar" y "Descifrar"
+- [x] **UI-03**: La UI muestra modelo de amenazas resumido visible (no solo en README)
 
 ### Security Hygiene
 
@@ -133,9 +133,9 @@
 | CI-01 | Phase 1 | Complete |
 | CI-02 | Phase 1 | Complete |
 | UI-01 | Phase 2 | Complete |
-| UI-02 | Phase 2 | Pending |
-| UI-03 | Phase 2 | Pending |
-| HIST-01 | Phase 2 | Pending |
+| UI-02 | Phase 2 | Complete |
+| UI-03 | Phase 2 | Complete |
+| HIST-01 | Phase 2 | Complete |
 | HIST-02 | Phase 2 | Complete |
 | HIST-03 | Phase 2 | Complete |
 | HIST-04 | Phase 2 | Complete |
