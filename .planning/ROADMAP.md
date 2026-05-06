@@ -48,7 +48,14 @@ Plans:
   2. User switches to Descifrar, uploads a `.bed` or pastes armored text, enters an xpub, clicks "Descifrar", and sees the recovered descriptor with a "Copiar" button; the descriptor never appears in server logs or saved files
   3. User enables the history toggle, performs an encrypt, sees the entry appear in the history list, and can delete it; after a container restart the history files persist but no plaintext descriptor can be found in `/data/encrypted/` by grep
   4. The SPA is served entirely from the binary (no filesystem mount needed); no external font, script, or stylesheet URLs appear in the HTML
-**Plans**: TBD
+**Plans**: 6 plans
+Plans:
+- [ ] 02-01-frontend-scaffold-PLAN.md — package.json + Vite + tokens.css + fonts self-hosted (Inter + JetBrains Mono)
+- [ ] 02-02-backend-history-endpoints-PLAN.md — 4 endpoints history (POST/GET/GET-id/DELETE) + tests (round-trip + no-leak HIST-03)
+- [ ] 02-03-shell-and-shared-components-PLAN.md — stores Svelte 5 + lib (api/clipboard) + 8 componentes compartidos + App.svelte shell
+- [ ] 02-04-tab-cifrar-PLAN.md — TabCifrar.svelte + CifrarOutputs (3 outputs simultáneos) + history fire-and-warn
+- [ ] 02-05-tab-descifrar-PLAN.md — TabDescifrar.svelte + drop-zone + DescifrarOutputs + AnimatedQrModal (BBQR lazy)
+- [ ] 02-06-tab-historial-and-rust-embed-PLAN.md — TabHistorial + 2 modales + rust-embed wiring + test embedded_spa
 **UI hint**: yes
 
 ### Phase 3: Docker + GHCR
@@ -83,6 +90,6 @@ Phases execute in numeric order: 1 → 2 → 3 → 4
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
 | 1. Crypto Core + HTTP API | 6/6 | Complete   | 2026-05-06 |
-| 2. SPA Frontend + History | 0/? | Not started | - |
+| 2. SPA Frontend + History | 0/6 | Not started | - |
 | 3. Docker + GHCR | 0/? | Not started | - |
 | 4. StartOS Packaging + Docs | 0/? | Not started | - |
