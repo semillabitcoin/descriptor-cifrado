@@ -14,7 +14,7 @@ Decimal phases appear between their surrounding integers in numeric order.
 
 - [x] **Phase 1: Crypto Core + HTTP API** - Establish round-trip encryption/decryption, BIP invariants, memory safety, and stable axum endpoints (completed 2026-05-06)
 - [x] **Phase 2: SPA Frontend + History** - Svelte UI for encrypt/decrypt flows, opt-in history mode with list and delete (completed 2026-05-06; interop Liana v0.0.2 verificada por UAT)
-- [ ] **Phase 3: Docker + GHCR** - Multi-stage distroless image, multi-arch build, public GHCR push with CI audits
+- [x] **Phase 3: Docker + GHCR** - Multi-stage distroless image, multi-arch build, public GHCR push with CI audits (completed 2026-05-06)
 - [ ] **Phase 4: StartOS Packaging + Docs** - s9pk manifest, health check, real-device test, threat model documentation
 
 ## Phase Details
@@ -69,7 +69,7 @@ Plans:
 **Plans**: 2 plans
 Plans:
 - [x] 03-01-PLAN.md — Cargo.toml [profile.release] + Dockerfile multi-stage 3 stages + .dockerignore (PKG-01)
-- [ ] 03-02-PLAN.md — .github/workflows/docker.yml con 3 jobs (build-and-push multi-arch, ldd-check, make-public) (PKG-02, PKG-03, PKG-04)
+- [x] 03-02-PLAN.md — .github/workflows/docker.yml con 3 jobs (build-and-push multi-arch, ldd-check, make-public) (PKG-02, PKG-03, PKG-04)
 **UI hint**: no
 
 ### Phase 4: StartOS Packaging + Docs
@@ -94,5 +94,5 @@ Phases execute in numeric order: 1 → 2 → 3 → 4
 |-------|----------------|--------|-----------|
 | 1. Crypto Core + HTTP API | 6/6 | Complete   | 2026-05-06 |
 | 2. SPA Frontend + History | 6/6 | Complete   | 2026-05-06 |
-| 3. Docker + GHCR | 1/2 | In Progress|  |
+| 3. Docker + GHCR | 2/2 | Complete   | 2026-05-06 |
 | 4. StartOS Packaging + Docs | 0/? | Not started | - |

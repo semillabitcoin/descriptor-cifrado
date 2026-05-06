@@ -2,15 +2,15 @@
 gsd_state_version: 1.0
 milestone: v0.0.2
 milestone_name: milestone
-status: executing
-stopped_at: Completed 03-docker-ghcr/03-01-PLAN.md
-last_updated: "2026-05-06T21:09:13.336Z"
+status: verifying
+stopped_at: Completed 03-docker-ghcr/03-02-PLAN.md
+last_updated: "2026-05-06T21:13:10.046Z"
 last_activity: 2026-05-06
 progress:
   total_phases: 4
-  completed_phases: 2
+  completed_phases: 3
   total_plans: 14
-  completed_plans: 13
+  completed_plans: 14
   percent: 0
 ---
 
@@ -27,7 +27,7 @@ See: .planning/PROJECT.md (updated 2026-05-05)
 
 Phase: 03 (docker-ghcr) — EXECUTING
 Plan: 2 of 2
-Status: Ready to execute
+Status: Phase complete — ready for verification
 Last activity: 2026-05-06
 
 Progress: [░░░░░░░░░░] 0%
@@ -65,6 +65,7 @@ Progress: [░░░░░░░░░░] 0%
 | Phase 02-spa-frontend-history P05-tab-descifrar | 3 | 2 tasks | 7 files |
 | Phase 02-spa-frontend-history P06-tab-historial-and-rust-embed | 11 | 2 tasks | 11 files |
 | Phase 03-docker-ghcr P01 | 16 | 4 tasks | 3 files |
+| Phase 03-docker-ghcr P02 | 3 | 2 tasks | 1 files |
 
 ## Accumulated Context
 
@@ -107,6 +108,9 @@ Recent decisions affecting current work:
 - [Phase 02-spa-frontend-history]: Plan 02-06: Bundle JS+CSS gzipped post-TabHistorial = 30,045 bytes (60% del budget 50 KB); binary release 5.8 MB (within STACK target 5-10 MB); Phase 2 closed 9/9 requirements
 - [Phase 03-docker-ghcr]: rust:1-slim-bookworm (not rust:1-slim) for Debian 12 glibc alignment with distroless/cc-debian12; rust:1-slim → Trixie since Mar 2026
 - [Phase 03-docker-ghcr]: Dockerfile COPY layer order: workspace config → crate manifests → frontend/dist → source code for maximal cache reuse
+- [Phase 03-docker-ghcr]: Action versions for docker.yml confirmed May 2026: setup-qemu@v4, setup-buildx@v4, login@v4, metadata@v6, build-push@v7 (CONTEXT.md had pre-March 2026 v3/v5/v6)
+- [Phase 03-docker-ghcr]: make-public uses /orgs/semillabitcoin/packages/container/descriptor-cifrado (not /user/packages/... which is incorrect for org-scoped packages); continue-on-error: true with fallback manual toggle URL documented
+- [Phase 03-docker-ghcr]: flavor: latest=false + conditional enable= in metadata-action@v6 prevents latest tag on non-main branches
 
 ### Pending Todos
 
@@ -126,6 +130,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-05-06T21:09:13.330Z
-Stopped at: Completed 03-docker-ghcr/03-01-PLAN.md
+Last session: 2026-05-06T21:13:10.041Z
+Stopped at: Completed 03-docker-ghcr/03-02-PLAN.md
 Resume file: None

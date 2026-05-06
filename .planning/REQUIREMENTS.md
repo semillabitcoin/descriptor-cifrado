@@ -53,9 +53,9 @@
 ### Packaging — Docker / GHCR
 
 - [x] **PKG-01**: Dockerfile multi-stage `rust:slim` → `distroless/cc-debian12` produce imagen ≤25 MB
-- [ ] **PKG-02**: Imagen multi-arch (amd64 + arm64) publicada en GHCR bajo organización `semillabitcoin`
-- [ ] **PKG-03**: Build de CI corre `ldd` sobre el binario y falla si aparece `libssl` o cualquier lib no presente en distroless
-- [ ] **PKG-04**: La imagen GHCR se marca pública inmediatamente tras el primer push
+- [x] **PKG-02**: Imagen multi-arch (amd64 + arm64) publicada en GHCR bajo organización `semillabitcoin`
+- [x] **PKG-03**: Build de CI corre `ldd` sobre el binario y falla si aparece `libssl` o cualquier lib no presente en distroless
+- [x] **PKG-04**: La imagen GHCR se marca pública inmediatamente tras el primer push
 
 ### Packaging — StartOS s9pk
 
@@ -143,9 +143,9 @@
 | HIST-05 | Phase 2 | Complete |
 | HIST-06 | Phase 2 | Complete |
 | PKG-01 | Phase 3 | Complete |
-| PKG-02 | Phase 3 | Pending |
-| PKG-03 | Phase 3 | Pending |
-| PKG-04 | Phase 3 | Pending |
+| PKG-02 | Phase 3 | Complete |
+| PKG-03 | Phase 3 | Complete |
+| PKG-04 | Phase 3 | Complete |
 | S9-01 | Phase 4 | Pending |
 | S9-02 | Phase 4 | Pending |
 | S9-03 | Phase 4 | Pending |
