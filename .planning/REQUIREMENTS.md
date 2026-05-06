@@ -40,7 +40,7 @@
 
 ### Frontend
 
-- [ ] **UI-01**: SPA Svelte 5 + Vite 6 servida desde el binario vía `rust-embed`, sin CDN externo, sin telemetría, sin fonts remotas
+- [x] **UI-01**: SPA Svelte 5 + Vite 6 servida desde el binario vía `rust-embed`, sin CDN externo, sin telemetría, sin fonts remotas
 - [ ] **UI-02**: La UI presenta dos pestañas/secciones simétricas: "Cifrar" y "Descifrar"
 - [ ] **UI-03**: La UI muestra modelo de amenazas resumido visible (no solo en README)
 
@@ -132,7 +132,7 @@
 | SEC-03 | Phase 1 | Complete |
 | CI-01 | Phase 1 | Complete |
 | CI-02 | Phase 1 | Complete |
-| UI-01 | Phase 2 | Pending |
+| UI-01 | Phase 2 | Complete |
 | UI-02 | Phase 2 | Pending |
 | UI-03 | Phase 2 | Pending |
 | HIST-01 | Phase 2 | Pending |

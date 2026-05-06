@@ -2,15 +2,15 @@
 gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
-status: verifying
-stopped_at: Phase 2 context gathered
-last_updated: "2026-05-06T11:36:56.502Z"
+status: executing
+stopped_at: Completed 02-01-frontend-scaffold-PLAN.md
+last_updated: "2026-05-06T13:21:00.199Z"
 last_activity: 2026-05-06
 progress:
   total_phases: 4
   completed_phases: 1
-  total_plans: 6
-  completed_plans: 6
+  total_plans: 12
+  completed_plans: 7
   percent: 0
 ---
 
@@ -21,13 +21,13 @@ progress:
 See: .planning/PROJECT.md (updated 2026-05-05)
 
 **Core value:** Un holder StartOS puede pegar un descriptor multisig y obtener un `.bed` cifrado (binario, armored o QR) sin instalar ni compilar nada, y luego recuperarlo pegando `.bed` + cualquier xpub cosigner — todo local, sobre Tor, sin telemetría.
-**Current focus:** Phase 01 — crypto-core-http-api
+**Current focus:** Phase 02 — spa-frontend-history
 
 ## Current Position
 
-Phase: 2
-Plan: Not started
-Status: Phase complete — ready for verification
+Phase: 02 (spa-frontend-history) — EXECUTING
+Plan: 2 of 6
+Status: Ready to execute
 Last activity: 2026-05-06
 
 Progress: [░░░░░░░░░░] 0%
@@ -58,6 +58,7 @@ Progress: [░░░░░░░░░░] 0%
 | Phase 01-crypto-core-http-api P04 | 18 | 2 tasks | 9 files |
 | Phase 01-crypto-core-http-api P05 | 5 | 2 tasks | 7 files |
 | Phase 01-crypto-core-http-api P06 | 27 | 2 tasks | 6 files |
+| Phase 02-spa-frontend-history P01 | 3 | 3 tasks | 13 files |
 
 ## Accumulated Context
 
@@ -81,6 +82,8 @@ Recent decisions affecting current work:
 - [Phase 01-crypto-core-http-api]: base64 added to bed-server Cargo.toml — required for bed_b64/qr_png_b64 JSON fields in encrypt handler
 - [Phase 01-crypto-core-http-api]: Strip BIP-380 checksum before round-trip comparison: miniscript re-computes checksum after canonical normalization
 - [Phase 01-crypto-core-http-api]: #![allow(clippy::panic)] required in integration test files: workspace lint panic=warn + -D warnings in CI
+- [Phase 02-spa-frontend-history]: Vite 8.0.10 / Svelte 5.55.5 / vite-plugin-svelte 7.1.1 resolved by ^X.0.0 ranges
+- [Phase 02-spa-frontend-history]: JetBrains Mono variable woff2 path is fonts/webfonts/, not fonts/variable/ (upstream renamed)
 
 ### Pending Todos
 
@@ -93,6 +96,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-05-06T11:36:56.498Z
-Stopped at: Phase 2 context gathered
-Resume file: .planning/phases/02-spa-frontend-history/02-CONTEXT.md
+Last session: 2026-05-06T13:21:00.194Z
+Stopped at: Completed 02-01-frontend-scaffold-PLAN.md
+Resume file: None
