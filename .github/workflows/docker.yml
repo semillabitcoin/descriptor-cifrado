@@ -1,0 +1,104 @@
+name: Docker
+
+on:
+  push:
+    branches: [main]
+    tags: ['v*.*.*']
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+  packages: write
+
+jobs:
+  build-and-push:
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v4
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v4
+
+      - name: Log in to GHCR
+        if: github.event_name != 'pull_request'
+        uses: docker/login-action@v4
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Extract metadata
+        id: meta
+        uses: docker/metadata-action@v6
+        with:
+          images: ghcr.io/semillabitcoin/descriptor-cifrado
+          flavor: |
+            latest=false
+          tags: |
+            type=ref,event=branch,enable=${{ github.ref == 'refs/heads/main' }},value=latest
+            type=sha,format=short,prefix=sha-
+            type=semver,pattern={{version}}
+            type=semver,pattern={{major}}.{{minor}}
+            type=semver,pattern={{major}}
+          labels: |
+            org.opencontainers.image.source=https://github.com/semillabitcoin/descriptor-cifrado
+            org.opencontainers.image.description=BED — Bitcoin Encrypted Backup app for StartOS
+            org.opencontainers.image.licenses=MIT
+
+      - name: Build and push
+        uses: docker/build-push-action@v7
+        with:
+          context: .
+          platforms: linux/amd64,linux/arm64
+          push: ${{ github.event_name != 'pull_request' }}
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+  ldd-check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+      - uses: Swatinem/rust-cache@v2
+      - name: Build release binary (native amd64)
+        run: cargo build --release --locked --bin bed-server
+      - name: ldd check — no libssl or non-distroless libs
+        run: |
+          echo "=== ldd output ==="
+          ldd target/release/bed-server
+          echo "=== checking for forbidden libs ==="
+          if ldd target/release/bed-server | grep -E 'libssl|libcrypto|native-tls|libpq|libmysqlclient|libsqlite3'; then
+            echo "ERROR: Binary links to forbidden library"
+            exit 1
+          fi
+          echo "=== ldd check PASSED ==="
+
+  make-public:
+    runs-on: ubuntu-latest
+    needs: build-and-push
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    continue-on-error: true
+    steps:
+      - name: Make GHCR package public (org endpoint, best-effort)
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          echo "Attempting PATCH /orgs/semillabitcoin/packages/container/descriptor-cifrado"
+          if gh api -X PATCH \
+            /orgs/semillabitcoin/packages/container/descriptor-cifrado \
+            -f visibility=public; then
+            echo "Package set to public via API."
+          else
+            echo "WARNING: API call failed. Package visibility falls back to repo inheritance."
+            echo "If package is still private after first push, toggle manually at:"
+            echo "  https://github.com/orgs/semillabitcoin/packages/container/descriptor-cifrado/settings"
+            echo "(Visibility inheritance from public repo + org.opencontainers.image.source label is the primary mechanism — see Plan 03-02 Task 1.)"
+          fi
