@@ -1,11 +1,11 @@
 ---
 gsd_state_version: 1.0
-milestone: v1.0
+milestone: v0.0.2
 milestone_name: milestone
 status: verifying
-stopped_at: Completed 02-06-tab-historial-and-rust-embed-PLAN.md (Phase 2 closed)
-last_updated: "2026-05-06T17:04:36.594Z"
-last_activity: 2026-05-06
+stopped_at: Phase 3 context gathered (auto-mode)
+last_updated: "2026-05-06T20:15:55.078Z"
+last_activity: "2026-05-06 - Completed quick task 260506-rx9: fix xpub interop con Liana"
 progress:
   total_phases: 4
   completed_phases: 2
@@ -123,6 +123,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-05-06T19:00:00.000Z
-Stopped at: Completed quick task 260506-sr7: migrar bitcoin-encrypted-backup a v0.0.2
-Resume file: None
+Last session: 2026-05-06T20:15:55.073Z
+Stopped at: Phase 3 context gathered (auto-mode)
+Resume file: .planning/phases/03-docker-ghcr/03-CONTEXT.md
