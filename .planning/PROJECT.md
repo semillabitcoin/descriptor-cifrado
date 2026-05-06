@@ -14,20 +14,19 @@ Un holder StartOS puede pegar un descriptor multisig y obtener un `.bed` cifrado
 
 <!-- Shipped and confirmed valuable. -->
 
-(None yet — ship to validate)
+- [x] Validación BIP: rechazar descriptors sin derivación `<0;1>/*` *(Validado en Phase 1: crypto-core-http-api — substrato HTTP devuelve 422 MISSING_MULTIPATH_WILDCARD)*
+- [x] Borrado seguro del descriptor en claro de memoria tras cifrar *(Validado en Phase 1: `ZeroizingDescriptor` newtype + `Zeroizing<String>` en primera línea de handlers)*
 
 ### Active
 
 <!-- Current scope. Building toward these. -->
 
-- [ ] Cifrado de descriptor: pegar descriptor → recibir `.bed` binario descargable
-- [ ] Salida armored estilo PGP (`-----BEGIN BITCOIN ENCRYPTED BACKUP-----`)
-- [ ] Salida QR (PNG descargable) generado del base64 armored
-- [ ] Descifrado simétrico: subir `.bed` (binario o armored) + xpub → recibir descriptor en claro
-- [ ] Validación BIP: rechazar descriptors sin derivación `<0;1>/*`
+- [ ] Cifrado de descriptor: pegar descriptor → recibir `.bed` binario descargable *(API substrate listo en Phase 1; UI llega en Phase 2)*
+- [ ] Salida armored estilo PGP (`-----BEGIN BITCOIN ENCRYPTED BACKUP-----`) *(API substrate listo en Phase 1)*
+- [ ] Salida QR (PNG descargable) generado del base64 armored *(API substrate listo en Phase 1)*
+- [ ] Descifrado simétrico: subir `.bed` (binario o armored) + xpub → recibir descriptor en claro *(API substrate listo en Phase 1)*
 - [ ] Modo histórico opt-in: toggle persiste `.bed` en `/data/encrypted/<timestamp>-<short-id>.bed`
 - [ ] Listar y borrar entradas del historial desde la UI
-- [ ] Borrado seguro del descriptor en claro de memoria tras cifrar
 - [ ] Empaquetado s9pk para StartOS 0.4.0 con Tor onion + LAN
 - [ ] Imagen runtime distroless ~5–10 MB
 - [ ] Documentación con modelo de amenazas explícito en README
@@ -81,6 +80,10 @@ Un holder StartOS puede pegar un descriptor multisig y obtener un `.bed` cifrado
 | Hardware wallet fuera de scope | USB no llega al contenedor StartOS 0.4.0 | — Pending |
 | Solo StartOS 0.4.0 en v1 | Foco; cross-platform a Umbrel es follow-up | — Pending |
 | Tor onion + LAN, sin clearnet | App maneja descriptors; clearnet aumenta superficie sin beneficio | — Pending |
+| Crate `bitcoin-encrypted-backup` pinneada exact en rev `17b69b71` | No está en crates.io; pin exacto previene breaking changes silenciosos | ✓ Phase 1 |
+| Workspace lints `unwrap_used = "deny"` + `expect_used = "deny"` | Garantiza no-panic en request path; clippy `-D warnings` lo enforce | ✓ Phase 1 |
+| Bind 127.0.0.1:8080 (no clearnet binding) | StartOS rutea externamente vía Tor + LAN; binding privado evita exposure accidental | ✓ Phase 1 |
+| Bans cargo-deny: openssl-sys, native-tls, async-hwi | TLS lo termina StartOS; rustls everywhere para distroless | ✓ Phase 1 |
 
 ## Evolution
 
@@ -100,4 +103,4 @@ This document evolves at phase transitions and milestone boundaries.
 4. Update Context with current state
 
 ---
-*Last updated: 2026-05-05 after initialization*
+*Last updated: 2026-05-06 — Phase 1 complete (crypto core + HTTP API substrate)*
