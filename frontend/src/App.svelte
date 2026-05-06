@@ -4,6 +4,7 @@
   import Header from './components/Header.svelte';
   import ThreatModel from './components/ThreatModel.svelte';
   import TabBar from './components/TabBar.svelte';
+  import TabCifrar from './components/TabCifrar.svelte';
 
   onMount(() => {
     initFromStorage();
@@ -22,8 +23,7 @@
     class="panel"
     hidden={appState.activeTab !== 'cifrar'}
   >
-    <!-- Plan 02-04 monta TabCifrar aquí -->
-    <p class="placeholder">Tab Cifrar — pendiente de plan 02-04.</p>
+    <TabCifrar />
   </section>
   <!-- svelte-ignore a11y_no_noninteractive_element_to_interactive_role -->
   <section
