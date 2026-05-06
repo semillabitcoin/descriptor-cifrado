@@ -1,6 +1,6 @@
 <script>
   import { postMultipart, ApiError } from '../lib/api.js';
-  import { validateXpub } from '../lib/xpub.js';
+  import { validateXpub, normalizeXpub } from '../lib/xpub.js';
   import InlineError from './InlineError.svelte';
   import DescifrarOutputs from './DescifrarOutputs.svelte';
   import Spinner from './Spinner.svelte';
@@ -93,7 +93,7 @@
         const armoredBlob = new Blob([armoredText.trim()], { type: 'text/plain' });
         formData.append('bed', armoredBlob, 'armored.txt');
       }
-      formData.append('xpub', xpubText.trim());
+      formData.append('xpub', normalizeXpub(xpubText));
 
       const resp = await postMultipart('/api/decrypt', formData);
       descriptor = resp.descriptor;
