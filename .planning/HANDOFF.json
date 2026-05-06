@@ -1,0 +1,46 @@
+{
+  "version": "1.0",
+  "timestamp": "2026-05-06T21:46:33.860Z",
+  "phase": "03",
+  "phase_name": "docker-ghcr",
+  "phase_dir": ".planning/phases/03-docker-ghcr",
+  "plan": 2,
+  "task": 2,
+  "total_tasks": 6,
+  "status": "paused",
+  "completed_tasks": [
+    {"id": "03-01-T1", "name": "Cargo.toml [profile.release] strip+lto+panic=abort", "status": "done", "commit": "696367e"},
+    {"id": "03-01-T2", "name": ".dockerignore con 11 exclusiones", "status": "done", "commit": "6911820"},
+    {"id": "03-01-T3", "name": "Dockerfile multi-stage (node:20-alpine → rust:1-slim-bookworm → distroless/cc-debian12:nonroot)", "status": "done", "commit": "407a772"},
+    {"id": "03-01-T4", "name": "Human-verify checkpoint plan 03-01 (auto-approved: image 10MB compressed, 27 tests OK)", "status": "done", "commit": "5833abb"},
+    {"id": "03-02-T1", "name": ".github/workflows/docker.yml — 3 jobs (build-and-push multi-arch, ldd-check, make-public)", "status": "done", "commit": "132b79a"},
+    {"id": "03-02-T2", "name": "Human-verify checkpoint plan 03-02 (LOCAL OK; remote pending GHA real)", "status": "done", "commit": "84d4c08"}
+  ],
+  "remaining_tasks": [
+    {"id": "HUMAN-UAT-1", "name": "Confirmar 3 jobs verdes en Docker workflow run 25462814409", "status": "not_started"},
+    {"id": "HUMAN-UAT-2", "name": "Verificar multi-arch manifest (linux/amd64 + linux/arm64) en GHCR", "status": "not_started"},
+    {"id": "HUMAN-UAT-3", "name": "Pull autenticado desde GHCR (PKG-04 sin auth bloqueado por repo PRIVATE)", "status": "blocked"},
+    {"id": "PHASE-CLOSE", "name": "node gsd-tools phase complete 03 + actualizar 03-HUMAN-UAT.md", "status": "not_started"}
+  ],
+  "blockers": [
+    {"description": "Token gh semillabitcoin no tiene scopes write:packages/delete:packages — gist/read:org/repo/workflow solamente", "type": "technical", "workaround": "GHA usa GITHUB_TOKEN automático del runner; si make-public step falla, ampliar con `gh auth refresh -s admin:packages -h github.com -u semillabitcoin`"},
+    {"description": "Historial git contiene xpubs reales (xpub6EbkXG2FN..., xpub6PLACEHOLDER2xxxx...), descriptor multisig Liana, paths /workspace/, test.bed en 11+ commits previos", "type": "external", "workaround": "Repo creado PRIVATE. Sanitizar con git-filter-repo en sesión separada antes de flipar a público. PKG-04 (pull sin auth) bloqueado hasta entonces."}
+  ],
+  "human_actions_pending": [
+    {"action": "gh run watch — confirmar Docker workflow verde (build-and-push, ldd-check, make-public)", "context": "Run 25462814409 estaba `queued` al cierre. Multi-arch buildx tarda 10-20 min con QEMU.", "blocking": true},
+    {"action": "gh auth token | docker login ghcr.io -u semillabitcoin --password-stdin", "context": "Repo es privado, pull requiere auth", "blocking": true},
+    {"action": "docker buildx imagetools inspect ghcr.io/semillabitcoin/descriptor-cifrado:latest — verificar linux/amd64 + linux/arm64", "context": "Validar HUMAN-UAT-2 (PKG-02)", "blocking": true},
+    {"action": "Sesión nueva: git-filter-repo para sanitizar xpubs/paths/test del historial completo", "context": "Pre-requisito para flipar repo a público y validar PKG-04 sin auth", "blocking": false}
+  ],
+  "decisions": [
+    {"decision": "Repo PRIVATE en lugar de público", "rationale": "Historial git contaminado con xpubs reales y paths personales — pushear público sin sanitizar = leak masivo (cluster on-chain + vinculación username↔wallet)", "phase": "03"},
+    {"decision": "Renombrar master → main antes del primer push", "rationale": "Convención GitHub default; aplicado con git branch -m master main antes de crear remoto", "phase": "03"},
+    {"decision": "Mantener author 4rkad (noreply 55397917+4rkad) en commits aunque repo viva en org semillabitcoin", "rationale": "4rkad es la cuenta personal del usuario que opera dentro de la org. Cumple feedback_git_noreply_email.md (todos los commits con noreply, no leak de email real). Re-firmar todo el historial como semillabitcoin sería trabajoso y sin valor.", "phase": "03"},
+    {"decision": "Add .env / .env.* a .gitignore (allow .env.example)", "rationale": "Defensivo — actualmente no hay .env trackeados pero la falta de patrón era una bomba de relojería", "phase": "03"},
+    {"decision": "Reset _auto_chain_active=false en config.json antes del push", "rationale": "Era flag de runtime; dejarlo en true ensuciaría la siguiente sesión haciéndola creer que está en cadena auto", "phase": "03"},
+    {"decision": "Plan 03-02 mantiene action versions del RESEARCH.md (qemu@v4, buildx@v4, login@v4, metadata@v6, build-push@v7) sobre los del CONTEXT.md (v3/v5/v6)", "rationale": "RESEARCH.md verificó las versiones actuales en Mayo 2026 — overrides discretional sobre versiones del CONTEXT que estaban desactualizadas", "phase": "03"}
+  ],
+  "uncommitted_files": [],
+  "next_action": "gh run watch — confirmar Docker workflow run 25462814409 verde, luego seguir HUMAN-UAT-2 y HUMAN-UAT-3 con docker login + buildx imagetools inspect.",
+  "context_notes": "Phase 3 ejecutada y verificada localmente al 100%. Verifier devolvió status: human_needed con 3 items en 03-HUMAN-UAT.md que requieren GHA real. Push hecho a repo PRIVATE en https://github.com/semillabitcoin/descriptor-cifrado tras decidir NO subir a público por contaminación de privacidad en el historial git. Trigger sesión nueva: 'sigue con bed start9'. Working dir: /workspace/descriptor-cifrado. Branch main. HEAD = 7904fa3 = origin/main."
+}
