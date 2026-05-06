@@ -13,12 +13,16 @@ image.workspace = true
 
 [dependencies.bitcoin-encrypted-backup]
 git = "https://github.com/pythcoiner/encrypted_backup"
-# Pinned to HEAD on master as of 2026-05-05 (verified via GitHub Atom + REST):
-#   commit "pin clap version" — 17b69b71cd1e005f80f5e81147795df0d11db027
-rev = "17b69b71cd1e005f80f5e81147795df0d11db027"
+# Pinned al tag publicado v0.0.2 (sha cd7ee382bf5ca0798d4f81697e2f9efb5e32fe40).
+# Este tag es la versión que Liana en producción usa (bitcoin-encrypted-backup = "=0.0.2").
+# NO migrar a HEAD master: el HEAD cambia el magic (BEB → placeholder BIPXXX),
+# el algoritmo simétrico (AES-256-GCM → ChaCha20-Poly1305) y la derivación de
+# claves (x-only + BIP340), lo que rompe la interop con .bed generados por Liana.
+rev = "cd7ee382bf5ca0798d4f81697e2f9efb5e32fe40"
 default-features = false
-features = ["miniscript_12_3_5", "rand", "base64"]
+features = ["miniscript_12_3_5", "rand"]
 # DO NOT enable: "devices" (USB doesn't reach StartOS), "cli" (pulls clap), "tokio"
+# NOTE: feature "base64" no existe en v0.0.2 (fue añadida en commit 55054b4 posterior).
 
 [lints]
 workspace = true
