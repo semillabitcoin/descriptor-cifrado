@@ -16,17 +16,16 @@ Un holder StartOS puede pegar un descriptor multisig y obtener un `.bed` cifrado
 
 - [x] Validación BIP: rechazar descriptors sin derivación `<0;1>/*` *(Validado en Phase 1: crypto-core-http-api — substrato HTTP devuelve 422 MISSING_MULTIPATH_WILDCARD)*
 - [x] Borrado seguro del descriptor en claro de memoria tras cifrar *(Validado en Phase 1: `ZeroizingDescriptor` newtype + `Zeroizing<String>` en primera línea de handlers)*
+- [x] Cifrado de descriptor: pegar descriptor → recibir `.bed` binario descargable *(Validado en Phase 2: spa-frontend-history — TabCifrar + CifrarOutputs)*
+- [x] Salida armored estilo PGP (`-----BEGIN BITCOIN ENCRYPTED BACKUP-----`) *(Validado en Phase 2: copia con feedback dual toast+label)*
+- [x] Salida QR (PNG descargable) generado del base64 armored *(Validado en Phase 2: descarga directa desde CifrarOutputs)*
+- [x] Descifrado simétrico: subir `.bed` (binario o armored) + xpub → recibir descriptor en claro *(Validado en Phase 2: TabDescifrar + drop-zone + DescifrarOutputs + AnimatedQrModal BBQR lazy)*
+- [x] Modo histórico opt-in: toggle persiste `.bed` en `/data/encrypted/<timestamp>-<short-id>.bed` *(Validado en Phase 2: 4 endpoints + HIST-03 enforced — descriptor en claro NUNCA toca disco)*
+- [x] Listar y borrar entradas del historial desde la UI *(Validado en Phase 2: TabHistorial + HistoryEntryDetailModal + ConfirmDeleteModal)*
 
 ### Active
 
 <!-- Current scope. Building toward these. -->
-
-- [ ] Cifrado de descriptor: pegar descriptor → recibir `.bed` binario descargable *(API substrate listo en Phase 1; UI llega en Phase 2)*
-- [ ] Salida armored estilo PGP (`-----BEGIN BITCOIN ENCRYPTED BACKUP-----`) *(API substrate listo en Phase 1)*
-- [ ] Salida QR (PNG descargable) generado del base64 armored *(API substrate listo en Phase 1)*
-- [ ] Descifrado simétrico: subir `.bed` (binario o armored) + xpub → recibir descriptor en claro *(API substrate listo en Phase 1)*
-- [ ] Modo histórico opt-in: toggle persiste `.bed` en `/data/encrypted/<timestamp>-<short-id>.bed`
-- [ ] Listar y borrar entradas del historial desde la UI
 - [ ] Empaquetado s9pk para StartOS 0.4.0 con Tor onion + LAN
 - [ ] Imagen runtime distroless ~5–10 MB
 - [ ] Documentación con modelo de amenazas explícito en README
@@ -103,4 +102,4 @@ This document evolves at phase transitions and milestone boundaries.
 4. Update Context with current state
 
 ---
-*Last updated: 2026-05-06 — Phase 1 complete (crypto core + HTTP API substrate)*
+*Last updated: 2026-05-06 — Phase 2 complete (SPA frontend Svelte 5 + history opt-in + rust-embed binario único)*
