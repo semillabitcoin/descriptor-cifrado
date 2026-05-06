@@ -28,7 +28,7 @@ See: .planning/PROJECT.md (updated 2026-05-05)
 Phase: 3
 Plan: Not started
 Status: Phase complete — ready for verification
-Last activity: 2026-05-06
+Last activity: 2026-05-06 - Completed quick task 260506-rx9: fix xpub interop con Liana
 
 Progress: [░░░░░░░░░░] 0%
 
@@ -113,6 +113,12 @@ None yet.
 
 - Phase 4 depends on StartOS 0.4.0 beta SDK stability; invoke `start9-packaging` skill at plan time for verified current details
 - Exact armored header string and QR size limit (2,900 B ECC-L) must be verified against reference impl in Phase 1, not assumed
+
+### Quick Tasks Completed
+
+| # | Description | Date | Commit | Directory |
+|---|-------------|------|--------|-----------|
+| 260506-rx9 | fix xpub interop con Liana (normalizar descriptor-style → bare en frontend) | 2026-05-06 | eedaa33 | [260506-rx9-260506-rgb-fix-xpub-interop-con-liana](./quick/260506-rx9-260506-rgb-fix-xpub-interop-con-liana/) |
 
 ## Session Continuity
 
