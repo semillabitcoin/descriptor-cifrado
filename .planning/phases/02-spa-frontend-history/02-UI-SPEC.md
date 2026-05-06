@@ -5,6 +5,8 @@ status: draft
 shadcn_initialized: false
 preset: none
 created: 2026-05-06
+revised: 2026-05-06
+revision_reason: "Fix BLOCK typography (weights 4→2, sizes 5→4+mono exception) and BLOCK spacing (off-grid padding values)"
 ---
 
 # Phase 2 — UI Design Contract
@@ -37,18 +39,23 @@ Declared values (multiples of 4 only):
 
 | Token | Value | Usage |
 |-------|-------|-------|
-| xs | 4px | Icon-to-label gap, inline badge padding |
-| sm | 8px | Input inner padding vertical, button vertical padding compact |
-| md | 16px | Default element gap, input inner padding horizontal, card padding |
-| lg | 24px | Section gap within a tab panel, between form rows |
-| xl | 32px | Gap between major sections (form + results zone) |
+| xs | 4px | Icon-to-label gap, inline badge padding vertical |
+| sm | 8px | Button padding vertical, input padding vertical, badge padding horizontal |
+| sm+ | 12px | Toast padding vertical, history row padding vertical |
+| md | 16px | Default element gap, button/input padding horizontal, card padding, toast padding horizontal |
+| lg | 24px | Section gap within a tab panel, between form rows, modal padding |
+| xl | 32px | Gap between major sections (form + results zone), drop-zone padding vertical |
 | 2xl | 48px | Tab panel top padding, header height internal padding |
-| 3xl | 64px | Page max-width side margins on desktop (≥1024px) |
+| 3xl | 64px | Page max-width side margins on desktop (≥1024px), tab panel bottom padding |
 
 Exceptions:
-- Touch targets: minimum 44×44px for all interactive elements (buttons, toggles, file-pick triggers). This may override the internal padding scale for icon-only controls. Source: D-01.
+- Touch targets: minimum 44×44px for all interactive elements (buttons, toggles, file-pick triggers). `min-height: 44px` on buttons/tabs; this overrides the internal padding scale for icon-only controls. Source: D-01.
 - Modal content padding: 24px (lg) on all sides.
-- Toast width: 320px fixed, 16px internal padding.
+- Toast width: 320px fixed.
+- Border thickness: 1px–2px (not part of spacing scale).
+- Focus outline-offset: 2px (not part of spacing scale).
+
+All padding/gap/margin values throughout this document are either declared in the scale above or noted as a documented exception.
 
 ---
 
@@ -56,17 +63,22 @@ Exceptions:
 
 All sizes in px at 16px root. Line heights are unitless ratios.
 
+**Scale rule:** Inter usa 4 tamaños (14, 16, 20, 28); JetBrains Mono usa 1 tamaño (13px) — excepción de familia monoespaciada para descriptores/código, no compite con la escala Inter.
+
 | Role | Font | Size | Weight | Line Height | Usage |
 |------|------|------|--------|-------------|-------|
 | Body | Inter | 16px | 400 | 1.5 | Paragraphs, labels, descriptions, threat model copy |
-| Label | Inter | 14px | 500 | 1.4 | Form labels, tab labels, toggle labels, toast messages |
+| Label | Inter | 14px | 400 | 1.4 | Form labels, tab labels, toggle labels, toast messages, badges |
 | Heading | Inter | 20px | 600 | 1.2 | Tab headings, section headings, modal titles |
-| Display | Inter | 28px | 700 | 1.1 | App title "BED" in header |
+| Display | Inter | 28px | 600 | 1.1 | App title "BED" in header |
 | Mono | JetBrains Mono | 13px | 400 | 1.6 | Descriptor textarea, armored block pre, xpub input, short-id, filename in history |
 | Mono bold | JetBrains Mono | 13px | 600 | 1.6 | Highlighted hex/ID fragments in history list |
 
 Notes:
-- Exactly 4 sizes (14, 16, 20, 28) + 1 mono size (13). Two Inter weights (400 + 600 primary; 500 label-only; 700 display-only). Mono uses 400 + 600.
+- Inter uses exactly 4 sizes (14, 16, 20, 28) and exactly 2 weights (400 body/label + 600 headings/CTAs/display). Size carries hierarchy; no intermediate weight needed.
+- Labels use 14px size for hierarchy differentiation — weight 500 has been removed; 400 is sufficient at this size.
+- Display uses 28px + weight 600; the size carries the emphasis — weight 700 has been removed.
+- JetBrains Mono is a monospace family exception (13px, 400 + 600) for code/descriptor contexts; its sizes do not count against the Inter 4-size scale.
 - Descriptors in textarea use `font-size: 13px` mono to allow long lines to fit visibly on mobile 360px without scrolling horizontally (overflow-x: auto on `<pre>`).
 - `<pre>` blocks (armored output, recovered descriptor) use `white-space: pre-wrap; word-break: break-all` to prevent layout overflow.
 
@@ -154,6 +166,8 @@ Theme persistence: `localStorage` key `bed.theme` ∈ `light | dark | auto` (def
 
 Header items order (left to right): logo "BED" (display 28px) → spacer → history-badge (when ON) → history toggle → threat-model button → theme toggle.
 
+**Focal points:** El focal point primario en estado idle es el textarea del descriptor (Tab Cifrar) o el drop-zone/textarea del armored (Tab Descifrar). En estado success, la zona de resultado (surface-raised, separada por xl=32px) toma el focal point — el executor debe asegurarse de que el scroll lleve esta zona a la vista tras una operación exitosa.
+
 Source: D-05, D-06.
 
 ### Tab Panel Widths
@@ -179,7 +193,7 @@ The result zone (outputs after encrypt/decrypt) renders below the form in the sa
 | Destructive | `--color-destructive` | `--color-destructive-fg` | none | `--color-destructive-hover` | opacity 0.4 |
 | Ghost | transparent | `--color-text-secondary` | none | `--color-surface-sunken` bg | opacity 0.4 |
 
-Button dimensions: `min-height: 44px; min-width: 44px; border-radius: 8px; padding: 10px 16px` (md horizontal, 10px vertical). Label weight 500 (Label role).
+Button dimensions: `min-height: 44px; min-width: 44px; border-radius: 8px; padding: 8px 16px` (sm vertical = 8px, md horizontal = 16px). Label font-size 14px, weight 400 (Label role). The `min-height: 44px` touch-target exception ensures the button meets the touch target requirement even though the padding alone gives less than 44px vertical.
 
 Loading state: spinner replaces leading icon, label changes to active verb ("Cifrando…" / "Descifrando…" / "Guardando…"), button disabled. Source: D-33.
 
@@ -191,7 +205,7 @@ Copy button post-action: label changes to "Copiado ✓" for 1500ms, then reverts
 border: 1px solid --color-border
 border-radius: 8px
 background: --color-surface-sunken
-padding: 10px 14px
+padding: 8px 16px
 font-size: 16px (body inputs) / 13px mono (descriptor, xpub, armored)
 focus: border-color --color-border-focus, box-shadow 0 0 0 3px rgba(accent, 0.2)
 ```
@@ -218,11 +232,11 @@ Historial tab: rendered in DOM only when `bed.historyEnabled === true`. Source: 
 
 ### Toggle (History Mode)
 
-Visual: pill toggle, 44px wide × 24px tall. ON state: `--color-accent` background. OFF state: `--color-border` background. Thumb: white circle 18px, transition `left 150ms ease`. Label "Historial" to the left, 14px weight 500.
+Visual: pill toggle, 44px wide × 24px tall. ON state: `--color-accent` background. OFF state: `--color-border` background. Thumb: white circle 18px, transition `left 150ms ease`. Label "Historial" to the left, 14px weight 400.
 
 ARIA: `role="switch" aria-checked="true|false"`. Source: D-18.
 
-Badge "Modo histórico activo": appears in header when toggle ON, `--color-history-badge-bg` background, `--color-history-badge-text` text, `border-radius: 999px`, `padding: 2px 10px`, `font-size: 12px weight 500`. Source: D-18.
+Badge "Modo histórico activo": appears in header when toggle ON, `--color-history-badge-bg` background, `--color-history-badge-text` text, `border-radius: 999px`, `padding: 4px 8px` (xs vertical = 4px, sm horizontal = 8px), `font-size: 14px weight 400` (Label role). Source: D-18.
 
 ### Threat Model Panel (`<details>`)
 
@@ -261,8 +275,8 @@ Escape closes modal (cancels action).
 ### Toast
 
 Position: top-right, `z-index: 9999`, `margin: 16px`.
-Dimensions: `width: 320px; padding: 14px 16px; border-radius: 8px`.
-Background: `--color-toast-bg`. Text: `--color-toast-text` 14px weight 500.
+Dimensions: `width: 320px; padding: 12px 16px; border-radius: 8px` (sm+ vertical = 12px, md horizontal = 16px).
+Background: `--color-toast-bg`. Text: `--color-toast-text` 14px weight 400.
 Auto-dismiss: 3000ms. Animation: slide-in from right 200ms ease-out, slide-out 150ms ease-in.
 `aria-live="polite"` on toast container. Source: D-34.
 
@@ -536,8 +550,16 @@ No external component registries. All components are hand-built Svelte 5 compone
 | WCAG AA mínimos | CONTEXT.md D-37 | Locked |
 | rust-embed pipeline + dev proxy | CONTEXT.md D-39..D-43 | Locked |
 | Color palette (exact hex values) | Claude's discretion (D-04) | Zinc/blue neutral — warm professional |
-| Spacing scale (exact values) | Claude's discretion | 8-point scale |
+| Spacing scale (exact values) | Claude's discretion | 8-point scale + 12px token added |
 | Border radii, shadows, transitions | Claude's discretion | Applied in this spec |
+
+---
+
+## Revision Log
+
+| Date | Revision | Issues Fixed |
+|------|----------|-------------|
+| 2026-05-06 | v2 | BLOCK Dim-4A: Eliminated 12px badge size → 14px; declared JetBrains Mono as monospace family exception outside Inter scale. BLOCK Dim-4B: Reduced Inter weights from 4 (400/500/600/700) to 2 (400+600); updated all component specs. BLOCK Dim-5: Fixed off-grid paddings — buttons 10px→8px vertical, inputs 10px 14px→8px 16px, badge 2px 10px→4px 8px, toast 14px→12px vertical; added 12px (sm+) to spacing scale. FLAG Dim-2: Added focal-point declaration to Layout Contract. |
 
 ---
 
