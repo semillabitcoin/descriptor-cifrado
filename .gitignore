@@ -7,3 +7,8 @@ Cargo.lock.bak
 frontend/node_modules/
 frontend/dist/
 frontend/.vite/
+
+# Secrets — defensive
+.env
+.env.*
+!.env.example
