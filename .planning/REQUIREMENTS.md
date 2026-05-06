@@ -32,10 +32,10 @@
 ### History Mode (Opt-In)
 
 - [ ] **HIST-01**: Toggle en la UI activa modo "guardar historial"; default es ephemeral (cifra → entrega → olvida)
-- [ ] **HIST-02**: Con toggle activo, los `.bed` resultantes se persisten en `/data/encrypted/<timestamp>-<short-id>.bed`
-- [ ] **HIST-03**: El descriptor en claro NUNCA se persiste en disco (test de CI hace grep del descriptor sobre archivos guardados)
-- [ ] **HIST-04**: Endpoint `GET /api/history` lista entradas vía directory scan de `/data/encrypted/`
-- [ ] **HIST-05**: Endpoint `DELETE /api/history/:id` borra una entrada
+- [x] **HIST-02**: Con toggle activo, los `.bed` resultantes se persisten en `/data/encrypted/<timestamp>-<short-id>.bed`
+- [x] **HIST-03**: El descriptor en claro NUNCA se persiste en disco (test de CI hace grep del descriptor sobre archivos guardados)
+- [x] **HIST-04**: Endpoint `GET /api/history` lista entradas vía directory scan de `/data/encrypted/`
+- [x] **HIST-05**: Endpoint `DELETE /api/history/:id` borra una entrada
 - [ ] **HIST-06**: La UI lista y permite borrar entradas del historial
 
 ### Frontend
@@ -136,10 +136,10 @@
 | UI-02 | Phase 2 | Pending |
 | UI-03 | Phase 2 | Pending |
 | HIST-01 | Phase 2 | Pending |
-| HIST-02 | Phase 2 | Pending |
-| HIST-03 | Phase 2 | Pending |
-| HIST-04 | Phase 2 | Pending |
-| HIST-05 | Phase 2 | Pending |
+| HIST-02 | Phase 2 | Complete |
+| HIST-03 | Phase 2 | Complete |
+| HIST-04 | Phase 2 | Complete |
+| HIST-05 | Phase 2 | Complete |
 | HIST-06 | Phase 2 | Pending |
 | PKG-01 | Phase 3 | Pending |
 | PKG-02 | Phase 3 | Pending |

@@ -51,7 +51,7 @@ Plans:
 **Plans**: 6 plans
 Plans:
 - [x] 02-01-frontend-scaffold-PLAN.md — package.json + Vite + tokens.css + fonts self-hosted (Inter + JetBrains Mono)
-- [ ] 02-02-backend-history-endpoints-PLAN.md — 4 endpoints history (POST/GET/GET-id/DELETE) + tests (round-trip + no-leak HIST-03)
+- [x] 02-02-backend-history-endpoints-PLAN.md — 4 endpoints history (POST/GET/GET-id/DELETE) + tests (round-trip + no-leak HIST-03)
 - [ ] 02-03-shell-and-shared-components-PLAN.md — stores Svelte 5 + lib (api/clipboard) + 8 componentes compartidos + App.svelte shell
 - [ ] 02-04-tab-cifrar-PLAN.md — TabCifrar.svelte + CifrarOutputs (3 outputs simultáneos) + history fire-and-warn
 - [ ] 02-05-tab-descifrar-PLAN.md — TabDescifrar.svelte + drop-zone + DescifrarOutputs + AnimatedQrModal (BBQR lazy)
