@@ -1,0 +1,146 @@
+/* tokens.css — Single source of truth para color, spacing, radii, shadows, transitions.
+   Valores derivados directamente de 02-UI-SPEC.md §Color, §Spacing Scale, §Border Radius,
+   §Shadows, §Transitions. NO modificar sin actualizar UI-SPEC. */
+
+:root {
+  /* ===== Spacing scale (UI-SPEC §Spacing Scale, multiplos de 4 only) ===== */
+  --space-xs: 4px;
+  --space-sm: 8px;
+  --space-sm-plus: 12px;
+  --space-md: 16px;
+  --space-lg: 24px;
+  --space-xl: 32px;
+  --space-2xl: 48px;
+  --space-3xl: 64px;
+
+  /* ===== Border radii ===== */
+  --radius-button: 8px;
+  --radius-input: 8px;
+  --radius-card: 12px;
+  --radius-modal: 12px;
+  --radius-dropzone: 12px;
+  --radius-toast: 8px;
+  --radius-pill: 999px;
+
+  /* ===== Touch target ===== */
+  --touch-target: 44px;
+
+  /* ===== Typography ===== */
+  --font-sans: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  --font-mono: 'JetBrains Mono', 'Cascadia Code', 'Fira Code', 'Courier New', monospace;
+  --font-size-label: 14px;
+  --font-size-body: 16px;
+  --font-size-heading: 20px;
+  --font-size-display: 28px;
+  --font-size-mono: 13px;
+  --font-weight-regular: 400;
+  --font-weight-bold: 600;
+  --line-height-display: 1.1;
+  --line-height-heading: 1.2;
+  --line-height-label: 1.4;
+  --line-height-body: 1.5;
+  --line-height-mono: 1.6;
+
+  /* ===== Shadows ===== */
+  --shadow-header: 0 1px 3px rgba(0, 0, 0, 0.08);
+  --shadow-card: 0 1px 2px rgba(0, 0, 0, 0.05);
+  --shadow-modal: 0 8px 24px rgba(0, 0, 0, 0.18);
+  --shadow-focus: 0 0 0 3px rgba(59, 130, 246, 0.25);
+
+  /* ===== Transitions ===== */
+  --transition-color: 150ms ease;
+  --transition-focus: 100ms ease;
+  --transition-disabled: 100ms ease;
+  --transition-tab: 150ms ease;
+  --transition-toggle: 150ms ease;
+  --transition-toast-in: 200ms ease-out;
+  --transition-toast-out: 150ms ease-in;
+  --transition-details: 200ms ease;
+
+  /* ===== Color tokens — LIGHT theme defaults ===== */
+  --color-surface: #FAFAF9;
+  --color-surface-raised: #FFFFFF;
+  --color-surface-sunken: #F4F4F5;
+  --color-border: #E4E4E7;
+  --color-border-focus: #3B82F6;
+  --color-text-primary: #18181B;
+  --color-text-secondary: #71717A;
+  --color-text-disabled: #A1A1AA;
+  --color-accent: #3B82F6;
+  --color-accent-hover: #2563EB;
+  --color-accent-fg: #FFFFFF;
+  --color-destructive: #EF4444;
+  --color-destructive-hover: #DC2626;
+  --color-destructive-fg: #FFFFFF;
+  --color-warning-bg: #FEF9C3;
+  --color-warning-border: #FDE047;
+  --color-warning-text: #713F12;
+  --color-success-bg: #F0FDF4;
+  --color-success-text: #166534;
+  --color-caution-bg: #FFFBEB;
+  --color-caution-text: #92400E;
+  --color-history-badge-bg: #DBEAFE;
+  --color-history-badge-text: #1E40AF;
+  --color-toast-bg: #18181B;
+  --color-toast-text: #FAFAF9;
+}
+
+/* DARK theme — activated by [data-theme="dark"] on <html> (set by stores/app.svelte.js) */
+:root[data-theme="dark"] {
+  --color-surface: #18181B;
+  --color-surface-raised: #27272A;
+  --color-surface-sunken: #09090B;
+  --color-border: #3F3F46;
+  --color-border-focus: #60A5FA;
+  --color-text-primary: #FAFAF9;
+  --color-text-secondary: #A1A1AA;
+  --color-text-disabled: #52525B;
+  --color-accent: #60A5FA;
+  --color-accent-hover: #93C5FD;
+  --color-accent-fg: #09090B;
+  --color-destructive: #F87171;
+  --color-destructive-hover: #FCA5A5;
+  --color-destructive-fg: #09090B;
+  --color-warning-bg: #422006;
+  --color-warning-border: #854D0E;
+  --color-warning-text: #FDE68A;
+  --color-success-bg: #052E16;
+  --color-success-text: #86EFAC;
+  --color-caution-bg: #1C1917;
+  --color-caution-text: #FCD34D;
+  --color-history-badge-bg: #1E3A5F;
+  --color-history-badge-text: #93C5FD;
+  --color-toast-bg: #FAFAF9;
+  --color-toast-text: #18181B;
+}
+
+/* AUTO theme — follows OS prefers-color-scheme. Applied when data-theme="auto" or absent. */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --color-surface: #18181B;
+    --color-surface-raised: #27272A;
+    --color-surface-sunken: #09090B;
+    --color-border: #3F3F46;
+    --color-border-focus: #60A5FA;
+    --color-text-primary: #FAFAF9;
+    --color-text-secondary: #A1A1AA;
+    --color-text-disabled: #52525B;
+    --color-accent: #60A5FA;
+    --color-accent-hover: #93C5FD;
+    --color-accent-fg: #09090B;
+    --color-destructive: #F87171;
+    --color-destructive-hover: #FCA5A5;
+    --color-destructive-fg: #09090B;
+    --color-warning-bg: #422006;
+    --color-warning-border: #854D0E;
+    --color-warning-text: #FDE68A;
+    --color-success-bg: #052E16;
+    --color-success-text: #86EFAC;
+    --color-caution-bg: #1C1917;
+    --color-caution-text: #FCD34D;
+    --color-history-badge-bg: #1E3A5F;
+    --color-history-badge-text: #93C5FD;
+    --color-toast-bg: #FAFAF9;
+    --color-toast-text: #18181B;
+  }
+}
