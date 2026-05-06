@@ -24,6 +24,7 @@ Un holder StartOS puede pegar un descriptor multisig y obtener un `.bed` cifrado
 - [x] Descifrado simétrico: subir `.bed` (binario o armored) + xpub → recibir descriptor en claro *(Validado en Phase 2: TabDescifrar + drop-zone + DescifrarOutputs + AnimatedQrModal BBQR lazy)*
 - [x] Modo histórico opt-in: toggle persiste `.bed` en `/data/encrypted/<timestamp>-<short-id>.bed` *(Validado en Phase 2: 4 endpoints + HIST-03 enforced — descriptor en claro NUNCA toca disco)*
 - [x] Listar y borrar entradas del historial desde la UI *(Validado en Phase 2: TabHistorial + HistoryEntryDetailModal + ConfirmDeleteModal)*
+- [~] ~~Panel "modelo de amenazas" inline en la UI~~ *(Retirado 2026-05-06 sesión 8 — preferencia de UI limpia; el modelo de amenazas se documenta en README solo)*
 
 ### Active
 
@@ -86,6 +87,7 @@ Un holder StartOS puede pegar un descriptor multisig y obtener un `.bed` cifrado
 | Workspace lints `unwrap_used = "deny"` + `expect_used = "deny"` | Garantiza no-panic en request path; clippy `-D warnings` lo enforce | ✓ Phase 1 |
 | Bind 127.0.0.1:8080 (no clearnet binding) | StartOS rutea externamente vía Tor + LAN; binding privado evita exposure accidental | ✓ Phase 1 |
 | Bans cargo-deny: openssl-sys, native-tls, async-hwi | TLS lo termina StartOS; rustls everywhere para distroless | ✓ Phase 1 |
+| Retirar panel UI "modelo de amenazas" (componente `ThreatModel.svelte`) | Preferencia de UI limpia; el modelo de amenazas se documenta en README (DOC-01/DOC-02) que el usuario lee al instalar — duplicarlo en cada carga de la UI añade ruido visual sin valor incremental | ✓ Sesión 8 (2026-05-06) |
 
 ## Evolution
 

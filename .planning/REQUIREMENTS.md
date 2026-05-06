@@ -42,7 +42,7 @@
 
 - [x] **UI-01**: SPA Svelte 5 + Vite 6 servida desde el binario vía `rust-embed`, sin CDN externo, sin telemetría, sin fonts remotas
 - [x] **UI-02**: La UI presenta dos pestañas/secciones simétricas: "Cifrar" y "Descifrar"
-- [x] **UI-03**: La UI muestra modelo de amenazas resumido visible (no solo en README)
+- [~] **UI-03**: ~~La UI muestra modelo de amenazas resumido visible~~ — Retirado 2026-05-06 sesión 8 por preferencia de UI limpia; el modelo de amenazas vive ahora solo en README (DOC-01/DOC-02)
 
 ### Security Hygiene
 
@@ -107,6 +107,7 @@
 | SDK Umbrel en v1 | Foco en una sola plataforma; cross-platform es follow-up |
 | Embedded DB (sled / SQLite) | sled abandonado, SQLite C-FFI rompe distroless; directory scan es suficiente |
 | Server bind 0.0.0.0 | StartOS rutea externamente; loopback evita exposición lateral |
+| Panel "modelo de amenazas" en la UI (UI-03 retirado 2026-05-06) | Preferencia de UI limpia; mismo contenido vive en README/DOC-01/DOC-02 que el usuario consulta una vez al instalar |
 
 ## Traceability
 
@@ -134,7 +135,7 @@
 | CI-02 | Phase 1 | Complete |
 | UI-01 | Phase 2 | Complete |
 | UI-02 | Phase 2 | Complete |
-| UI-03 | Phase 2 | Complete |
+| UI-03 | Phase 2 | Retirado (2026-05-06 sesión 8 — UI limpia) |
 | HIST-01 | Phase 2 | Complete |
 | HIST-02 | Phase 2 | Complete |
 | HIST-03 | Phase 2 | Complete |

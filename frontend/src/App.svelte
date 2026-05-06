@@ -2,7 +2,6 @@
   import { onMount } from 'svelte';
   import { appState, initFromStorage } from './stores/app.svelte.js';
   import Header from './components/Header.svelte';
-  import ThreatModel from './components/ThreatModel.svelte';
   import TabBar from './components/TabBar.svelte';
   import TabCifrar from './components/TabCifrar.svelte';
   import TabDescifrar from './components/TabDescifrar.svelte';
@@ -14,7 +13,6 @@
 </script>
 
 <Header />
-<ThreatModel />
 <main>
   <TabBar />
   <!-- svelte-ignore a11y_no_noninteractive_element_to_interactive_role -->
