@@ -17,6 +17,7 @@ tracing-subscriber.workspace = true
 zeroize.workspace = true
 base64.workspace = true
 rust-embed.workspace = true
+mime_guess.workspace = true
 uuid.workspace = true
 time.workspace = true
 
