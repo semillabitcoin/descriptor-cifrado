@@ -52,9 +52,10 @@ pub async fn post_decrypt(mut form: Multipart) -> Result<Json<DecryptResponse>, 
     let bed_bytes = bed.ok_or_else(|| AppError::BadRequest("missing 'bed' field".to_string()))?;
     let xpub_str = xpub.ok_or_else(|| AppError::BadRequest("missing 'xpub' field".to_string()))?;
 
-    // Auto-detect armored: if bytes start with "-----BEGIN", strip PEM headers
-    // via decode_armored. Otherwise pass raw bytes to crate (which auto-detects
-    // binary "BIPXXX" magic vs raw base64).
+    // Auto-detect armored: si los bytes empiezan con "-----BEGIN", quitar headers
+    // PEM vía decode_armored. En caso contrario, pasar binario crudo a la crate
+    // (v0.0.2 espera magic `BEB` y no acepta base64 raw — el frontend siempre nos
+    // manda binario o armored, nunca base64 suelto).
     let payload: Vec<u8> = if bed_bytes.starts_with(b"-----BEGIN") {
         let text = std::str::from_utf8(&bed_bytes)
             .map_err(|_| AppError::BadRequest("invalid utf-8 in armored".to_string()))?;

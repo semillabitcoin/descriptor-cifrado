@@ -1,8 +1,10 @@
 //! Decrypt path: .bed bytes + xpub → cleartext descriptor wrapped in Zeroizing.
 //!
-//! The crate's `set_encrypted_payload` auto-detects binary "BIPXXX" magic vs
-//! base64 — but does NOT strip PEM-style headers. The server is responsible
-//! for stripping headers via `armored::decode_armored` BEFORE calling this.
+//! En `bitcoin-encrypted-backup` v0.0.2 (tag publicado, compatible con Liana),
+//! `set_encrypted_payload` espera el blob binario con magic `BEB`. NO hace
+//! autodetección de base64 ni strip de PEM. El server decodifica armored vía
+//! `armored::decode_armored` ANTES de llamar a esta función; este wrapper solo
+//! recibe binario crudo.
 
 use std::str::FromStr;
 
