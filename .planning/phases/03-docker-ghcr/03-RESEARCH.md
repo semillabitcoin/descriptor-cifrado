@@ -22,7 +22,7 @@
 - **D-09:** Nuevo workflow .github/workflows/docker.yml, separado de ci.yml.
 - **D-10:** 3 jobs en docker.yml: (1) build-and-push, (2) ldd-check, (3) make-public.
 - **D-11:** Permissions en docker.yml: contents:read, packages:write.
-- **D-12:** Image name: ghcr.io/semillabitcoin/bed-app.
+- **D-12:** Image name: ghcr.io/semillabitcoin/descriptor-cifrado.
 - **D-13:** Distroless variant: gcr.io/distroless/cc-debian12:nonroot. UID 65532 / GID 65532.
 - **D-14:** Build args RUST_VERSION (default 1) y NODE_VERSION (default 20). Reproducibilidad via Cargo.lock + package-lock.json + --locked + npm ci.
 - **D-15:** Sin SBOM ni cosign en v1.
@@ -60,7 +60,7 @@ Phase 3 agrega tres artefactos: `Dockerfile` (raíz), `.dockerignore` (raíz), y
 
 La investigación confirmó que las versiones de Docker GitHub Actions han avanzado desde los valores asumidos en CONTEXT.md: el ecosistema completo migró a **Node 24 como runtime** en Marzo 2026, resultando en versiones v4 para setup-qemu, setup-buildx y login-action; v6 para metadata-action; y v7 para build-push-action. El planner DEBE usar estas versiones actuales — las v3/v5/v6 mencionadas en CONTEXT.md son una versión atrás.
 
-El mecanismo de visibilidad pública de GHCR para paquetes de **organización** (no usuario) tiene una particularidad crítica: la decisión D-10 propone `gh api -X PATCH /user/packages/container/bed-app/visibility` pero ese endpoint aplica a paquetes de usuario, **no a paquetes de org**. Para un paquete bajo `ghcr.io/semillabitcoin/...`, el endpoint correcto sería `/orgs/semillabitcoin/packages/container/bed-app` — pero la investigación revela que ese endpoint PATCH de visibilidad **no está oficialmente documentado ni confirmado como funcional** para organizaciones. La alternativa confiable: si el repo es público y el `Dockerfile` incluye la label `org.opencontainers.image.source` ANTES del primer push, GHCR hereda automáticamente la visibilidad pública del repo cuando se usa `GITHUB_TOKEN`.
+El mecanismo de visibilidad pública de GHCR para paquetes de **organización** (no usuario) tiene una particularidad crítica: la decisión D-10 propone `gh api -X PATCH /user/packages/container/descriptor-cifrado/visibility` pero ese endpoint aplica a paquetes de usuario, **no a paquetes de org**. Para un paquete bajo `ghcr.io/semillabitcoin/...`, el endpoint correcto sería `/orgs/semillabitcoin/packages/container/descriptor-cifrado` — pero la investigación revela que ese endpoint PATCH de visibilidad **no está oficialmente documentado ni confirmado como funcional** para organizaciones. La alternativa confiable: si el repo es público y el `Dockerfile` incluye la label `org.opencontainers.image.source` ANTES del primer push, GHCR hereda automáticamente la visibilidad pública del repo cuando se usa `GITHUB_TOKEN`.
 
 El Rust binary de este proyecto con el release profile D-08 (strip+lto+panic=abort) debería producir un binario de ~5-8 MB basado en el binario actual (5.8 MB sin strip). La imagen distroless/cc-debian12 base es ~3-5 MB comprimida. Total estimado: ~10-15 MB comprimido, bien dentro del límite de 25 MB.
 
@@ -231,7 +231,7 @@ jobs:
         id: meta
         uses: docker/metadata-action@v6
         with:
-          images: ghcr.io/semillabitcoin/bed-app
+          images: ghcr.io/semillabitcoin/descriptor-cifrado
           tags: |
             type=ref,event=branch,enable=${{ github.ref == 'refs/heads/main' }},value=latest
             type=sha,format=short,prefix=sha-
@@ -241,7 +241,7 @@ jobs:
           flavor: |
             latest=false
           labels: |
-            org.opencontainers.image.source=https://github.com/semillabitcoin/bed-app
+            org.opencontainers.image.source=https://github.com/semillabitcoin/descriptor-cifrado
             org.opencontainers.image.description=BED — Bitcoin Encrypted Backup app for StartOS
             org.opencontainers.image.licenses=MIT
 
@@ -282,7 +282,7 @@ jobs:
       - name: Make GHCR package public (org endpoint)
         run: |
           gh api -X PATCH \
-            /orgs/semillabitcoin/packages/container/bed-app \
+            /orgs/semillabitcoin/packages/container/descriptor-cifrado \
             -f visibility=public
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -294,7 +294,7 @@ jobs:
 
 | Evento | Tags generados |
 |--------|----------------|
-| push a `main` | `ghcr.io/semillabitcoin/bed-app:latest`, `ghcr.io/semillabitcoin/bed-app:sha-a1b2c3d` |
+| push a `main` | `ghcr.io/semillabitcoin/descriptor-cifrado:latest`, `ghcr.io/semillabitcoin/descriptor-cifrado:sha-a1b2c3d` |
 | push tag `v0.1.0` | `0.1.0`, `0.1`, `0`, `latest` |
 | PR | Sin tags, build sin push |
 
@@ -331,7 +331,7 @@ jobs:
 
 ### Contexto del Problema
 
-CONTEXT.md D-10 propone `gh api -X PATCH /user/packages/container/bed-app/visibility` para el step `make-public`. **Este endpoint es para paquetes de usuario, no de organización.**
+CONTEXT.md D-10 propone `gh api -X PATCH /user/packages/container/descriptor-cifrado/visibility` para el step `make-public`. **Este endpoint es para paquetes de usuario, no de organización.**
 
 ### Mecanismos Disponibles (en orden de confiabilidad)
 
@@ -341,24 +341,24 @@ Condición: Si el repo `semillabitcoin/<nombre>` es público Y la label `org.ope
 
 Fuente: GitHub Docs "Publishing and installing a package with GitHub Actions" — "The package inherits the visibility and permissions model of the repository where the workflow is run."
 
-Implicación práctica: Si el repo es público (como debe ser para `semillabitcoin/bed-app` dado que es open source), y el Dockerfile incluye la label `org.opencontainers.image.source=https://github.com/semillabitcoin/bed-app`, el primer push resultará en un paquete público sin step adicional.
+Implicación práctica: Si el repo es público (como debe ser para `semillabitcoin/descriptor-cifrado` dado que es open source), y el Dockerfile incluye la label `org.opencontainers.image.source=https://github.com/semillabitcoin/descriptor-cifrado`, el primer push resultará en un paquete público sin step adicional.
 
 **Esta es la alternativa más simple y la que el planner DEBE explorar primero.**
 
 **Mecanismo 2: API PATCH para paquetes de organización (INCERTIDUMBRE)**
 
-Endpoint candidato: `PATCH /orgs/semillabitcoin/packages/container/bed-app`
+Endpoint candidato: `PATCH /orgs/semillabitcoin/packages/container/descriptor-cifrado`
 
 Estado: **No oficialmente documentado para PATCH de visibilidad.** Investigación encontró discussions de community que reportan que este endpoint puede devolver 404 o funcionar sin documentación formal. No se puede garantizar que funcione con solo `GITHUB_TOKEN` — puede requerir un PAT con scope `write:packages` del owner de la org.
 
 **Mecanismo 3: Configuración manual en GitHub UI**
 
-Fallback garantizado: El owner de la org `semillabitcoin` puede ir a `github.com/orgs/semillabitcoin/packages/container/bed-app/settings` y cambiar visibilidad a Public manualmente tras el primer push. **Una vez público, no se puede hacer privado de nuevo (por diseño de GHCR).**
+Fallback garantizado: El owner de la org `semillabitcoin` puede ir a `github.com/orgs/semillabitcoin/packages/container/descriptor-cifrado/settings` y cambiar visibilidad a Public manualmente tras el primer push. **Una vez público, no se puede hacer privado de nuevo (por diseño de GHCR).**
 
 ### Recomendación para el Planner
 
 El job `make-public` debe:
-1. Intentar `PATCH /orgs/semillabitcoin/packages/container/bed-app` con `GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}`
+1. Intentar `PATCH /orgs/semillabitcoin/packages/container/descriptor-cifrado` con `GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}`
 2. Si falla (código de salida distinto de 0), continuar (`continue-on-error: true`) con un warning visible
 3. En Wave 0 del plan, incluir una task manual: "Verificar que el repo `semillabitcoin/<nombre>` es público antes del primer push, y que el Dockerfile incluye `org.opencontainers.image.source` label"
 
@@ -388,11 +388,11 @@ El job `make-public` debe:
 
 ### Pitfall 3: `make-public` step con endpoint /user/packages/ para paquetes de org
 
-**What goes wrong:** El endpoint `/user/packages/container/bed-app/visibility` aplica a paquetes del usuario autenticado (el GITHUB_TOKEN actúa como `github.actor`). Si el paquete está bajo la org `semillabitcoin`, este endpoint devolverá 404.
+**What goes wrong:** El endpoint `/user/packages/container/descriptor-cifrado/visibility` aplica a paquetes del usuario autenticado (el GITHUB_TOKEN actúa como `github.actor`). Si el paquete está bajo la org `semillabitcoin`, este endpoint devolverá 404.
 
 **Why it happens:** GHCR distingue entre user-scoped (`ghcr.io/<username>/...`) y org-scoped (`ghcr.io/<org>/...`) packages.
 
-**How to avoid:** Ver sección GHCR Visibility. Usar `/orgs/semillabitcoin/packages/container/bed-app` con `continue-on-error: true`, y confiar en herencia automática de visibilidad si el repo es público.
+**How to avoid:** Ver sección GHCR Visibility. Usar `/orgs/semillabitcoin/packages/container/descriptor-cifrado` con `continue-on-error: true`, y confiar en herencia automática de visibilidad si el repo es público.
 
 **Warning signs:** El step `make-public` retorna 404. El paquete sigue siendo privado tras el primer push.
 
@@ -499,7 +499,7 @@ panic = "abort"
 
 ```bash
 # Tras push a GHCR, inspeccionar tamaño desde manifest (sin pull):
-docker buildx imagetools inspect --raw ghcr.io/semillabitcoin/bed-app:sha-<x> | \
+docker buildx imagetools inspect --raw ghcr.io/semillabitcoin/descriptor-cifrado:sha-<x> | \
   python3 -c "
 import json, sys
 data = json.load(sys.stdin)
@@ -510,8 +510,8 @@ print(f'Total layers size: {total / 1024 / 1024:.1f} MB')
 
 **Alternativa simple (post-pull local):**
 ```bash
-docker pull ghcr.io/semillabitcoin/bed-app:sha-<x>
-docker image ls ghcr.io/semillabitcoin/bed-app --format "{{.Size}}"
+docker pull ghcr.io/semillabitcoin/descriptor-cifrado:sha-<x>
+docker image ls ghcr.io/semillabitcoin/descriptor-cifrado --format "{{.Size}}"
 # Nota: docker image ls muestra tamaño descomprimido. Para comprimido, usar registry API.
 ```
 
@@ -536,12 +536,12 @@ docker image ls ghcr.io/semillabitcoin/bed-app --format "{{.Size}}"
 
 ## Open Questions
 
-1. **¿Es el repo `semillabitcoin/bed-app` público en GitHub?**
+1. **¿Es el repo `semillabitcoin/descriptor-cifrado` público en GitHub?**
    - What we know: La herencia automática de visibilidad GHCR requiere repo público.
-   - What's unclear: El nombre exacto del repo en la org `semillabitcoin` (puede ser `descriptor-cifrado` o `bed-app` o similar).
+   - What's unclear: El nombre exacto del repo en la org `semillabitcoin` (puede ser `descriptor-cifrado` o `descriptor-cifrado` o similar).
    - Recommendation: El planner debe incluir en Wave 0 una task de verificación: "Confirmar que el repo es público en GitHub org semillabitcoin". Si no lo es, el mecanismo de herencia automática no aplica y se necesita configuración manual.
 
-2. **¿Funciona PATCH /orgs/semillabitcoin/packages/container/bed-app con GITHUB_TOKEN?**
+2. **¿Funciona PATCH /orgs/semillabitcoin/packages/container/descriptor-cifrado con GITHUB_TOKEN?**
    - What we know: El endpoint para paquetes de usuario (`/user/packages/...`) funciona. El endpoint de org no está oficialmente documentado para PATCH de visibilidad. Algunos community reports lo marcan como 404.
    - What's unclear: Si el `GITHUB_TOKEN` en un workflow de la org tiene permisos suficientes para PATCH ese endpoint.
    - Recommendation: Incluir `continue-on-error: true` en el step `make-public`. Documentar en plan como "best-effort + fallback manual".

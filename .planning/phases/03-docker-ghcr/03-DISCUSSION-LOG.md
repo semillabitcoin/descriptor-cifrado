@@ -128,12 +128,12 @@
 
 | Option | Description | Selected |
 |--------|-------------|----------|
-| `ghcr.io/semillabitcoin/bed-app` | Match exacto con ROADMAP success criteria #1 | ✓ |
+| `ghcr.io/semillabitcoin/descriptor-cifrado` | Match exacto con ROADMAP success criteria #1 | ✓ |
 | `ghcr.io/semillabitcoin/bed` | Más corto pero no documentado | |
 | `ghcr.io/semillabitcoin/bed-server` | Refleja binario pero confunde con app completa | |
 
-**User's choice:** auto → bed-app
-**Notes:** ROADMAP lo nombra explícitamente.
+**User's choice:** auto → descriptor-cifrado (rename confirmado por usuario tras research; ROADMAP actualizado)
+**Notes:** Original `bed-app` renombrado a `descriptor-cifrado` para alinear con nombre de repo.
 
 ---
 

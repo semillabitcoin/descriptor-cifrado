@@ -63,7 +63,7 @@ Plans:
 **Depends on**: Phase 2
 **Requirements**: PKG-01, PKG-02, PKG-03, PKG-04
 **Success Criteria** (what must be TRUE):
-  1. `docker pull ghcr.io/semillabitcoin/bed-app:latest` succeeds without any GitHub credentials from a fresh machine
+  1. `docker pull ghcr.io/semillabitcoin/descriptor-cifrado:latest` succeeds without any GitHub credentials from a fresh machine
   2. `docker inspect` reports both `linux/amd64` and `linux/arm64` manifest entries for the image
   3. CI `ldd` check on the release binary exits 0 only if no `libssl` or non-distroless lib appears; the final image is at or below 25 MB compressed
 **Plans**: TBD

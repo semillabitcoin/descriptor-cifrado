@@ -6,7 +6,7 @@
 <domain>
 ## Phase Boundary
 
-Phase 3 empaqueta el binario `bed-server` (workspace Rust) + frontend Svelte 5 ya construido, en una imagen Docker multi-stage que termina en `gcr.io/distroless/cc-debian12:nonroot`, multi-arch (linux/amd64 + linux/arm64), publicada bajo `ghcr.io/semillabitcoin/bed-app` con visibilidad pública desde el primer push. Añade un workflow de CI separado que (a) compila la imagen multi-arch con `docker buildx`, (b) la pushea a GHCR en eventos disparadores, (c) corre un check `ldd` sobre el binario release nativo amd64 que falla si aparece `libssl`/`native-tls`/lib no-distroless, y (d) marca el package GHCR como público vía API tras el primer push.
+Phase 3 empaqueta el binario `bed-server` (workspace Rust) + frontend Svelte 5 ya construido, en una imagen Docker multi-stage que termina en `gcr.io/distroless/cc-debian12:nonroot`, multi-arch (linux/amd64 + linux/arm64), publicada bajo `ghcr.io/semillabitcoin/descriptor-cifrado` con visibilidad pública desde el primer push. Añade un workflow de CI separado que (a) compila la imagen multi-arch con `docker buildx`, (b) la pushea a GHCR en eventos disparadores, (c) corre un check `ldd` sobre el binario release nativo amd64 que falla si aparece `libssl`/`native-tls`/lib no-distroless, y (d) marca el package GHCR como público vía API tras el primer push.
 
 **Fuera de Phase 3:**
 - Manifest s9pk de StartOS, health checks Start9 SDK, install en device real (Phase 4 — S9-01..05).
@@ -73,11 +73,11 @@ Phase 3 empaqueta el binario `bed-server` (workspace Rust) + frontend Svelte 5 y
        - `cache-to: type=gha,mode=max`
        - `tags`/`labels` desde metadata-action
   2. **`ldd-check`** — corre en cada PR + push main. Compila release amd64 nativo en runner GHA estándar, ejecuta `ldd target/release/bed-server` y `nm` chequeando símbolos. Falla si aparece cualquiera de: `libssl`, `libcrypto`, `native-tls`, `libpq`, `libmysqlclient`, `libsqlite3`. PKG-03 cumplido.
-  3. **`make-public`** — corre solo en push a `main`, después de `build-and-push`, condicional en `success()`. Step usa `gh api -X PATCH /user/packages/container/bed-app/visibility` con body `{"visibility":"public"}` para forzar visibilidad pública. Idempotente (toggle de no-op si ya pública). Necesario por `feedback_ghcr_private_default.md` — paquetes GHCR son privados por default y rompen pull sin auth (PKG-04).
+  3. **`make-public`** — corre solo en push a `main`, después de `build-and-push`, condicional en `success()`. Step usa `gh api -X PATCH /user/packages/container/descriptor-cifrado/visibility` con body `{"visibility":"public"}` para forzar visibilidad pública. Idempotente (toggle de no-op si ya pública). Necesario por `feedback_ghcr_private_default.md` — paquetes GHCR son privados por default y rompen pull sin auth (PKG-04).
 - **D-11:** Workflow permissions explícitos en `docker.yml`: `permissions: { contents: read, packages: write }`. Sin `id-token`/`OIDC` en v1 (auth con `GITHUB_TOKEN` es suficiente).
 
 ### Image Identity
-- **D-12:** Image name: **`ghcr.io/semillabitcoin/bed-app`**. Coincide exactamente con ROADMAP success criteria #1 (`docker pull ghcr.io/semillabitcoin/bed-app:latest`). No usar variantes (`bed`, `bed-server`, `bed-startos`).
+- **D-12:** Image name: **`ghcr.io/semillabitcoin/descriptor-cifrado`**. Coincide exactamente con ROADMAP success criteria #1 (`docker pull ghcr.io/semillabitcoin/descriptor-cifrado:latest`). No usar variantes (`bed`, `bed-server`, `bed-startos`).
 - **D-13:** Distroless variant: **`gcr.io/distroless/cc-debian12:nonroot`**. UID 65532 / GID 65532. El binario `bed-server` bindea a `127.0.0.1:8080` (Phase 1 SEC-02), por lo cual no requiere capabilities privilegiadas. Defensa en profundidad sin coste operacional.
 
 ### Build Context & Reproducibility
@@ -168,7 +168,7 @@ None — `gsd-tools todo match-phase 3` retornó 0 matches.
 - **Lints workspace `unwrap_used = "deny"`/`expect_used = "deny"`/`panic = "warn"`** (Phase 1) — alineado con `panic = "abort"` en release profile (D-08).
 
 ### Integration Points
-- **Repo organización** — `semillabitcoin/<repo>`. El nombre exacto del repo determina `image.source` label. Si el repo se llama `bed-app` ya no hace falta sobreescribir; si es `descriptor-cifrado` o similar, el GHCR `bed-app` package no coincide con repo name pero `image.source` label hace el link.
+- **Repo organización** — `semillabitcoin/<repo>`. El nombre exacto del repo determina `image.source` label. Si el repo se llama `descriptor-cifrado` ya no hace falta sobreescribir; si es `descriptor-cifrado` o similar, el GHCR `descriptor-cifrado` package no coincide con repo name pero `image.source` label hace el link.
 - **Volume `/data/encrypted/`** — Phase 2 lo usa via env `BED_DATA_DIR` con default `/data/encrypted/`. Dockerfile no necesita `VOLUME` declaration (Phase 4 s9pk lo gestiona), pero el binario debe poder escribir ahí cuando StartOS monte el volume — distroless `:nonroot` necesita que el directorio sea propiedad de UID 65532. Phase 4 manifest gestiona ownership; Phase 3 sólo asegura que el binario respeta `BED_DATA_DIR`.
 - **`EXPOSE 8080`** declarativo — orientativo para herramientas; el bind real lo hace el binario en `127.0.0.1:8080`. StartOS gestiona el routing externo.
 - **GHCR auth** — `GITHUB_TOKEN` con scope `packages: write` es suficiente; no requiere PAT manual.
@@ -179,8 +179,8 @@ None — `gsd-tools todo match-phase 3` retornó 0 matches.
 ## Specific Ideas
 
 - **Dockerfile en raíz del repo** (no `docker/Dockerfile`); convención más común para que `docker build .` funcione sin flags. `.dockerignore` también raíz.
-- **Verificar tamaño imagen tras primer build** — pre-condición para mergear: `docker buildx imagetools inspect ghcr.io/semillabitcoin/bed-app:sha-<x>` reporta `linux/amd64` y `linux/arm64`, ambas ≤25 MB compressed (success criterion 3 + PKG-01).
-- **Test manual end-to-end pre-merge**: tras primer push, hacer `docker pull ghcr.io/semillabitcoin/bed-app:sha-<x>` desde máquina limpia (sin `docker login`), `docker run -p 8080:8080 -v $(pwd)/data:/data/encrypted ghcr.io/semillabitcoin/bed-app:sha-<x>`, y comprobar que SPA carga en `http://localhost:8080` y un round-trip cifrar→descifrar funciona contra esa imagen. Cumple `feedback_test_before_push.md` para Phase 3.
+- **Verificar tamaño imagen tras primer build** — pre-condición para mergear: `docker buildx imagetools inspect ghcr.io/semillabitcoin/descriptor-cifrado:sha-<x>` reporta `linux/amd64` y `linux/arm64`, ambas ≤25 MB compressed (success criterion 3 + PKG-01).
+- **Test manual end-to-end pre-merge**: tras primer push, hacer `docker pull ghcr.io/semillabitcoin/descriptor-cifrado:sha-<x>` desde máquina limpia (sin `docker login`), `docker run -p 8080:8080 -v $(pwd)/data:/data/encrypted ghcr.io/semillabitcoin/descriptor-cifrado:sha-<x>`, y comprobar que SPA carga en `http://localhost:8080` y un round-trip cifrar→descifrar funciona contra esa imagen. Cumple `feedback_test_before_push.md` para Phase 3.
 - **`make-public` step idempotente** — el endpoint API acepta toggle a público incluso si ya lo es; no falla en runs subsiguientes. Útil porque el primer push tras crear el package es donde el toggle es crítico, y los siguientes son no-op.
 - **`ldd` exit code semántica** — `ldd` no falla por sí solo cuando encuentra libs; el job debe `grep -E 'libssl|libcrypto|native-tls|libpq'` y fallar via `if grep -E ... ; then exit 1; fi`. Distroless `cc-debian12` incluye `libgcc_s`, `libc`, `libm` — esos son OK.
 - **`nm --dynamic --defined-only target/release/bed-server`** complementa `ldd` para detectar symbol-level surprises (ej. símbolos OpenSSL inlined estáticamente). Opcional v1; recomendable.
