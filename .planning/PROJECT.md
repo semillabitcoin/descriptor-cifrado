@@ -52,8 +52,8 @@ Un holder StartOS puede pegar un descriptor multisig y obtener un `.bed` cifrado
   - Crate Rust + CLI: https://github.com/pythcoiner/encrypted_backup
   - GUI nativa de referencia: https://github.com/pythcoiner/bed
   - Liana v13 ya implementa archivos `.bed`
-- **Audiencia:** holders StartOS con multisig que quieren backup redundante del descriptor sin compilar la CLI Rust.
-- **Premisa de seguridad clave:** ninguna ubicación debe contener simultáneamente el `.bed` y una xpub del multisig.
+- **Audiencia:** holders StartOS con descriptor (singlesig, multisig sortedmulti, miniscript Liana con recovery) que quieren backup redundante sin compilar la CLI Rust.
+- **Premisa de seguridad clave:** ninguna ubicación debe contener simultáneamente el `.bed` y una xpub que pertenezca al descriptor cifrado.
 
 ## Constraints
 

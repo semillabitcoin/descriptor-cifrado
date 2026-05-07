@@ -68,7 +68,7 @@
 ### Documentation & CI
 
 - [x] **DOC-01**: README documenta el modelo de amenazas explícito (lo que protege y lo que NO protege)
-- [x] **DOC-02**: README incluye el aviso clave: "ninguna ubicación debe contener simultáneamente el `.bed` y una xpub del multisig"
+- [x] **DOC-02**: README incluye el aviso clave: "ninguna ubicación debe contener simultáneamente el `.bed` y una xpub que pertenezca al descriptor cifrado"
 - [x] **CI-01**: Pipeline de CI corre `cargo audit` + `cargo deny` y falla en vulnerabilidades / licencias prohibidas
 - [x] **CI-02**: Pipeline de CI corre el test de round-trip y el test de no-leak (descriptor no aparece en logs ni en archivos persistidos)
 
