@@ -181,7 +181,7 @@
       rows="6"
     ></textarea>
     <p id="descriptor-help" class="help">
-      Pega el descriptor con derivación multipath <code>&lt;a;b&gt;/*</code> (típicamente <code>&lt;0;1&gt;/*</code>; Liana recovery puede usar <code>&lt;2;3&gt;/*</code>). Nada se envía a internet. Si pegas un descriptor single-chain (<code>/0/*</code>), te propondremos convertirlo automáticamente a multipath.
+      Nada se envía a internet. El cifrado y descifrado son locales.
     </p>
   </div>
 
