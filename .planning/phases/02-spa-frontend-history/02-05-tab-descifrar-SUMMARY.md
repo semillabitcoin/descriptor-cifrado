@@ -123,7 +123,7 @@ $ ARMORED=$(echo "$RESP" | jq -r .armored)
 $ curl -s -X POST http://127.0.0.1:8080/api/decrypt \
     -F "bed=@-;type=text/plain" \
     -F "xpub=$XPUB" <<< "$ARMORED"
-{"descriptor":"wsh(sortedmulti(2,[68a9ec24/48'/0'/0'/2']xpub6PLACEHOLDER2xxxxL...))#da2y4klw"}
+{"descriptor":"wsh(sortedmulti(2,[68a9ec24/48'/0'/0'/2']xpub6PLACEHOLDER2x...))#da2y4klw"}
 ```
 
 Ambas paths (binario + armored) responden 200 con `{descriptor}` correcto. La UI consume directamente esta forma vía `postMultipart('/api/decrypt', formData)` y monta `<DescifrarOutputs {descriptor} />`.
