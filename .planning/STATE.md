@@ -145,9 +145,10 @@ None yet.
 |---|-------------|------|--------|--------|-----------|
 | 260506-rx9 | fix xpub interop con Liana (normalizar descriptor-style → bare en frontend) | 2026-05-06 | eedaa33 | | [260506-rx9-260506-rgb-fix-xpub-interop-con-liana](./quick/260506-rx9-260506-rgb-fix-xpub-interop-con-liana/) |
 | 260506-sr7 | migrar bitcoin-encrypted-backup a v0.0.2 (interop Liana, magic BEB, AES-256-GCM) | 2026-05-06 | 8d9d2f0 | Verified | [260506-sr7-migrar-bitcoin-encrypted-backup-a-v0-0-2](./quick/260506-sr7-migrar-bitcoin-encrypted-backup-a-v0-0-2/) |
+| 260507-v6e | relajar validador multipath <0;1>/* → <a;b>/* + dropzone TabCifrar + botones Limpiar | 2026-05-07 | 53af96d | Verified | [260507-v6e-relax-multipath-validator-file-upload-ta](./quick/260507-v6e-relax-multipath-validator-file-upload-ta/) |
 
 ## Session Continuity
 
-Last session: 2026-05-07T17:15:48.110Z
-Stopped at: Completed 04-04-PLAN.md (bed-startos manifest+main+interfaces+versions+icon+LICENSE+README+CI); approved by user, advancing to Plan 05
+Last session: 2026-05-07T22:45:00Z
+Stopped at: Completed quick task 260507-v6e (relajar validador multipath + dropzone TabCifrar + botones Limpiar)
 Resume file: None
