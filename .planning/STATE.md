@@ -2,9 +2,9 @@
 gsd_state_version: 1.0
 milestone: v0.0.2
 milestone_name: milestone
-status: executing
-stopped_at: "Completed 04-04-PLAN.md (bed-startos manifest+main+interfaces+versions+icon+LICENSE+README+CI); Task 7 checkpoint:human-verify pending"
-last_updated: "2026-05-07T17:12:06.666Z"
+status: verifying
+stopped_at: Completed 04-04-PLAN.md (bed-startos manifest+main+interfaces+versions+icon+LICENSE+README+CI); approved by user, advancing to Plan 05
+last_updated: "2026-05-07T17:15:48.115Z"
 last_activity: 2026-05-07
 progress:
   total_phases: 4
@@ -27,7 +27,7 @@ See: .planning/PROJECT.md (updated 2026-05-05)
 
 Phase: 04 (startos-packaging-docs) — EXECUTING
 Plan: 5 of 5
-Status: Ready to execute
+Status: Phase complete — ready for verification
 Last activity: 2026-05-07
 
 Progress: [░░░░░░░░░░] 0%
@@ -70,6 +70,7 @@ Progress: [░░░░░░░░░░] 0%
 | Phase 04-startos-packaging-docs P03 | 14 | 4 tasks | 33 files |
 | Phase 04-startos-packaging-docs P01 | 45 | 4 tasks | 2 files |
 | Phase 04-startos-packaging-docs P04 | 45 | 6 tasks | 12 files |
+| Phase 04-startos-packaging-docs P04 | 45 | 7 tasks | 12 files |
 
 ## Accumulated Context
 
@@ -125,6 +126,9 @@ Recent decisions affecting current work:
 - [Phase 04-startos-packaging-docs]: Digest-pinned GHCR image in manifest (sha256:41684bce9dd4ec6270965f8df2caafecab031b573ab9dd52c38937c057fa67b5) — deterministic s9pk (D-01)
 - [Phase 04-startos-packaging-docs]: Single bindPort(8080, http) in interfaces.ts generates both Tor onion + LAN .local automatically (D-14)
 - [Phase 04-startos-packaging-docs]: release.yml Option B (custom CI with explicit GHCR docker/login-action@v3) chosen over shared-workflows for auth control (Pitfall 1 mitigation)
+- [Phase 04-startos-packaging-docs]: Digest-pinned GHCR image in manifest (sha256:41684bce9dd4ec6270965f8df2caafecab031b573ab9dd52c38937c057fa67b5) — deterministic s9pk (D-01)
+- [Phase 04-startos-packaging-docs]: Single bindPort(8080, http) in interfaces.ts generates both Tor onion + LAN .local automatically (D-14)
+- [Phase 04-startos-packaging-docs]: release.yml Option B (custom CI with explicit GHCR docker/login-action@v3) chosen over shared-workflows for auth control (Pitfall 1 mitigation)
 
 ### Pending Todos
 
@@ -144,6 +148,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-05-07T17:12:06.659Z
-Stopped at: Completed 04-04-PLAN.md (bed-startos manifest+main+interfaces+versions+icon+LICENSE+README+CI); Task 7 checkpoint:human-verify pending
+Last session: 2026-05-07T17:15:48.110Z
+Stopped at: Completed 04-04-PLAN.md (bed-startos manifest+main+interfaces+versions+icon+LICENSE+README+CI); approved by user, advancing to Plan 05
 Resume file: None
