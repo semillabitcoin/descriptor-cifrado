@@ -48,7 +48,7 @@
       <span class="label">Archivo .bed</span>
       <button type="button" class="btn btn-primary" onclick={downloadBed}>Descargar .bed</button>
     </div>
-    <p class="hint">Binario cifrado. Distribuye copias en ubicaciones que NO contengan ninguna xpub del multisig.</p>
+    <p class="hint">Binario cifrado. Distribuye copias en ubicaciones que NO contengan ninguna xpub que pertenezca al descriptor.</p>
   </div>
 
   <!-- 2. Texto armored -->

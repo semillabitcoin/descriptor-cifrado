@@ -204,7 +204,7 @@
       aria-describedby="xpub-help"
     ></textarea>
     <p id="xpub-help" class="help">
-      Cualquier xpub cosigner del multisig sirve. La xpub se borra automáticamente tras descifrar.
+      Cualquier xpub del descriptor sirve. La xpub se borra automáticamente tras descifrar.
     </p>
 
     <button type="button" class="btn btn-ghost" onclick={() => xpubFileInput?.click()}>
