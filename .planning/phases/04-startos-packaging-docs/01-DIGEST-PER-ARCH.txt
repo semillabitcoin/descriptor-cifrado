@@ -1,0 +1,15 @@
+Name:      ghcr.io/semillabitcoin/descriptor-cifrado:0.1.0
+MediaType: application/vnd.oci.image.index.v1+json
+Digest:    sha256:41684bce9dd4ec6270965f8df2caafecab031b573ab9dd52c38937c057fa67b5
+
+Manifests:
+  Name:      ghcr.io/semillabitcoin/descriptor-cifrado:0.1.0@sha256:a61ad1f37a0de965fd6f99eb8a473a49ce2ee1c7578db1c1a093bceb38654640
+  MediaType: application/vnd.oci.image.manifest.v1+json
+  Platform:  linux/amd64
+
+  Name:      ghcr.io/semillabitcoin/descriptor-cifrado:0.1.0@sha256:cd7a99d7ca574347502139e83a2e45d5b744cdfcdb2f778f5484b7ec92c568b4
+  MediaType: application/vnd.oci.image.manifest.v1+json
+  Platform:  linux/arm64
+
+(Note: GHCR published this image under tag 0.1.0 — semver action strips the 'v' prefix.
+ The tag v0.1.0 was pushed to git; the resulting image is tagged 0.1.0 in GHCR.)
