@@ -2,7 +2,8 @@ use std::error::Error;
 use tokio::net::TcpListener;
 use tracing_subscriber::EnvFilter;
 
-const BIND_ADDR: &str = "127.0.0.1:8080";
+// StartOS ingress proxy vive fuera del netns del contenedor — 0.0.0.0 es correcto (SEC-02).
+const BIND_ADDR: &str = "0.0.0.0:8080";
 
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn Error>> {

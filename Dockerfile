@@ -44,7 +44,7 @@ RUN cargo build --release --locked --bin bed-server
 FROM gcr.io/distroless/cc-debian12:nonroot AS runtime
 COPY --from=rust-builder /app/target/release/bed-server /usr/local/bin/bed-server
 
-# Documentación; el bind real lo hace el binario en 127.0.0.1:8080 (SEC-02)
+# Documentación; el bind real lo hace el binario en 0.0.0.0:8080 — el proxy StartOS vive fuera del netns del contenedor (SEC-02)
 EXPOSE 8080
 
 ENTRYPOINT ["/usr/local/bin/bed-server"]
