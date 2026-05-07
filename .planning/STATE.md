@@ -3,14 +3,14 @@ gsd_state_version: 1.0
 milestone: v0.0.2
 milestone_name: milestone
 status: executing
-stopped_at: Completed 04-03-PLAN.md (bed-startos scaffold + private GitHub repo)
-last_updated: "2026-05-07T16:23:46.346Z"
+stopped_at: Completed 04-01-PLAN.md (v0.1.0 tag + GHCR public + digest capture)
+last_updated: "2026-05-07T16:46:06.688Z"
 last_activity: 2026-05-07
 progress:
   total_phases: 4
   completed_phases: 3
   total_plans: 19
-  completed_plans: 16
+  completed_plans: 17
   percent: 0
 ---
 
@@ -26,7 +26,7 @@ See: .planning/PROJECT.md (updated 2026-05-05)
 ## Current Position
 
 Phase: 04 (startos-packaging-docs) — EXECUTING
-Plan: 3 of 5
+Plan: 4 of 5
 Status: Ready to execute
 Last activity: 2026-05-07
 
@@ -68,6 +68,7 @@ Progress: [░░░░░░░░░░] 0%
 | Phase 03-docker-ghcr P02 | 3 | 2 tasks | 1 files |
 | Phase 04-startos-packaging-docs P02 | 3 | 1 tasks | 2 files |
 | Phase 04-startos-packaging-docs P03 | 14 | 4 tasks | 33 files |
+| Phase 04-startos-packaging-docs P01 | 45 | 4 tasks | 2 files |
 
 ## Accumulated Context
 
@@ -118,6 +119,8 @@ Recent decisions affecting current work:
 - [Phase 04-startos-packaging-docs]: Used hello-world-startos master branch (update/040 merged into master by 2026-05-07)
 - [Phase 04-startos-packaging-docs]: marketingUrl must be string in SDK 1.4.1 (not null) — set to GitHub repo URL
 - [Phase 04-startos-packaging-docs]: bed-startos repo path: /home/anon/bed-startos (not /workspace/bed-startos — /workspace does not exist)
+- [Phase 04-startos-packaging-docs]: GHCR tag es 0.1.0 (sin prefijo v) porque metadata-action@v6 con type=semver,pattern={{version}} lo normaliza; Plan 04 debe usar digest no tag string
+- [Phase 04-startos-packaging-docs]: Manifest list digest sha256:41684bce9dd4ec6270965f8df2caafecab031b573ab9dd52c38937c057fa67b5 capturado en 01-DIGEST.txt para pin exacto en manifest.ts
 
 ### Pending Todos
 
@@ -137,6 +140,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-05-07T16:23:46.342Z
-Stopped at: Completed 04-03-PLAN.md (bed-startos scaffold + private GitHub repo)
+Last session: 2026-05-07T16:46:06.683Z
+Stopped at: Completed 04-01-PLAN.md (v0.1.0 tag + GHCR public + digest capture)
 Resume file: None
