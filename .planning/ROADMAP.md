@@ -84,7 +84,7 @@ Plans:
 **Plans**: 5 plans
 - [ ] 04-01-PLAN.md — Tag descriptor-cifrado v0.1.0, flip GHCR public, capture multi-arch digest
 - [x] 04-02-PLAN.md — Author descriptor-cifrado README.md (DOC-01, DOC-02 with golden rule)
-- [ ] 04-03-PLAN.md — Bootstrap bed-startos repo (clone, pin SDK, create private GitHub repo)
+- [x] 04-03-PLAN.md — Bootstrap bed-startos repo (clone, pin SDK, create private GitHub repo)
 - [ ] 04-04-PLAN.md — Author bed-startos manifest + main + interfaces + icon + LICENSE + README + CI workflow
 - [ ] 04-05-PLAN.md — Local pack smoke test, tag v0.1.0, manual blocking UAT on real device, phase close
 
@@ -101,4 +101,4 @@ Phases execute in numeric order: 1 → 2 → 3 → 4
 | 1. Crypto Core + HTTP API | 6/6 | Complete   | 2026-05-06 |
 | 2. SPA Frontend + History | 6/6 | Complete   | 2026-05-06 |
 | 3. Docker + GHCR | 2/2 | Complete   | 2026-05-06 |
-| 4. StartOS Packaging + Docs | 1/5 | In Progress|  |
+| 4. StartOS Packaging + Docs | 2/5 | In Progress|  |

@@ -59,7 +59,7 @@
 
 ### Packaging — StartOS s9pk
 
-- [ ] **S9-01**: Repo `semillabitcoin/bed-startos` inicializado desde `hello-world-startos` rama `update/040`
+- [x] **S9-01**: Repo `semillabitcoin/bed-startos` inicializado desde `hello-world-startos` rama `update/040`
 - [ ] **S9-02**: Manifest TypeScript declara interfaces (Tor + LAN auto-generadas vía `bindPort`) y volume `main` que cubre `/data/encrypted/`
 - [ ] **S9-03**: Health check usa `sdk.healthCheck.checkPortListening`
 - [ ] **S9-04**: La app se instala y arranca en un dispositivo StartOS 0.4.0 real (no solo `docker run`)
@@ -146,7 +146,7 @@
 | PKG-02 | Phase 3 | Complete |
 | PKG-03 | Phase 3 | Complete |
 | PKG-04 | Phase 3 | Complete |
-| S9-01 | Phase 4 | Pending |
+| S9-01 | Phase 4 | Complete |
 | S9-02 | Phase 4 | Pending |
 | S9-03 | Phase 4 | Pending |
 | S9-04 | Phase 4 | Pending |
