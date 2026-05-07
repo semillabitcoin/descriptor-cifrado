@@ -1,8 +1,10 @@
 <script>
   import { postJson, ApiError } from '../lib/api.js';
   import { appState } from '../stores/app.svelte.js';
+  import { detectSingleChain, convertSingleChainToMultipath } from '../lib/descriptor.js';
   import InlineError from './InlineError.svelte';
   import CifrarOutputs from './CifrarOutputs.svelte';
+  import ConvertSingleChainModal from './ConvertSingleChainModal.svelte';
   import Toast from './Toast.svelte';
   import Spinner from './Spinner.svelte';
 
@@ -16,6 +18,8 @@
   let descriptorDragOver = $state(false);
   let descriptorFilename = $state('');
   let descriptorFileInput;
+  let singleChainModalOpen = $state(false);
+  let singleChainConverted = $state('');
 
   const PLACEHOLDER =
     'wsh(or_d(pk([fp/48h/0h/0h/2h]xpub.../<0;1>/*),and_v(v:pkh([fp/48h/0h/0h/2h]xpub.../<2;3>/*),older(N))))#checksum';
@@ -65,6 +69,14 @@
 
   async function handleCifrar() {
     if (!descriptor.trim() || loading) return;
+
+    // Interceptar descriptores single-chain ANTES de lanzar el POST
+    if (detectSingleChain(descriptor.trim())) {
+      singleChainConverted = convertSingleChainToMultipath(descriptor.trim());
+      singleChainModalOpen = true;
+      return; // esperar confirmación del modal
+    }
+
     loading = true;
     errorVisible = false;
     errorMessage = '';
@@ -101,6 +113,18 @@
   function handleSubmit(e) {
     e.preventDefault();
     handleCifrar();
+  }
+
+  function handleSingleChainConfirm() {
+    descriptor = singleChainConverted;  // actualizar textarea con valor convertido
+    singleChainModalOpen = false;
+    // Lanzar handleCifrar de nuevo — el descriptor ya es multipath, no volverá a interceptarse
+    handleCifrar();
+  }
+
+  function handleSingleChainCancel() {
+    singleChainModalOpen = false;
+    // No hacer nada; el descriptor queda sin cambios
   }
 </script>
 
@@ -157,7 +181,7 @@
       rows="6"
     ></textarea>
     <p id="descriptor-help" class="help">
-      Pega el descriptor con derivación multipath <code>&lt;a;b&gt;/*</code> (típicamente <code>&lt;0;1&gt;/*</code>; Liana recovery puede usar <code>&lt;2;3&gt;/*</code>). Nada se envía a internet.
+      Pega el descriptor con derivación multipath <code>&lt;a;b&gt;/*</code> (típicamente <code>&lt;0;1&gt;/*</code>; Liana recovery puede usar <code>&lt;2;3&gt;/*</code>). Nada se envía a internet. Si pegas un descriptor single-chain (<code>/0/*</code>), te propondremos convertirlo automáticamente a multipath.
     </p>
   </div>
 
@@ -185,6 +209,13 @@
 {/if}
 
 <Toast bind:visible={warningToast} message={warningMessage} />
+
+<ConvertSingleChainModal
+  bind:open={singleChainModalOpen}
+  convertedDescriptor={singleChainConverted}
+  onConfirm={handleSingleChainConfirm}
+  onCancel={handleSingleChainCancel}
+/>
 
 <style>
   .form { display: flex; flex-direction: column; gap: var(--space-md); }
