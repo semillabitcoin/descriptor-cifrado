@@ -16,7 +16,7 @@ Un holder StartOS puede pegar un descriptor multisig y obtener un `.bed` cifrado
 
 <!-- Shipped and confirmed valuable. -->
 
-- [x] Validación BIP: rechazar descriptors sin derivación `<0;1>/*` *(Validado en Phase 1: crypto-core-http-api — substrato HTTP devuelve 422 MISSING_MULTIPATH_WILDCARD)*
+- [x] Validación BIP: rechazar descriptors sin derivación multipath `<a;b>/*` con `a≠b` *(Validado en Phase 1: crypto-core-http-api — substrato HTTP devuelve 422 MISSING_MULTIPATH_WILDCARD; relajado en quick task 260507-v6e para aceptar cualquier par distinto, no solo `<0;1>/*`)*
 - [x] Borrado seguro del descriptor en claro de memoria tras cifrar *(Validado en Phase 1: `ZeroizingDescriptor` newtype + `Zeroizing<String>` en primera línea de handlers)*
 - [x] Cifrado de descriptor: pegar descriptor → recibir `.bed` binario descargable *(Validado en Phase 2: spa-frontend-history — TabCifrar + CifrarOutputs)*
 - [x] Salida armored estilo PGP (`-----BEGIN BITCOIN ENCRYPTED BACKUP-----`) *(Validado en Phase 2: copia con feedback dual toast+label)*
@@ -61,7 +61,7 @@ Un holder StartOS puede pegar un descriptor multisig y obtener un `.bed` cifrado
 - **Crate pin**: `bitcoin-encrypted-backup` tag `v0.0.2` (rev `cd7ee382bf5ca0798d4f81697e2f9efb5e32fe40`) — único release publicado, compat con Liana producción. NUNCA HEAD master (formato cripto distinto: ChaCha20-Poly1305 vs AES-256-GCM, magic `BIPXXX` vs `BEB`)
 - **Tech stack**: Frontend SPA mínima vanilla JS o Svelte servida desde el mismo backend — sin CDN externo, sin telemetría, sin fonts remotas
 - **Compatibilidad**: miniscript v0.12.x (la crate soporta features `miniscript_12_0` y `miniscript_12_3_5`); features de la crate = `miniscript_12_3_5` + `rand` (NO `base64`/`devices`/`cli`/`tokio`)
-- **BIP**: descriptors deben usar derivación `<0;1>/*`; sin esto, gastar desde dirección 0 expone la xpub on-chain y rompe el cifrado
+- **BIP**: descriptors deben usar derivación multipath `<a;b>/*` con `a≠b` (típicamente `<0;1>/*`; Liana recovery usa `<2;3>/*`); sin esta derivación, gastar desde dirección 0 expone la xpub on-chain y rompe el cifrado
 - **Plataforma**: solo StartOS 0.4.0 — invocar skill `start9-packaging` cuando llegue empaquetado
 - **Imagen**: build con `rust:slim`, runtime con `distroless/cc`, target ~5–10 MB
 - **Acceso de red**: Tor onion + LAN, no clearnet

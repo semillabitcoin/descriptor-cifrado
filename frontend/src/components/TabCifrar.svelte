@@ -13,9 +13,55 @@
   let errorMessage = $state('');
   let warningToast = $state(false);
   let warningMessage = $state('');
+  let descriptorDragOver = $state(false);
+  let descriptorFilename = $state('');
+  let descriptorFileInput;
 
   const PLACEHOLDER =
-    'wsh(multi(2,[fp/48h/0h/0h/2h]xpub…/<0;1>/*,[fp/48h/0h/0h/2h]xpub…/<0;1>/*))#checksum';
+    'wsh(or_d(pk([fp/48h/0h/0h/2h]xpub.../<0;1>/*),and_v(v:pkh([fp/48h/0h/0h/2h]xpub.../<2;3>/*),older(N))))#checksum';
+
+  function handleDescriptorDragOver(e) {
+    e.preventDefault();
+    descriptorDragOver = true;
+  }
+  function handleDescriptorDragLeave() {
+    descriptorDragOver = false;
+  }
+  async function handleDescriptorDrop(e) {
+    e.preventDefault();
+    descriptorDragOver = false;
+    const file = e.dataTransfer?.files?.[0];
+    if (file) await loadDescriptorFile(file);
+  }
+  async function handleDescriptorFilePick(e) {
+    const file = e.target?.files?.[0];
+    if (!file) return;
+    await loadDescriptorFile(file);
+    if (descriptorFileInput) descriptorFileInput.value = '';
+  }
+  async function loadDescriptorFile(file) {
+    try {
+      const text = await file.text();
+      descriptor = text.trim();
+      descriptorFilename = file.name;
+    } catch {
+      errorMessage = 'No se pudo leer el archivo de descriptor.';
+      errorVisible = true;
+    }
+  }
+
+  function handleLimpiar() {
+    descriptor = '';
+    result = null;
+    loading = false;
+    errorVisible = false;
+    errorMessage = '';
+    warningToast = false;
+    warningMessage = '';
+    descriptorFilename = '';
+    descriptorDragOver = false;
+    if (descriptorFileInput) descriptorFileInput.value = '';
+  }
 
   async function handleCifrar() {
     if (!descriptor.trim() || loading) return;
@@ -63,6 +109,41 @@
 
   <div class="field">
     <label for="descriptor-input" class="label">Descriptor multisig</label>
+
+    <!-- Dropzone para cargar desde archivo -->
+    <div
+      class="dropzone"
+      class:dragover={descriptorDragOver}
+      role="button"
+      tabindex="0"
+      aria-label="Soltar archivo con descriptor aquí o pulsa para seleccionar"
+      ondragover={handleDescriptorDragOver}
+      ondragleave={handleDescriptorDragLeave}
+      ondrop={handleDescriptorDrop}
+      onclick={() => descriptorFileInput?.click()}
+      onkeydown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); descriptorFileInput?.click(); } }}
+    >
+      {#if descriptorFilename}
+        <p class="dropzone-text">
+          Archivo cargado: <strong class="filename">{descriptorFilename}</strong>
+        </p>
+        <button type="button" class="btn btn-ghost" onclick={(e) => { e.stopPropagation(); descriptorFilename = ''; descriptor = ''; if (descriptorFileInput) descriptorFileInput.value = ''; }}>
+          Cambiar archivo
+        </button>
+      {:else}
+        <p class="dropzone-text">Arrastra el archivo con descriptor aquí o pulsa para seleccionar</p>
+      {/if}
+      <input
+        bind:this={descriptorFileInput}
+        type="file"
+        accept=".txt,.descriptor,text/plain"
+        hidden
+        onchange={handleDescriptorFilePick}
+      />
+    </div>
+
+    <p class="separator">— o pega el descriptor —</p>
+
     <textarea
       id="descriptor-input"
       class="textarea"
@@ -76,17 +157,27 @@
       rows="6"
     ></textarea>
     <p id="descriptor-help" class="help">
-      Pega el descriptor con derivación <code>&lt;0;1&gt;/*</code>. Nada se envía a internet.
+      Pega el descriptor con derivación multipath <code>&lt;a;b&gt;/*</code> (típicamente <code>&lt;0;1&gt;/*</code>; Liana recovery puede usar <code>&lt;2;3&gt;/*</code>). Nada se envía a internet.
     </p>
   </div>
 
-  <button type="submit" class="btn btn-primary" disabled={!descriptor.trim() || loading}>
-    {#if loading}
-      <Spinner /> <span>Cifrando…</span>
-    {:else}
-      <span>Cifrar</span>
-    {/if}
-  </button>
+  <div class="btn-row">
+    <button type="submit" class="btn btn-primary" disabled={!descriptor.trim() || loading}>
+      {#if loading}
+        <Spinner /> <span>Cifrando…</span>
+      {:else}
+        <span>Cifrar</span>
+      {/if}
+    </button>
+    <button
+      type="button"
+      class="btn btn-ghost"
+      disabled={!descriptor && result === null && !errorVisible && !warningToast}
+      onclick={handleLimpiar}
+    >
+      Limpiar
+    </button>
+  </div>
 </form>
 
 {#if result}
@@ -156,4 +247,49 @@
     border: 0;
   }
   .btn-primary:hover:not(:disabled) { background: var(--color-accent-hover); }
+  .btn-row {
+    display: flex;
+    align-items: center;
+    gap: var(--space-md);
+  }
+  .dropzone {
+    border: 2px dashed var(--color-border);
+    border-radius: var(--radius-card);
+    background: var(--color-surface-sunken);
+    padding: var(--space-xl) var(--space-md);
+    text-align: center;
+    cursor: pointer;
+    transition: border-color var(--transition-color), background-color var(--transition-color);
+  }
+  .dropzone:hover, .dropzone:focus-visible {
+    border-color: var(--color-border-focus);
+    outline: 0;
+  }
+  .dropzone.dragover {
+    border-color: var(--color-accent);
+    background: var(--color-surface-raised);
+  }
+  .dropzone-text {
+    margin: 0 0 var(--space-sm) 0;
+    font-size: var(--font-size-label);
+    color: var(--color-text-secondary);
+  }
+  .filename {
+    font-family: var(--font-mono);
+    font-size: var(--font-size-mono);
+    color: var(--color-text-primary);
+  }
+  .separator {
+    text-align: center;
+    margin: var(--space-sm) 0;
+    font-size: var(--font-size-label);
+    color: var(--color-text-secondary);
+  }
+  .btn-ghost {
+    background: transparent;
+    color: var(--color-text-secondary);
+    border: 0;
+    align-self: flex-start;
+  }
+  .btn-ghost:hover { background: var(--color-surface-sunken); color: var(--color-text-primary); }
 </style>

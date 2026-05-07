@@ -29,6 +29,19 @@
     descriptor = null;
   }
 
+  function handleLimpiarTodo() {
+    bedFile = null;
+    bedFilename = '';
+    armoredText = '';
+    xpubText = '';
+    descriptor = null;
+    errorVisible = false;
+    errorMessage = '';
+    dragOver = false;
+    if (bedFileInput) bedFileInput.value = '';
+    if (xpubFileInput) xpubFileInput.value = '';
+  }
+
   function handleDragOver(e) {
     e.preventDefault();
     dragOver = true;
@@ -206,22 +219,22 @@
     />
   </fieldset>
 
-  <button type="submit" class="btn btn-primary" disabled={!canSubmit}>
-    {#if loading}
-      <Spinner /> <span>Descifrando…</span>
-    {:else}
-      <span>Descifrar</span>
-    {/if}
-  </button>
+  <div class="btn-row">
+    <button type="submit" class="btn btn-primary" disabled={!canSubmit}>
+      {#if loading}
+        <Spinner /> <span>Descifrando…</span>
+      {:else}
+        <span>Descifrar</span>
+      {/if}
+    </button>
+    <button type="button" class="btn btn-ghost" onclick={handleLimpiarTodo}>
+      Limpiar todo
+    </button>
+  </div>
 </form>
 
 {#if descriptor}
-  <div class="result-wrapper">
-    <DescifrarOutputs {descriptor} />
-    <button type="button" class="btn btn-ghost clear-btn" onclick={handleClearResult}>
-      Limpiar resultado
-    </button>
-  </div>
+  <DescifrarOutputs {descriptor} />
 {/if}
 
 <style>
@@ -338,6 +351,9 @@
     align-self: flex-start;
   }
   .btn-ghost:hover { background: var(--color-surface-sunken); color: var(--color-text-primary); }
-  .clear-btn { margin-top: var(--space-md); }
-  .result-wrapper { display: flex; flex-direction: column; }
+  .btn-row {
+    display: flex;
+    align-items: center;
+    gap: var(--space-md);
+  }
 </style>

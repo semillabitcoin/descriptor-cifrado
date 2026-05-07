@@ -12,7 +12,7 @@ App s9pk para StartOS 0.4.0 que cifra y descifra descriptors de Bitcoin siguiend
 - **Tech stack**: Rust + axum + tokio — importar la crate `bitcoin-encrypted-backup` directamente (NO shellear la CLI `beb`)
 - **Tech stack**: Frontend SPA mínima vanilla JS o Svelte servida desde el mismo backend — sin CDN externo, sin telemetría, sin fonts remotas
 - **Compatibilidad**: miniscript v0.12.x (la crate soporta features `miniscript_12_0` y `miniscript_12_3_5`)
-- **BIP**: descriptors deben usar derivación `<0;1>/*`; sin esto, gastar desde dirección 0 expone la xpub on-chain y rompe el cifrado
+- **BIP**: descriptors deben usar derivación multipath `<a;b>/*` con `a≠b` (típicamente `<0;1>/*`; Liana recovery usa `<2;3>/*`); sin esta derivación, gastar desde dirección 0 expone la xpub on-chain y rompe el cifrado
 - **Plataforma**: solo StartOS 0.4.0 — invocar skill `start9-packaging` cuando llegue empaquetado
 - **Imagen**: build con `rust:slim`, runtime con `distroless/cc`, target ~5–10 MB
 - **Acceso de red**: Tor onion + LAN, no clearnet
