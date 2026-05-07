@@ -20,7 +20,7 @@ use bed_core::CoreError;
 
 #[derive(Error, Debug)]
 pub enum AppError {
-    #[error("El descriptor debe incluir derivación <0;1>/* en todas las claves. Sin esta derivación, gastar desde la primera dirección expone tu xpub on-chain.")]
+    #[error("El descriptor debe incluir derivación multipath <a;b>/* con a≠b en todas las claves (típicamente <0;1>/*; Liana recovery usa <2;3>/*). Sin esta derivación, gastar desde la primera dirección expone tu xpub on-chain.")]
     MissingMultipathWildcard,
 
     #[error("No se pudo parsear el descriptor.")]

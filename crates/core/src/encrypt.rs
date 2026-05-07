@@ -11,7 +11,7 @@ use bitcoin_encrypted_backup::{
 use zeroize::Zeroizing;
 
 use crate::{
-    armored::encode_armored, qr::render_qr_png, validate::require_multipath_0_1, CoreError,
+    armored::encode_armored, qr::render_qr_png, validate::require_multipath_wildcard, CoreError,
 };
 
 /// Output triple from a single encrypt call: binary `.bed`, armored PEM string,
@@ -22,13 +22,13 @@ pub struct EncryptOutput {
     pub qr_png: Vec<u8>,
 }
 
-/// Encrypt a cleartext descriptor. Validates `<0;1>/*` first, then calls the
+/// Encrypt a cleartext descriptor. Valida multipath wildcard primero, then calls the
 /// crate to produce binary, wraps to armored, generates QR.
 pub fn encrypt_descriptor(cleartext: &mut Zeroizing<String>) -> Result<EncryptOutput, CoreError> {
     let desc: Descriptor<DescriptorPublicKey> =
         Descriptor::from_str(cleartext.as_str()).map_err(|_| CoreError::DescriptorParse)?;
 
-    require_multipath_0_1(&desc)?;
+    require_multipath_wildcard(&desc)?;
 
     let bed_bytes: Vec<u8> = EncryptedBackup::new().set_payload(&desc)?.encrypt()?;
 

@@ -1,9 +1,8 @@
-//! BIP <0;1>/* multipath wildcard validation (CORE-03, D-08).
+//! Validación de wildcard multipath BIP (CORE-03, D-08).
 //!
-//! The bitcoin-encrypted-backup crate does NOT enforce this — it accepts
-//! any descriptor with at least one non-NUMS key. This module is the
-//! application-layer guard that rejects descriptors which would expose
-//! the xpub on-chain at first spend.
+//! La crate bitcoin-encrypted-backup NO enforce esto — acepta cualquier descriptor
+//! con al menos una clave no-NUMS. Este módulo es el guard de capa de aplicación
+//! que rechaza descriptors que expondrían la xpub on-chain al primer gasto.
 
 use bitcoin_encrypted_backup::miniscript::{
     descriptor::Wildcard, Descriptor, DescriptorPublicKey, ForEachKey,
@@ -11,10 +10,11 @@ use bitcoin_encrypted_backup::miniscript::{
 
 use crate::CoreError;
 
-/// Require every key to be a `MultiXPub` with `derivation_paths == [0, 1]`
-/// and `Wildcard::Unhardened`. Rejects bare xpubs, single wildcards, and
-/// non-`<0;1>` multipath indices.
-pub fn require_multipath_0_1(desc: &Descriptor<DescriptorPublicKey>) -> Result<(), CoreError> {
+/// Require que cada clave sea un `MultiXPub` con exactamente 2 paths distintos
+/// y `Wildcard::Unhardened`. Acepta cualquier par `<a;b>/*` con `a ≠ b`
+/// (por ejemplo `<0;1>/*`, `<2;3>/*`). Rechaza bare xpubs, single wildcards
+/// y pares degenerados como `<5;5>/*`.
+pub fn require_multipath_wildcard(desc: &Descriptor<DescriptorPublicKey>) -> Result<(), CoreError> {
     let mut all_ok = true;
 
     desc.for_each_key(|k| {
@@ -24,15 +24,15 @@ pub fn require_multipath_0_1(desc: &Descriptor<DescriptorPublicKey>) -> Result<(
                     false
                 } else {
                     let paths = mx.derivation_paths.paths();
-                    paths.len() == 2 && paths[0].to_string() == "0" && paths[1].to_string() == "1"
+                    paths.len() == 2 && paths[0] != paths[1]
                 }
             }
-            _ => false, // Single, XPub (single wildcard or none) → reject
+            _ => false, // Single, XPub (single wildcard o ninguno) → rechazar
         };
         if !ok {
             all_ok = false;
         }
-        true // continue iteration
+        true // continuar iteración
     });
 
     if all_ok {
