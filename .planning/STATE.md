@@ -147,9 +147,10 @@ None yet.
 | 260506-sr7 | migrar bitcoin-encrypted-backup a v0.0.2 (interop Liana, magic BEB, AES-256-GCM) | 2026-05-06 | 8d9d2f0 | Verified | [260506-sr7-migrar-bitcoin-encrypted-backup-a-v0-0-2](./quick/260506-sr7-migrar-bitcoin-encrypted-backup-a-v0-0-2/) |
 | 260507-v6e | relajar validador multipath <0;1>/* → <a;b>/* + dropzone TabCifrar + botones Limpiar | 2026-05-07 | 53af96d | Verified | [260507-v6e-relax-multipath-validator-file-upload-ta](./quick/260507-v6e-relax-multipath-validator-file-upload-ta/) |
 | 260507-ww3 | UX Nunchuk: detectar single-chain /N/* y autoconvertir par-impar (regla Sparrow) con modal | 2026-05-07 | c057d72 | Local-only | [260507-ww3-ux-nunchuk-detectar-single-chain-n-y-aut](./quick/260507-ww3-ux-nunchuk-detectar-single-chain-n-y-aut/) |
+| 260508-0ao | polish UI: validar issue B (history toast = config no bug), reducir help redundante TabCifrar (issue C), generalizar copy "del multisig" → "del descriptor" en CifrarOutputs+TabDescifrar (issue D) | 2026-05-08 | b2384c6 | Local-only | [260508-0ao-polish-history-textos](./quick/260508-0ao-polish-history-textos/) |
 
 ## Session Continuity
 
-Last session: 2026-05-07T22:45:00Z
-Stopped at: Completed quick task 260507-v6e (relajar validador multipath + dropzone TabCifrar + botones Limpiar)
+Last session: 2026-05-08T00:20:00Z
+Stopped at: Completed quick task 260508-0ao (issues B/C/D — Issue A queda para Quick 2 con UR crypto-output)
 Resume file: None
