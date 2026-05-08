@@ -1,0 +1,6 @@
+{"type":"xpub","ref":"tpubDFmUCPAr8WgEANGstmygZF5WdoSx3mLozHEp9RW92Z6nqcYNbRyVUBLsnhrQ4TmwszRBnhqgJvAf8s3tWQtkjANYqP8qRnTiKpkt7p9WPji","label":"Coldcard 1"}
+{"type":"xpub","ref":"tpubDEBuUGE6MofiCADqeET94gPUrxYCjrcFNshi7yMpFG5RF6gh5ArXVCpPzocEE1enATbAyob7tW1JScwH5KedRMXJXMDCrZWmnVv7voaccGn","label":"Coldcard 2"}
+{"type":"xpub","ref":"tpubDDy5p4sGtyDQhTP3Ne13CSHeJvGjMP1NCWHnuiY755eimd1f7LmdxxtPYN5CdZpw7jvvvEAFoeQCkyM6xfiTJHWLEFzZ8qgBLtyZqCTK2YX","label":"Coldcard 3"}
+{"keypath":"/0/0","heights":[],"type":"addr","ref":"tb1q38jjy0jghzvcpqwven4kxnecggt7qmas02cnjpxhe29tfq3s7j6q23s5w0","origin":"wsh(sortedmulti(2,[e98826a2/48h/1h/0h/2h],[101ccc0d/48h/1h/0h/2h],[d2ac52a3/48h/1h/0h/2h]))"}
+{"keypath":"/0/1","heights":[],"type":"addr","ref":"tb1qttpf532zv3jsgkkwt0hwkeuqmtsq4t0nyt059vy78yvxhpwjg4ss3tmhve","origin":"wsh(sortedmulti(2,[e98826a2/48h/1h/0h/2h],[101ccc0d/48h/1h/0h/2h],[d2ac52a3/48h/1h/0h/2h]))"}
+{"keypath":"/1/0","heights":[],"type":"addr","ref":"tb1ql7jyeg233s2r8dw77zpz926vlgwnm0xl4p56d2mnfw30l8h202uqhyswuw","origin":"wsh(sortedmulti(2,[e98826a2/48h/1h/0h/2h],[101ccc0d/48h/1h/0h/2h],[d2ac52a3/48h/1h/0h/2h]))"}
