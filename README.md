@@ -52,6 +52,36 @@ crate v0.0.2.
 4. Click **Descifrar**. The recovered descriptor appears with a
    Copy-to-clipboard button. The descriptor is never persisted on disk.
 
+### Wallet exports beyond plain descriptors (since v0.3.0)
+
+Beyond a bare descriptor string, BED also encrypts and decrypts two
+wallet-export formats round-trip byte-identical:
+
+- **Liana JSON.** Paste or load a Liana wallet export (the JSON file
+  with the nested descriptor and metadata). BED detects it by the
+  leading `{`, encrypts the JSON in full, and on decrypt returns the
+  original JSON intact. Useful when you want a single `.bed` to
+  reconstruct a Liana wallet (descriptor + metadata) instead of just
+  the descriptor.
+- **Sparrow Wallet BIP-329 JSONL.** Paste or load a Sparrow labels
+  export (multi-line JSONL where each line is `{type, ref, label}`
+  per [BIP-329](https://github.com/bitcoin/bips/blob/master/bip-0329.mediawiki)).
+  BED detects it by the leading `{` on the first line, encrypts the
+  JSONL in full, and on decrypt returns the original labels intact —
+  byte for byte, including line endings. The decrypt panel visually
+  distinguishes Sparrow exports from classic / Liana payloads so you
+  know which file to re-import where.
+
+Both formats coexist with the classic descriptor flow. The encrypt
+file picker accepts `.txt`, `.descriptor`, `.json`, and `.jsonl`
+(drag-and-drop also supported).
+
+**Workflow example.** Recover a multisig wallet from cold storage:
+recreate the wallet in Liana from the decrypted JSON (descriptor +
+metadata in one file), then import the decrypted Sparrow JSONL into
+Sparrow if you also keep label history. Two `.bed` files cover both
+the wallet structure and the label history.
+
 ## Threat Model
 
 ### What BED protects
@@ -140,9 +170,10 @@ available for decrypting legacy files.
    prefix and suffix before pasting.
 3. **QR size limit (~2,900 bytes ECC-L).** Multisig descriptors with
    five or more cosigners may produce armored payloads that exceed the
-   QR ECC-L capacity. BED returns a descriptive error in this case
-   instead of an unreadable QR — use the binary or armored output
-   and rely on cold-storage paper for QR-bound transport.
+   QR ECC-L capacity. Since v0.3.0 the QR panel degrades cleanly to
+   "QR not available — payload too large"; binary and ASCII-armored
+   downloads remain available for those cases. Use them with cold-storage
+   paper for QR-bound transport.
 4. **History mode default is OFF.** The history toggle is opt-in. If
    you cifrar without enabling it, the `.bed` is returned to the
    browser and the server forgets it immediately. Enable the toggle
