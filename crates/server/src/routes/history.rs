@@ -28,6 +28,7 @@ use crate::{
 #[derive(Deserialize)]
 pub struct PostHistoryRequest {
     pub bed_b64: String,
+    pub label: String,
 }
 
 #[derive(Serialize)]
@@ -35,6 +36,7 @@ pub struct PostHistoryResponse {
     pub id: String,
     pub timestamp: String,
     pub filename: String,
+    pub label: String,
 }
 
 #[derive(Serialize)]
@@ -43,6 +45,8 @@ pub struct HistoryEntry {
     pub timestamp: String,
     pub filename: String,
     pub size_bytes: u64,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub label: Option<String>,
 }
 
 #[derive(Serialize)]
@@ -76,32 +80,38 @@ fn now_iso() -> Result<String, AppError> {
         .map_err(|_| AppError::Internal)
 }
 
-/// Parsea `20260506T115537Z-a3f7b2c1.bed` → (timestamp_iso, id).
-/// Retorna None si el filename no matchea el formato esperado.
-fn parse_filename(name: &str) -> Option<(String, String)> {
-    // Formato: 20260506T115537Z-XXXXXXXX.bed (16 chars timestamp + "-" + 8 hex + ".bed")
+/// Parsea filename del historial. Soporta dos formatos:
+///   `20260506T115537Z-a3f7b2c1.bed`               → label=None (legacy v0.1.x)
+///   `20260506T115537Z-a3f7b2c1-Mi multisig.bed`   → label=Some
+/// Retorna None si el filename no matchea ningún formato.
+fn parse_filename(name: &str) -> Option<(String, String, Option<String>)> {
     let stripped = name.strip_suffix(".bed")?;
-    let dash_pos = stripped.len().checked_sub(9)?;
-    let (compact, dash_id) = stripped.split_at(dash_pos);
-    if !dash_id.starts_with('-') {
+    if stripped.len() < 25 {
         return None;
     }
-    let id = &dash_id[1..];
-    if !validate_history_id(id) {
-        return None;
-    }
-    if compact.len() != 16 {
-        return None;
-    }
-    if compact.as_bytes().get(8) != Some(&b'T') || compact.as_bytes().last() != Some(&b'Z') {
+    let compact = &stripped[0..16];
+    if compact.as_bytes().get(8) != Some(&b'T') || compact.as_bytes().get(15) != Some(&b'Z') {
         return None;
     }
     let date = &compact[0..8];
     let time = &compact[9..15];
-    // Validate digits
     if !date.chars().all(|c| c.is_ascii_digit()) || !time.chars().all(|c| c.is_ascii_digit()) {
         return None;
     }
+    if stripped.as_bytes().get(16) != Some(&b'-') {
+        return None;
+    }
+    let id = &stripped[17..25];
+    if !validate_history_id(id) {
+        return None;
+    }
+    let label = if stripped.len() == 25 {
+        None
+    } else if stripped.as_bytes().get(25) == Some(&b'-') && stripped.len() > 26 {
+        Some(stripped[26..].to_string())
+    } else {
+        return None;
+    };
     let iso = format!(
         "{}-{}-{}T{}:{}:{}Z",
         &date[0..4],
@@ -111,11 +121,41 @@ fn parse_filename(name: &str) -> Option<(String, String)> {
         &time[2..4],
         &time[4..6],
     );
-    Some((iso, id.to_string()))
+    Some((iso, id.to_string(), label))
 }
 
-fn make_filename(compact: &str, id: &str) -> String {
-    format!("{compact}-{id}.bed")
+fn make_filename(compact: &str, id: &str, label: Option<&str>) -> String {
+    match label {
+        Some(l) => format!("{compact}-{id}-{l}.bed"),
+        None => format!("{compact}-{id}.bed"),
+    }
+}
+
+/// Sanitize user-supplied label for safe embedding in filename.
+/// Charset permitido: `[a-zA-Z0-9 _-]`. Otros chars → `-`. Trim. Max 80.
+/// Devuelve None si tras sanitizar queda vacío o solo whitespace/dashes.
+fn sanitize_label(input: &str) -> Option<String> {
+    let trimmed = input.trim();
+    if trimmed.is_empty() {
+        return None;
+    }
+    let mut out = String::with_capacity(trimmed.len().min(80));
+    for ch in trimmed.chars() {
+        if out.chars().count() >= 80 {
+            break;
+        }
+        if ch.is_ascii_alphanumeric() || ch == ' ' || ch == '-' || ch == '_' {
+            out.push(ch);
+        } else {
+            out.push('-');
+        }
+    }
+    let cleaned = out.trim().to_string();
+    if cleaned.is_empty() || cleaned.chars().all(|c| c == '-') {
+        None
+    } else {
+        Some(cleaned)
+    }
 }
 
 fn full_path(filename: &str) -> PathBuf {
@@ -129,12 +169,13 @@ async fn find_file_by_id(id: &str) -> Result<Option<PathBuf>, AppError> {
         Err(e) if e.kind() == std::io::ErrorKind::NotFound => return Ok(None),
         Err(_) => return Err(AppError::Internal),
     };
-    let suffix = format!("-{id}.bed");
     while let Some(entry) = rd.next_entry().await.map_err(|_| AppError::Internal)? {
         let name = entry.file_name();
         let Some(s) = name.to_str() else { continue };
-        if s.ends_with(&suffix) && parse_filename(s).is_some() {
-            return Ok(Some(entry.path()));
+        if let Some((_ts, parsed_id, _label)) = parse_filename(s) {
+            if parsed_id == id {
+                return Ok(Some(entry.path()));
+            }
         }
     }
     Ok(None)
@@ -153,10 +194,15 @@ pub async fn post_history(
     if bytes.is_empty() {
         return Err(AppError::BadRequest("bed_b64 está vacío".to_string()));
     }
+    let label = sanitize_label(&req.label).ok_or_else(|| {
+        AppError::BadRequest(
+            "label requerido: usa letras, números, espacios, guiones o guiones bajos".to_string(),
+        )
+    })?;
     let id: String = Uuid::new_v4().simple().to_string()[..8].to_string();
     let compact = now_compact()?;
     let iso = now_iso()?;
-    let filename = make_filename(&compact, &id);
+    let filename = make_filename(&compact, &id, Some(&label));
     let path = full_path(&filename);
     if let Some(parent) = path.parent() {
         fs::create_dir_all(parent)
@@ -170,6 +216,7 @@ pub async fn post_history(
         id,
         timestamp: iso,
         filename,
+        label,
     }))
 }
 
@@ -188,7 +235,7 @@ pub async fn get_history() -> Result<Json<ListHistoryResponse>, AppError> {
     while let Some(entry) = rd.next_entry().await.map_err(|_| AppError::Internal)? {
         let name = entry.file_name();
         let Some(s) = name.to_str() else { continue };
-        let Some((timestamp, id)) = parse_filename(s) else {
+        let Some((timestamp, id, label)) = parse_filename(s) else {
             continue;
         };
         let size_bytes = entry.metadata().await.map(|m| m.len()).unwrap_or(0);
@@ -197,6 +244,7 @@ pub async fn get_history() -> Result<Json<ListHistoryResponse>, AppError> {
             timestamp,
             filename: s.to_string(),
             size_bytes,
+            label,
         });
     }
     entries.sort_by(|a, b| b.timestamp.cmp(&a.timestamp));
@@ -249,14 +297,27 @@ mod tests {
     use super::*;
 
     #[test]
-    fn parse_filename_round_trip() {
+    fn parse_filename_legacy_round_trip() {
         let id = "a3f7b2c1";
         let compact = "20260506T115537Z";
-        let name = make_filename(compact, id);
+        let name = make_filename(compact, id, None);
         assert_eq!(name, "20260506T115537Z-a3f7b2c1.bed");
-        let (iso, parsed_id) = parse_filename(&name).expect("parse should succeed");
+        let (iso, parsed_id, label) = parse_filename(&name).expect("parse should succeed");
         assert_eq!(iso, "2026-05-06T11:55:37Z");
         assert_eq!(parsed_id, id);
+        assert_eq!(label, None);
+    }
+
+    #[test]
+    fn parse_filename_with_label_round_trip() {
+        let id = "a3f7b2c1";
+        let compact = "20260506T115537Z";
+        let name = make_filename(compact, id, Some("Mi multisig"));
+        assert_eq!(name, "20260506T115537Z-a3f7b2c1-Mi multisig.bed");
+        let (iso, parsed_id, label) = parse_filename(&name).expect("parse should succeed");
+        assert_eq!(iso, "2026-05-06T11:55:37Z");
+        assert_eq!(parsed_id, id);
+        assert_eq!(label.as_deref(), Some("Mi multisig"));
     }
 
     #[test]
@@ -271,5 +332,49 @@ mod tests {
         assert!(parse_filename("20260506T11553Z-a3f7b2c1.bed").is_none());
         // missing T
         assert!(parse_filename("20260506X115537Z-a3f7b2c1.bed").is_none());
+        // label vacío tras separador
+        assert!(parse_filename("20260506T115537Z-a3f7b2c1-.bed").is_none());
+    }
+
+    #[test]
+    fn sanitize_label_valid() {
+        assert_eq!(
+            sanitize_label("Mi multisig 3 de 5").as_deref(),
+            Some("Mi multisig 3 de 5")
+        );
+        assert_eq!(sanitize_label("backup_2026-05").as_deref(), Some("backup_2026-05"));
+    }
+
+    #[test]
+    fn sanitize_label_empty_or_whitespace() {
+        assert_eq!(sanitize_label(""), None);
+        assert_eq!(sanitize_label("   "), None);
+    }
+
+    #[test]
+    fn sanitize_label_replaces_invalid_chars() {
+        // tildes/acentos no-ASCII y símbolos → '-'; 'o' ASCII se preserva
+        assert_eq!(sanitize_label("Ñoño@!").as_deref(), Some("-o-o--"));
+        // mezcla válido + inválido
+        assert_eq!(sanitize_label("a/b\\c").as_deref(), Some("a-b-c"));
+    }
+
+    #[test]
+    fn sanitize_label_all_dashes_after_sanitize_returns_none() {
+        // Tras sanitizar todos los chars devienen '-' → None
+        assert_eq!(sanitize_label("@@@"), None);
+        assert_eq!(sanitize_label("///"), None);
+    }
+
+    #[test]
+    fn sanitize_label_caps_at_80_chars() {
+        let long = "a".repeat(120);
+        let result = sanitize_label(&long).expect("válido");
+        assert_eq!(result.chars().count(), 80);
+    }
+
+    #[test]
+    fn sanitize_label_trims_whitespace() {
+        assert_eq!(sanitize_label("  hello  ").as_deref(), Some("hello"));
     }
 }

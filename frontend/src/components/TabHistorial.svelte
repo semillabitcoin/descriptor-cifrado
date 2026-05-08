@@ -16,6 +16,7 @@
   let detailOpen = $state(false);
   let detailEntryId = $state('');
   let detailFilename = $state('');
+  let detailLabel = $state('');
 
   let confirmOpen = $state(false);
   let confirmEntry = $state(null);
@@ -47,6 +48,7 @@
   function openDetail(entry) {
     detailEntryId = entry.id;
     detailFilename = entry.filename;
+    detailLabel = entry.label ?? '';
     detailOpen = true;
   }
 
@@ -85,8 +87,13 @@
       {#each entries as entry (entry.id)}
         <li class="entry">
           <div class="info">
+            {#if entry.label}
+              <span class="primary-name">{entry.label}</span>
+              <span class="filename">{entry.filename}</span>
+            {:else}
+              <span class="primary-name primary-name-mono">{entry.filename}</span>
+            {/if}
             <span class="when" title={entry.timestamp}>{formatRelative(entry.timestamp)}</span>
-            <span class="filename">{entry.filename}</span>
             <span class="size">{Math.round(entry.size_bytes / 1024 * 10) / 10} KB</span>
           </div>
           <div class="actions">
@@ -99,7 +106,7 @@
   {/if}
 </div>
 
-<HistoryEntryDetailModal bind:open={detailOpen} entryId={detailEntryId} filename={detailFilename} />
+<HistoryEntryDetailModal bind:open={detailOpen} entryId={detailEntryId} filename={detailFilename} label={detailLabel} />
 <ConfirmDeleteModal bind:open={confirmOpen} entry={confirmEntry} onConfirm={handleDelete} />
 <Toast bind:visible={toastVisible} message={toastMessage} />
 
@@ -113,7 +120,9 @@
   .entry { display: flex; align-items: center; justify-content: space-between; padding: var(--space-sm-plus) var(--space-md); min-height: 56px; border-bottom: 1px solid var(--color-border); flex-wrap: wrap; gap: var(--space-md); }
   .entry:last-child { border-bottom: 0; }
   .info { display: flex; flex-direction: column; gap: 2px; flex: 1; min-width: 0; }
-  .when { font-size: var(--font-size-label); color: var(--color-text-primary); }
+  .when { font-size: var(--font-size-label); color: var(--color-text-secondary); }
+  .primary-name { font-size: var(--font-size-body); font-weight: var(--font-weight-bold); color: var(--color-text-primary); word-break: break-word; }
+  .primary-name-mono { font-family: var(--font-mono); font-size: var(--font-size-mono); font-weight: var(--font-weight-regular); }
   .filename { font-family: var(--font-mono); font-size: var(--font-size-mono); color: var(--color-text-secondary); word-break: break-all; }
   .size { font-size: var(--font-size-label); color: var(--color-text-secondary); }
   .actions { display: flex; gap: var(--space-sm); }

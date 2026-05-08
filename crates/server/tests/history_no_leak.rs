@@ -58,7 +58,8 @@ async fn descriptor_cleartext_never_persisted_in_history_dir() {
                 .uri("/api/history")
                 .header(header::CONTENT_TYPE, "application/json")
                 .body(Body::from(
-                    serde_json::to_vec(&json!({ "bed_b64": bed_b64 })).unwrap(),
+                    serde_json::to_vec(&json!({ "bed_b64": bed_b64, "label": "leak test" }))
+                        .unwrap(),
                 ))
                 .unwrap(),
         )

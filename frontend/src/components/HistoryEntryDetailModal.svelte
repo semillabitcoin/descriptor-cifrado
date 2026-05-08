@@ -2,10 +2,11 @@
   import { getJson, ApiError } from '../lib/api.js';
   import { copyToClipboard } from '../lib/clipboard.js';
   import { triggerDownloadBase64 } from '../lib/download.js';
+  import { sanitizeLabelForFilename } from '../lib/labelSanitize.js';
   import Spinner from './Spinner.svelte';
   import Toast from './Toast.svelte';
 
-  let { open = $bindable(false), entryId = '', filename = '' } = $props();
+  let { open = $bindable(false), entryId = '', filename = '', label = '' } = $props();
 
   let loading = $state(false);
   let errorMessage = $state('');
@@ -52,15 +53,20 @@
     toastVisible = true;
   }
 
+  function downloadStem() {
+    const fromLabel = sanitizeLabelForFilename(label);
+    if (fromLabel) return fromLabel;
+    return (filename || `${entryId}.bed`).replace(/\.bed$/i, '');
+  }
+
   function downloadBed() {
     if (!result) return;
-    triggerDownloadBase64(result.bed_b64, filename || `${entryId}.bed`, 'application/octet-stream');
+    triggerDownloadBase64(result.bed_b64, `${downloadStem()}.bed`, 'application/octet-stream');
   }
 
   function downloadQrPng() {
     if (!result) return;
-    const base = (filename || `${entryId}.bed`).replace(/\.bed$/i, '');
-    triggerDownloadBase64(result.qr_png_b64, `${base}.png`, 'image/png');
+    triggerDownloadBase64(result.qr_png_b64, `${downloadStem()}.png`, 'image/png');
   }
 
   async function handleCopyArmored() {
@@ -98,7 +104,12 @@
       onclick={(e) => e.stopPropagation()}
     >
       <h2 id="detail-title" class="title">Backup cifrado</h2>
-      <p class="subtitle">{filename}</p>
+      {#if label}
+        <p class="subtitle-label">{label}</p>
+        <p class="subtitle">{filename}</p>
+      {:else}
+        <p class="subtitle">{filename}</p>
+      {/if}
 
       {#if loading}
         <p class="hint"><Spinner /> Cargando…</p>
@@ -144,6 +155,7 @@
   .backdrop { position: fixed; inset: 0; background: rgba(0,0,0,0.4); backdrop-filter: blur(2px); z-index: 9000; display: flex; align-items: center; justify-content: center; padding: var(--space-md); }
   .panel { background: var(--color-surface-raised); border-radius: var(--radius-card); padding: var(--space-lg); max-width: 480px; width: 100%; max-height: 90vh; overflow-y: auto; box-shadow: var(--shadow-modal); }
   .title { margin: 0 0 var(--space-xs) 0; font-size: var(--font-size-heading); font-weight: var(--font-weight-bold); color: var(--color-text-primary); }
+  .subtitle-label { margin: 0 0 var(--space-xs) 0; font-size: var(--font-size-body); font-weight: var(--font-weight-bold); color: var(--color-text-primary); word-break: break-word; }
   .subtitle { margin: 0 0 var(--space-md) 0; font-family: var(--font-mono); font-size: var(--font-size-mono); color: var(--color-text-secondary); }
   .output { margin-bottom: var(--space-md); }
   .row { display: flex; justify-content: space-between; align-items: center; gap: var(--space-md); margin-bottom: var(--space-sm); flex-wrap: wrap; }

@@ -46,7 +46,8 @@ async fn round_trip_post_list_get_delete() {
                 .uri("/api/history")
                 .header(header::CONTENT_TYPE, "application/json")
                 .body(Body::from(
-                    serde_json::to_vec(&json!({ "bed_b64": bed_b64 })).unwrap(),
+                    serde_json::to_vec(&json!({ "bed_b64": bed_b64, "label": "round trip" }))
+                        .unwrap(),
                 ))
                 .unwrap(),
         )
@@ -184,7 +185,10 @@ async fn invalid_base64_returns_400() {
                 .uri("/api/history")
                 .header(header::CONTENT_TYPE, "application/json")
                 .body(Body::from(
-                    serde_json::to_vec(&json!({ "bed_b64": "not-valid-base64!!!" })).unwrap(),
+                    serde_json::to_vec(
+                        &json!({ "bed_b64": "not-valid-base64!!!", "label": "x" }),
+                    )
+                    .unwrap(),
                 ))
                 .unwrap(),
         )

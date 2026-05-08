@@ -9,7 +9,9 @@
   import Spinner from './Spinner.svelte';
 
   let descriptor = $state('');
+  let label = $state('');
   let result = $state(null);
+  let resultLabel = $state('');
   let loading = $state(false);
   let errorVisible = $state(false);
   let errorMessage = $state('');
@@ -20,6 +22,12 @@
   let descriptorFileInput;
   let singleChainModalOpen = $state(false);
   let singleChainConverted = $state('');
+
+  const LABEL_PATTERN = /^[a-zA-Z0-9 _-]+$/;
+  const labelTrimmed = $derived(label.trim());
+  const labelValid = $derived(
+    labelTrimmed.length > 0 && labelTrimmed.length <= 80 && LABEL_PATTERN.test(labelTrimmed)
+  );
 
   const PLACEHOLDER =
     'wsh(or_d(pk([fp/48h/0h/0h/2h]xpub.../<0;1>/*),and_v(v:pkh([fp/48h/0h/0h/2h]xpub.../<2;3>/*),older(N))))#checksum';
@@ -56,7 +64,9 @@
 
   function handleLimpiar() {
     descriptor = '';
+    label = '';
     result = null;
+    resultLabel = '';
     loading = false;
     errorVisible = false;
     errorMessage = '';
@@ -68,7 +78,7 @@
   }
 
   async function handleCifrar() {
-    if (!descriptor.trim() || loading) return;
+    if (!descriptor.trim() || !labelValid || loading) return;
 
     // Interceptar descriptores single-chain ANTES de lanzar el POST
     if (detectSingleChain(descriptor.trim())) {
@@ -81,13 +91,15 @@
     errorVisible = false;
     errorMessage = '';
     result = null;
+    resultLabel = '';
     try {
       const resp = await postJson('/api/encrypt', { descriptor: descriptor.trim() });
       result = resp;
+      resultLabel = labelTrimmed;
       // D-12: si historyEnabled ON, persistir tras éxito (fire-and-warn).
       if (appState.historyEnabled) {
         try {
-          await postJson('/api/history', { bed_b64: resp.bed_b64 });
+          await postJson('/api/history', { bed_b64: resp.bed_b64, label: labelTrimmed });
           bumpHistoryVersion();
         } catch {
           warningMessage = 'Cifrado OK, pero no se guardó en historial';
@@ -131,6 +143,26 @@
 
 <form class="form" onsubmit={handleSubmit} novalidate>
   <InlineError bind:visible={errorVisible} message={errorMessage} />
+
+  <div class="field">
+    <label for="label-input" class="label">Nombre</label>
+    <input
+      id="label-input"
+      class="input"
+      type="text"
+      bind:value={label}
+      placeholder="Mi multisig 3 de 5"
+      maxlength="80"
+      autocomplete="off"
+      autocorrect="off"
+      autocapitalize="off"
+      spellcheck="false"
+      aria-describedby="label-help"
+    />
+    <p id="label-help" class="help">
+      Se usará como nombre del archivo descargado y en el historial. Letras, números, espacios, guiones y guiones bajos.
+    </p>
+  </div>
 
   <div class="field">
     <label for="descriptor-input" class="label">Descriptor multisig</label>
@@ -187,7 +219,7 @@
   </div>
 
   <div class="btn-row">
-    <button type="submit" class="btn btn-primary" disabled={!descriptor.trim() || loading}>
+    <button type="submit" class="btn btn-primary" disabled={!descriptor.trim() || !labelValid || loading}>
       {#if loading}
         <Spinner /> <span>Cifrando…</span>
       {:else}
@@ -206,7 +238,7 @@
 </form>
 
 {#if result}
-  <CifrarOutputs {result} />
+  <CifrarOutputs {result} label={resultLabel} />
 {/if}
 
 <Toast bind:visible={warningToast} message={warningMessage} />
@@ -242,6 +274,22 @@
     transition: border-color var(--transition-color), box-shadow var(--transition-focus);
   }
   .textarea:focus {
+    outline: 0;
+    border-color: var(--color-border-focus);
+    box-shadow: var(--shadow-focus);
+  }
+  .input {
+    font-family: inherit;
+    font-size: var(--font-size-body);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-input);
+    background: var(--color-surface-sunken);
+    color: var(--color-text-primary);
+    padding: var(--space-sm) var(--space-md);
+    width: 100%;
+    transition: border-color var(--transition-color), box-shadow var(--transition-focus);
+  }
+  .input:focus {
     outline: 0;
     border-color: var(--color-border-focus);
     box-shadow: var(--shadow-focus);

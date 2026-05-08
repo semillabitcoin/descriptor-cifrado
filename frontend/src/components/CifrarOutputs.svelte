@@ -1,9 +1,10 @@
 <script>
   import { copyToClipboard } from '../lib/clipboard.js';
   import { triggerDownloadBase64 } from '../lib/download.js';
+  import { sanitizeLabelForFilename } from '../lib/labelSanitize.js';
   import Toast from './Toast.svelte';
 
-  let { result } = $props(); // { bed_b64, armored, qr_png_b64 }
+  let { result, label = '' } = $props(); // { bed_b64, armored, qr_png_b64 }, label requerido
 
   let copyLabel = $state('Copiar al portapapeles');
   let copyResetTimer;
@@ -15,15 +16,16 @@
     toastVisible = true;
   }
 
+  function safeStem() {
+    return sanitizeLabelForFilename(label) || 'backup';
+  }
+
   function downloadBed() {
-    // Filename con timestamp para evitar colisiones.
-    const ts = new Date().toISOString().replace(/[:.]/g, '-');
-    triggerDownloadBase64(result.bed_b64, `backup-${ts}.bed`, 'application/octet-stream');
+    triggerDownloadBase64(result.bed_b64, `${safeStem()}.bed`, 'application/octet-stream');
   }
 
   function downloadQrPng() {
-    const ts = new Date().toISOString().replace(/[:.]/g, '-');
-    triggerDownloadBase64(result.qr_png_b64, `backup-${ts}.png`, 'image/png');
+    triggerDownloadBase64(result.qr_png_b64, `${safeStem()}.png`, 'image/png');
   }
 
   async function handleCopyArmored() {
