@@ -151,7 +151,6 @@
       class="input"
       type="text"
       bind:value={label}
-      placeholder="Mi multisig 3 de 5"
       maxlength="80"
       autocomplete="off"
       autocorrect="off"
@@ -165,7 +164,7 @@
   </div>
 
   <div class="field">
-    <label for="descriptor-input" class="label">Descriptor multisig</label>
+    <label for="descriptor-input" class="label">Descriptor</label>
 
     <!-- Dropzone para cargar desde archivo -->
     <div
