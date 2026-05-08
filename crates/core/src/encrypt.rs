@@ -18,10 +18,11 @@ use crate::{
 
 /// Output triple from a single encrypt call: binary `.bed`, armored PEM string,
 /// and QR PNG bytes. Server serializes these into one JSON response (D-05).
+/// `qr_png` is `None` when the armored payload exceeds `MAX_QR_BYTES` (2900 B).
 pub struct EncryptOutput {
     pub bed_bytes: Vec<u8>,
     pub armored: String,
-    pub qr_png: Vec<u8>,
+    pub qr_png: Option<Vec<u8>>,
 }
 
 #[derive(Deserialize)]
@@ -72,7 +73,11 @@ pub fn encrypt_descriptor(cleartext: &mut Zeroizing<String>) -> Result<EncryptOu
     };
 
     let armored = encode_armored(&bed_bytes);
-    let qr_png = render_qr_png(&armored)?;
+    let qr_png = match render_qr_png(&armored) {
+        Ok(png) => Some(png),
+        Err(CoreError::QrTooLarge { .. }) => None,
+        Err(e) => return Err(e),
+    };
     Ok(EncryptOutput {
         bed_bytes,
         armored,

@@ -63,8 +63,11 @@ fn round_trip_fixture() {
         .armored
         .ends_with("-----END BITCOIN ENCRYPTED BACKUP-----\n"));
 
-    // Sanity: qr_png is a real PNG
-    assert!(out.qr_png.starts_with(b"\x89PNG"), "qr_png must be PNG");
+    // Sanity: qr_png is a real PNG (fixture descriptor is small — must be Some)
+    assert!(
+        out.qr_png.as_ref().expect("qr_png debe estar presente para descriptor pequeño").starts_with(b"\x89PNG"),
+        "qr_png must be PNG"
+    );
 
     let recovered = decrypt_payload(&out.bed_bytes, FIXTURE_XPUB.trim())
         .unwrap_or_else(|e| panic!("decrypt failed: {e}"));
@@ -114,4 +117,26 @@ fn qr_too_large_returns_error() {
             max: 2900
         }
     ));
+}
+
+#[test]
+fn encrypt_large_payload_omits_qr() {
+    // JSON Liana sintético (>2900 bytes) — el descriptor en sí cabe, pero el JSON
+    // completo no. Verifica que qr_png == None y que bed_bytes + armored siguen válidos.
+    let descriptor = FIXTURE_DESC.trim();
+    let big_payload = format!(
+        r#"{{"version":0,"network":"bitcoin","name":"big","accounts":[{{"descriptor":"{}","labels":null,"transactions":[],"psbts":[],"coins":{{}}}}],"padding":"{}","proprietary":{{}}}}"#,
+        descriptor,
+        "x".repeat(3500)
+    );
+    let mut cleartext = Zeroizing::new(big_payload);
+    let out = encrypt_descriptor(&mut cleartext)
+        .unwrap_or_else(|e| panic!("encrypt failed: {e}"));
+
+    assert!(out.bed_bytes.starts_with(b"BEB"), "bed debe empezar con BEB");
+    assert!(out.armored.starts_with("-----BEGIN BITCOIN ENCRYPTED BACKUP-----\n"));
+    assert!(
+        out.qr_png.is_none(),
+        "qr_png debe ser None cuando el armored excede MAX_QR_BYTES"
+    );
 }
