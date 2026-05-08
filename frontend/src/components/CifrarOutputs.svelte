@@ -4,7 +4,7 @@
   import { sanitizeLabelForFilename } from '../lib/labelSanitize.js';
   import Toast from './Toast.svelte';
 
-  let { result, label = '' } = $props(); // { bed_b64, armored, qr_png_b64 }, label requerido
+  let { result, label = '' } = $props(); // { bed_b64, armored, qr_png_b64? }, label requerido
 
   let copyLabel = $state('Copiar al portapapeles');
   let copyResetTimer;
@@ -62,21 +62,27 @@
     <pre class="armored" aria-label="Bloque armored del backup cifrado">{result.armored}</pre>
   </div>
 
-  <!-- 3. QR PNG -->
-  <div class="output">
-    <div class="row">
-      <span class="label">Código QR (PNG)</span>
-      <button type="button" class="btn btn-secondary" onclick={downloadQrPng}>Descargar PNG</button>
+  <!-- 3. QR PNG (omitido si payload excede capacidad QR) -->
+  {#if result.qr_png_b64}
+    <div class="output">
+      <div class="row">
+        <span class="label">Código QR (PNG)</span>
+        <button type="button" class="btn btn-secondary" onclick={downloadQrPng}>Descargar PNG</button>
+      </div>
+      <figure class="qr">
+        <img
+          src="data:image/png;base64,{result.qr_png_b64}"
+          alt="Código QR del backup cifrado"
+          width="200"
+          height="200"
+        />
+      </figure>
     </div>
-    <figure class="qr">
-      <img
-        src="data:image/png;base64,{result.qr_png_b64}"
-        alt="Código QR del backup cifrado"
-        width="200"
-        height="200"
-      />
-    </figure>
-  </div>
+  {:else}
+    <div class="output">
+      <p class="hint">QR no disponible: el payload excede la capacidad del código QR (máx. 2900 B). Usa el archivo .bed o el texto armored.</p>
+    </div>
+  {/if}
 </div>
 
 <Toast bind:visible={toastVisible} message={toastMessage} />

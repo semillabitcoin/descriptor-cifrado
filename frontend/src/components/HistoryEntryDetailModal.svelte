@@ -10,7 +10,7 @@
 
   let loading = $state(false);
   let errorMessage = $state('');
-  let result = $state(null); // { bed_b64, armored, qr_png_b64 }
+  let result = $state(null); // { bed_b64, armored, qr_png_b64? }
   let copyLabel = $state('Copiar al portapapeles');
   let copyResetTimer;
   let toastVisible = $state(false);
@@ -131,15 +131,21 @@
           <pre class="armored">{result.armored}</pre>
         </div>
 
-        <div class="output">
-          <div class="row">
-            <span class="label">Código QR (PNG)</span>
-            <button type="button" class="btn btn-secondary" onclick={downloadQrPng}>Descargar PNG</button>
+        {#if result.qr_png_b64}
+          <div class="output">
+            <div class="row">
+              <span class="label">Código QR (PNG)</span>
+              <button type="button" class="btn btn-secondary" onclick={downloadQrPng}>Descargar PNG</button>
+            </div>
+            <figure class="qr">
+              <img src="data:image/png;base64,{result.qr_png_b64}" alt="Código QR del backup cifrado" width="180" height="180" />
+            </figure>
           </div>
-          <figure class="qr">
-            <img src="data:image/png;base64,{result.qr_png_b64}" alt="Código QR del backup cifrado" width="180" height="180" />
-          </figure>
-        </div>
+        {:else}
+          <div class="output">
+            <p class="hint">QR no disponible: payload excede capacidad QR (máx. 2900 B). Usa .bed o armored.</p>
+          </div>
+        {/if}
       {/if}
 
       <div class="actions">
