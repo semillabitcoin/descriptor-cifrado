@@ -12,3 +12,6 @@ frontend/.vite/
 .env
 .env.*
 !.env.example
+
+# GSD planning artifacts (internal AI scaffolding, not for public repo)
+.planning/
