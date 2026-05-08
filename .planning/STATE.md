@@ -4,8 +4,8 @@ milestone: v0.0.2
 milestone_name: milestone
 status: verifying
 stopped_at: Completed 04-04-PLAN.md (bed-startos manifest+main+interfaces+versions+icon+LICENSE+README+CI); approved by user, advancing to Plan 05
-last_updated: "2026-05-07T17:15:48.115Z"
-last_activity: 2026-05-07
+last_updated: "2026-05-08T14:00:00.000Z"
+last_activity: 2026-05-08
 progress:
   total_phases: 4
   completed_phases: 3
@@ -148,9 +148,10 @@ None yet.
 | 260507-v6e | relajar validador multipath <0;1>/* → <a;b>/* + dropzone TabCifrar + botones Limpiar | 2026-05-07 | 53af96d | Verified | [260507-v6e-relax-multipath-validator-file-upload-ta](./quick/260507-v6e-relax-multipath-validator-file-upload-ta/) |
 | 260507-ww3 | UX Nunchuk: detectar single-chain /N/* y autoconvertir par-impar (regla Sparrow) con modal | 2026-05-07 | c057d72 | Local-only | [260507-ww3-ux-nunchuk-detectar-single-chain-n-y-aut](./quick/260507-ww3-ux-nunchuk-detectar-single-chain-n-y-aut/) |
 | 260508-0ao | polish UI: validar issue B (history toast = config no bug), reducir help redundante TabCifrar (issue C), generalizar copy "del multisig" → "del descriptor" en CifrarOutputs+TabDescifrar (issue D) | 2026-05-08 | b2384c6 | Local-only | [260508-0ao-polish-history-textos](./quick/260508-0ao-polish-history-textos/) |
+| 260508-m7g | fix v0.1.5-A: refrescar TabHistorial tras cifrar exitoso (signal `historyVersion` en appState — paneles permanecen montados, $effect solo corría en mount) | 2026-05-08 | d4e031f | | [260508-m7g-fix-refresh-historial-v015](./quick/260508-m7g-fix-refresh-historial-v015/) |
 
 ## Session Continuity
 
-Last session: 2026-05-08T00:20:00Z
-Stopped at: Completed quick task 260508-0ao (issues B/C/D — Issue A queda para Quick 2 con UR crypto-output)
+Last session: 2026-05-08T14:00:00Z
+Stopped at: Completed quick task 260508-m7g (fix refresh historial v0.1.5-A); pendiente release v0.1.5 cadena estándar + abordar v0.2.0 naming obligatorio
 Resume file: None
