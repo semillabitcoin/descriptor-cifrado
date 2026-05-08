@@ -30,6 +30,9 @@ pub fn decrypt_payload(bed_bytes: &[u8], xpub_str: &str) -> Result<Zeroizing<Str
 
     match restored {
         Decrypted::Descriptor(d) => Ok(Zeroizing::new(d.to_string())),
+        Decrypted::Raw(bytes) => String::from_utf8(bytes)
+            .map(Zeroizing::new)
+            .map_err(|_| CoreError::Crypto),
         _ => Err(CoreError::Crypto),
     }
 }

@@ -5,9 +5,11 @@
 use std::str::FromStr;
 
 use bitcoin_encrypted_backup::{
+    descriptor::{descr_to_dpks, dpks_to_derivation_keys_paths},
     miniscript::{Descriptor, DescriptorPublicKey},
-    EncryptedBackup,
+    Content, EncryptedBackup,
 };
+use serde::Deserialize;
 use zeroize::Zeroizing;
 
 use crate::{
@@ -22,19 +24,55 @@ pub struct EncryptOutput {
     pub qr_png: Vec<u8>,
 }
 
-/// Encrypt a cleartext descriptor. Valida multipath wildcard primero, then calls the
-/// crate to produce binary, wraps to armored, generates QR.
+#[derive(Deserialize)]
+struct LianaAccount {
+    descriptor: String,
+}
+
+#[derive(Deserialize)]
+struct LianaBackup {
+    accounts: Vec<LianaAccount>,
+}
+
+/// Encrypt a cleartext descriptor or Liana JSON backup. Valida multipath wildcard
+/// primero, then calls the crate to produce binary, wraps to armored, generates QR.
+///
+/// Si el cleartext empieza con `{`, se interpreta como JSON de backup Liana:
+/// extrae `accounts[0].descriptor` para derivar claves/paths y cifra el JSON
+/// completo como blob (Decrypted::Raw al descifrar). En caso contrario, usa
+/// la ruta clásica de descriptor.
 pub fn encrypt_descriptor(cleartext: &mut Zeroizing<String>) -> Result<EncryptOutput, CoreError> {
-    let desc: Descriptor<DescriptorPublicKey> =
-        Descriptor::from_str(cleartext.as_str()).map_err(|_| CoreError::DescriptorParse)?;
-
-    require_multipath_wildcard(&desc)?;
-
-    let bed_bytes: Vec<u8> = EncryptedBackup::new().set_payload(&desc)?.encrypt()?;
+    let bed_bytes = if cleartext.trim_start().starts_with('{') {
+        // --- Ruta JSON Liana ---
+        let backup: LianaBackup = serde_json::from_str(cleartext.as_str())
+            .map_err(|_| CoreError::DescriptorParse)?;
+        let account = backup
+            .accounts
+            .into_iter()
+            .next()
+            .ok_or(CoreError::DescriptorParse)?;
+        let desc: Descriptor<DescriptorPublicKey> =
+            Descriptor::from_str(&account.descriptor).map_err(|_| CoreError::DescriptorParse)?;
+        require_multipath_wildcard(&desc)?;
+        let dpks = descr_to_dpks(&desc)?;
+        let (keys, paths) = dpks_to_derivation_keys_paths(&dpks);
+        let payload: Vec<u8> = cleartext.as_bytes().to_vec();
+        EncryptedBackup::new()
+            .set_keys(keys)
+            .set_derivation_paths(paths)
+            .set_content_type(Content::None)
+            .set_payload(&payload)?
+            .encrypt()?
+    } else {
+        // --- Ruta descriptor clásica (sin cambios) ---
+        let desc: Descriptor<DescriptorPublicKey> =
+            Descriptor::from_str(cleartext.as_str()).map_err(|_| CoreError::DescriptorParse)?;
+        require_multipath_wildcard(&desc)?;
+        EncryptedBackup::new().set_payload(&desc)?.encrypt()?
+    };
 
     let armored = encode_armored(&bed_bytes);
     let qr_png = render_qr_png(&armored)?;
-
     Ok(EncryptOutput {
         bed_bytes,
         armored,
