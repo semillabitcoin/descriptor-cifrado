@@ -10,6 +10,8 @@ thiserror.workspace = true
 base64.workspace = true
 qrcode.workspace = true
 image.workspace = true
+serde = { workspace = true, features = ["derive"] }
+serde_json.workspace = true
 
 [dependencies.bitcoin-encrypted-backup]
 git = "https://github.com/pythcoiner/encrypted_backup"
@@ -23,14 +25,6 @@ default-features = false
 features = ["miniscript_12_3_5", "rand"]
 # DO NOT enable: "devices" (USB doesn't reach StartOS), "cli" (pulls clap), "tokio"
 # NOTE: feature "base64" no existe en v0.0.2 (fue añadida en commit 55054b4 posterior).
-
-# Dev-only: necesario para el test de validación round-trip con payload arbitrario
-# (Vec<u8> blob para JSON de Liana). Mismo pin que la dep principal — Cargo unifica.
-[dev-dependencies.bitcoin-encrypted-backup]
-git = "https://github.com/pythcoiner/encrypted_backup"
-rev = "cd7ee382bf5ca0798d4f81697e2f9efb5e32fe40"
-default-features = false
-features = ["miniscript_12_3_5", "rand"]
 
 [lints]
 workspace = true
