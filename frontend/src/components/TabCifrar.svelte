@@ -193,7 +193,7 @@
       <input
         bind:this={descriptorFileInput}
         type="file"
-        accept=".txt,.descriptor,text/plain"
+        accept=".txt,.descriptor,.json,.jsonl,text/plain,application/json"
         hidden
         onchange={handleDescriptorFilePick}
       />
