@@ -11,6 +11,7 @@
   let armoredText = $state('');        // textarea armored
   let xpubText = $state('');
   let descriptor = $state(null);       // resultado descifrado — vive solo aquí
+  let composedDescriptor = $state(null); // descriptor canónico Sparrow (null si no es JSONL Sparrow)
   let loading = $state(false);
   let errorVisible = $state(false);
   let errorMessage = $state('');
@@ -27,6 +28,7 @@
 
   function handleClearResult() {
     descriptor = null;
+    composedDescriptor = null;
   }
 
   function handleLimpiarTodo() {
@@ -35,6 +37,7 @@
     armoredText = '';
     xpubText = '';
     descriptor = null;
+    composedDescriptor = null;
     errorVisible = false;
     errorMessage = '';
     dragOver = false;
@@ -110,6 +113,8 @@
 
       const resp = await postMultipart('/api/decrypt', formData);
       descriptor = resp.descriptor;
+      // Descriptor canónico Sparrow (null si no es JSONL Sparrow).
+      composedDescriptor = resp.composed_descriptor ?? null;
       // D-17: limpiar xpub tras descifrado exitoso (security default).
       xpubText = '';
     } catch (e) {
@@ -234,7 +239,7 @@
 </form>
 
 {#if descriptor}
-  <DescifrarOutputs {descriptor} />
+  <DescifrarOutputs {descriptor} {composedDescriptor} />
 {/if}
 
 <style>
