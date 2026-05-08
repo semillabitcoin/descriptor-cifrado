@@ -12,6 +12,9 @@
   let toastMessage = $state('');
   let qrOpen = $state(false);
 
+  const isJson = $derived(descriptor.trimStart().startsWith('{'));
+  const downloadLabel = $derived(isJson ? 'Descargar .json' : 'Descargar .txt');
+
   function showToast(msg) {
     toastMessage = msg;
     toastVisible = true;
@@ -29,9 +32,13 @@
     }
   }
 
-  function handleDownloadTxt() {
+  function handleDownload() {
     const ts = new Date().toISOString().replace(/[:.]/g, '-');
-    triggerDownloadText(descriptor, `descriptor-${ts}.txt`, 'text/plain');
+    if (isJson) {
+      triggerDownloadText(descriptor, `liana-backup-${ts}.json`, 'application/json');
+    } else {
+      triggerDownloadText(descriptor, `descriptor-${ts}.txt`, 'text/plain');
+    }
   }
 
   function handleShowQr() {
@@ -46,7 +53,7 @@
 
   <div class="actions">
     <button type="button" class="btn btn-primary" onclick={handleCopy}>{copyLabel}</button>
-    <button type="button" class="btn btn-secondary" onclick={handleDownloadTxt}>Descargar .txt</button>
+    <button type="button" class="btn btn-secondary" onclick={handleDownload}>{downloadLabel}</button>
     <button type="button" class="btn btn-secondary" onclick={handleShowQr}>Mostrar QR</button>
   </div>
 </div>
