@@ -17,7 +17,8 @@ pub struct EncryptRequest {
 pub struct EncryptResponse {
     pub bed_b64: String,
     pub armored: String,
-    pub qr_png_b64: String,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub qr_png_b64: Option<String>,
 }
 
 /// Encrypt handler. The `descriptor` field is moved into `Zeroizing<String>`
@@ -37,7 +38,7 @@ pub async fn post_encrypt(Json(req): Json<EncryptRequest>) -> Result<impl IntoRe
     let response = EncryptResponse {
         bed_b64: STANDARD.encode(&out.bed_bytes),
         armored: out.armored,
-        qr_png_b64: STANDARD.encode(&out.qr_png),
+        qr_png_b64: out.qr_png.as_ref().map(|png| STANDARD.encode(png)),
     };
     Ok(Json(response))
 }

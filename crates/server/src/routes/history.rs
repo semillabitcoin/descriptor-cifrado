@@ -58,7 +58,8 @@ pub struct ListHistoryResponse {
 pub struct GetHistoryIdResponse {
     pub bed_b64: String,
     pub armored: String,
-    pub qr_png_b64: String,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub qr_png_b64: Option<String>,
 }
 
 // === Filename format helpers ===
@@ -265,8 +266,11 @@ pub async fn get_history_id(
     let bytes = fs::read(&path).await.map_err(|_| AppError::Internal)?;
     let bed_b64 = B64.encode(&bytes);
     let armored = bed_core::encode_armored(&bytes);
-    let qr_png = bed_core::render_qr_png(&armored)?;
-    let qr_png_b64 = B64.encode(&qr_png);
+    let qr_png_b64 = match bed_core::render_qr_png(&armored) {
+        Ok(png) => Some(B64.encode(&png)),
+        Err(bed_core::CoreError::QrTooLarge { .. }) => None,
+        Err(e) => return Err(e.into()),
+    };
     Ok(Json(GetHistoryIdResponse {
         bed_b64,
         armored,
