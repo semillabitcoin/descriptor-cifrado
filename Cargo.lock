@@ -155,6 +155,8 @@ dependencies = [
  "bitcoin-encrypted-backup",
  "image",
  "qrcode",
+ "serde",
+ "serde_json",
  "thiserror",
  "zeroize",
 ]
