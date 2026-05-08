@@ -54,9 +54,8 @@ fn test_json_malformed() {
 
 #[test]
 fn test_json_empty_accounts() {
-    let json =
-        r#"{"version":0,"network":"bitcoin","name":"test","accounts":[],"proprietary":{}}"#
-            .to_string();
+    let json = r#"{"version":0,"network":"bitcoin","name":"test","accounts":[],"proprietary":{}}"#
+        .to_string();
     let mut cleartext = Zeroizing::new(json);
     let err = encrypt_descriptor(&mut cleartext)
         .err()

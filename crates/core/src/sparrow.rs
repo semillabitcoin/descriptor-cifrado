@@ -87,7 +87,8 @@ pub(crate) fn compose_descriptor_from_sparrow(data: &SparrowData) -> Result<Stri
     let origin = &data.origin;
     let xpubs = &data.xpubs;
 
-    let mut result = String::with_capacity(origin.len() + xpubs.iter().map(|x| x.len() + 10).sum::<usize>());
+    let mut result =
+        String::with_capacity(origin.len() + xpubs.iter().map(|x| x.len() + 10).sum::<usize>());
     let mut xpub_idx = 0usize;
     let chars: Vec<char> = origin.chars().collect();
     let mut i = 0;

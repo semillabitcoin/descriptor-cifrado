@@ -346,7 +346,10 @@ mod tests {
             sanitize_label("Mi multisig 3 de 5").as_deref(),
             Some("Mi multisig 3 de 5")
         );
-        assert_eq!(sanitize_label("backup_2026-05").as_deref(), Some("backup_2026-05"));
+        assert_eq!(
+            sanitize_label("backup_2026-05").as_deref(),
+            Some("backup_2026-05")
+        );
     }
 
     #[test]

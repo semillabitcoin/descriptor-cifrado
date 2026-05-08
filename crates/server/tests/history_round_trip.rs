@@ -185,10 +185,8 @@ async fn invalid_base64_returns_400() {
                 .uri("/api/history")
                 .header(header::CONTENT_TYPE, "application/json")
                 .body(Body::from(
-                    serde_json::to_vec(
-                        &json!({ "bed_b64": "not-valid-base64!!!", "label": "x" }),
-                    )
-                    .unwrap(),
+                    serde_json::to_vec(&json!({ "bed_b64": "not-valid-base64!!!", "label": "x" }))
+                        .unwrap(),
                 ))
                 .unwrap(),
         )

@@ -82,8 +82,8 @@ pub fn encrypt_descriptor(cleartext: &mut Zeroizing<String>) -> Result<EncryptOu
             }
             Err(_) => {
                 // --- Fall-through: intentar JSONL Sparrow BIP329 ---
-                let sparrow_data =
-                    parse_sparrow_jsonl(cleartext.as_str()).map_err(|_| CoreError::DescriptorParse)?;
+                let sparrow_data = parse_sparrow_jsonl(cleartext.as_str())
+                    .map_err(|_| CoreError::DescriptorParse)?;
                 let composed = compose_descriptor_from_sparrow(&sparrow_data)
                     .map_err(|_| CoreError::DescriptorParse)?;
                 let desc: Descriptor<DescriptorPublicKey> =

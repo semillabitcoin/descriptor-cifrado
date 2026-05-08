@@ -5,7 +5,9 @@
 
 #![allow(clippy::panic, clippy::unwrap_used, clippy::expect_used)]
 
-use bed_core::{compose_descriptor_if_sparrow_jsonl, decrypt_payload, encrypt_descriptor, CoreError};
+use bed_core::{
+    compose_descriptor_if_sparrow_jsonl, decrypt_payload, encrypt_descriptor, CoreError,
+};
 use zeroize::Zeroizing;
 
 const FIXTURE_MULTISIG: &str = include_str!("fixtures/sparrow-multisig.jsonl");
@@ -46,8 +48,7 @@ fn test_jsonl_multisig_round_trip() {
 
     // Descifrar con la primera xpub del fixture
     let xpub = first_xpub_from_jsonl(FIXTURE_MULTISIG);
-    let recovered =
-        decrypt_payload(&out.bed_bytes, &xpub).expect("decrypt JSONL con primera xpub");
+    let recovered = decrypt_payload(&out.bed_bytes, &xpub).expect("decrypt JSONL con primera xpub");
 
     // Round-trip byte-idéntico
     assert_eq!(
@@ -134,7 +135,10 @@ fn test_jsonl_no_origin_error() {
 #[test]
 fn test_compose_descriptor_returns_some_for_jsonl() {
     let result = compose_descriptor_if_sparrow_jsonl(FIXTURE_MULTISIG);
-    assert!(result.is_some(), "debe devolver Some para fixture multisig válido");
+    assert!(
+        result.is_some(),
+        "debe devolver Some para fixture multisig válido"
+    );
 
     let desc = result.unwrap();
     assert!(

@@ -49,7 +49,11 @@ fn round_trip_liana_backup_json_with_fixture_xpub() {
     let dpks = descr_to_dpks(&descriptor).expect("dpks extracted");
     let (keys, paths) = dpks_to_derivation_keys_paths(&dpks);
 
-    assert_eq!(keys.len(), 3, "3 cosigner keys expected from sortedmulti(2,k,k,k)");
+    assert_eq!(
+        keys.len(),
+        3,
+        "3 cosigner keys expected from sortedmulti(2,k,k,k)"
+    );
     assert!(!paths.is_empty(), "at least one derivation path");
 
     // Paso 2: cifrar JSON como blob arbitrario con keys/paths del descriptor.
@@ -81,7 +85,10 @@ fn round_trip_liana_backup_json_with_fixture_xpub() {
             assert_eq!(bytes, payload_bytes, "byte-identical round trip");
             let recovered = std::str::from_utf8(&bytes).expect("valid utf8 JSON");
             assert!(recovered.contains("\"accounts\""), "JSON shape preserved");
-            assert!(recovered.contains(descriptor_str), "descriptor preserved inside JSON");
+            assert!(
+                recovered.contains(descriptor_str),
+                "descriptor preserved inside JSON"
+            );
         }
         other => panic!("expected Decrypted::Raw, got {:?}", other),
     }
@@ -119,10 +126,7 @@ fn round_trip_decrypts_with_each_cosigner_independently() {
             .unwrap_or_else(|e| panic!("cosigner #{i} decrypt failed: {:?}", e));
 
         match decrypted {
-            Decrypted::Raw(bytes) => assert_eq!(
-                bytes, payload,
-                "cosigner #{i}: payload mismatch"
-            ),
+            Decrypted::Raw(bytes) => assert_eq!(bytes, payload, "cosigner #{i}: payload mismatch"),
             other => panic!("cosigner #{i}: expected Raw, got {:?}", other),
         }
     }

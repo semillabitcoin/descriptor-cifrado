@@ -65,8 +65,10 @@ fn round_trip_fixture() {
 
     // Sanity: qr_png is a real PNG (fixture descriptor is small — must be Some)
     assert!(
-        out.qr_png.as_ref().expect("qr_png debe estar presente para descriptor pequeño").starts_with(b"\x89PNG"),
-        "qr_png must be PNG"
+        out.qr_png
+            .as_ref()
+            .is_some_and(|qr| qr.starts_with(b"\x89PNG")),
+        "qr_png must be Some and start with PNG magic"
     );
 
     let recovered = decrypt_payload(&out.bed_bytes, FIXTURE_XPUB.trim())
@@ -130,11 +132,15 @@ fn encrypt_large_payload_omits_qr() {
         "x".repeat(3500)
     );
     let mut cleartext = Zeroizing::new(big_payload);
-    let out = encrypt_descriptor(&mut cleartext)
-        .unwrap_or_else(|e| panic!("encrypt failed: {e}"));
+    let out = encrypt_descriptor(&mut cleartext).unwrap_or_else(|e| panic!("encrypt failed: {e}"));
 
-    assert!(out.bed_bytes.starts_with(b"BEB"), "bed debe empezar con BEB");
-    assert!(out.armored.starts_with("-----BEGIN BITCOIN ENCRYPTED BACKUP-----\n"));
+    assert!(
+        out.bed_bytes.starts_with(b"BEB"),
+        "bed debe empezar con BEB"
+    );
+    assert!(out
+        .armored
+        .starts_with("-----BEGIN BITCOIN ENCRYPTED BACKUP-----\n"));
     assert!(
         out.qr_png.is_none(),
         "qr_png debe ser None cuando el armored excede MAX_QR_BYTES"
