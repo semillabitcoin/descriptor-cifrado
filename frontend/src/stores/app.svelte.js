@@ -13,7 +13,15 @@ export const appState = $state({
   activeTab: 'cifrar',
   theme: 'auto',
   historyEnabled: false,
+  historyVersion: 0,
 });
+
+// Señal reactiva para forzar recarga de TabHistorial tras escribir un .bed
+// (TabHistorial está montado siempre — el panel solo togglea `hidden` — así que
+// no se remonta al cambiar de tab; sin esta señal la lista solo se carga una vez).
+export function bumpHistoryVersion() {
+  appState.historyVersion += 1;
+}
 
 function applyThemeToDom(theme) {
   // tokens.css usa :root[data-theme="dark"] y :root:not([data-theme="light"]) @media dark.

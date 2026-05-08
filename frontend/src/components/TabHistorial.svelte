@@ -1,5 +1,6 @@
 <script>
   import { getJson, deleteJson, ApiError } from '../lib/api.js';
+  import { appState } from '../stores/app.svelte.js';
   import { formatRelative } from '../lib/relativeTime.js';
   import HistoryEntryDetailModal from './HistoryEntryDetailModal.svelte';
   import ConfirmDeleteModal from './ConfirmDeleteModal.svelte';
@@ -22,7 +23,11 @@
   let toastVisible = $state(false);
   let toastMessage = $state('');
 
-  $effect(() => { void loadList(); });
+  // Recargar al montar y cada vez que TabCifrar bumpea historyVersion (D-15 refresh).
+  $effect(() => {
+    appState.historyVersion;
+    void loadList();
+  });
 
   async function loadList() {
     loading = true;

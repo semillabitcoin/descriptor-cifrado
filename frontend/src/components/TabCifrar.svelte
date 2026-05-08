@@ -1,6 +1,6 @@
 <script>
   import { postJson, ApiError } from '../lib/api.js';
-  import { appState } from '../stores/app.svelte.js';
+  import { appState, bumpHistoryVersion } from '../stores/app.svelte.js';
   import { detectSingleChain, convertSingleChainToMultipath } from '../lib/descriptor.js';
   import InlineError from './InlineError.svelte';
   import CifrarOutputs from './CifrarOutputs.svelte';
@@ -88,6 +88,7 @@
       if (appState.historyEnabled) {
         try {
           await postJson('/api/history', { bed_b64: resp.bed_b64 });
+          bumpHistoryVersion();
         } catch {
           warningMessage = 'Cifrado OK, pero no se guardó en historial';
           warningToast = true;
