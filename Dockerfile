@@ -39,9 +39,12 @@ COPY crates/ crates/
 RUN cargo build --release --locked --bin bed-server
 
 # ── Stage 3: Distroless runtime ─────────────────────────────────────────
-# cc-debian12:nonroot incluye glibc + libgcc_s + libstdc++ mínimo.
-# UID/GID 65532 heredado del tag :nonroot. Sin shell, sin package manager.
-FROM gcr.io/distroless/cc-debian12:nonroot AS runtime
+# cc-debian12 incluye glibc + libgcc_s + libstdc++ mínimo. Sin shell, sin
+# package manager. Corre como UID 0 dentro del container — necesario para
+# escribir en el volume `main` montado por StartOS en /data/encrypted/
+# (SDK 1.4.1 no expone ownership en mountVolume; el sandbox real lo provee
+# StartOS via cgroups + netns, no el UID interno).
+FROM gcr.io/distroless/cc-debian12 AS runtime
 COPY --from=rust-builder /app/target/release/bed-server /usr/local/bin/bed-server
 
 # Documentación; el bind real lo hace el binario en 0.0.0.0:8080 — el proxy StartOS vive fuera del netns del contenedor (SEC-02)
