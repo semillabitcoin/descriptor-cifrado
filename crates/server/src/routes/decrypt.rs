@@ -17,6 +17,12 @@ use crate::AppError;
 #[derive(Serialize)]
 pub struct DecryptResponse {
     pub descriptor: String,
+    /// Descriptor canónico compuesto a partir del JSONL Sparrow BIP329.
+    /// Solo presente si el cleartext descifrado es un JSONL Sparrow válido con
+    /// xpubs etiquetadas. Ausente (campo omitido) para descriptores clásicos y
+    /// backups Liana.
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub composed_descriptor: Option<String>,
 }
 
 #[tracing::instrument(skip_all)]
@@ -71,8 +77,16 @@ pub async fn post_decrypt(mut form: Multipart) -> Result<Json<DecryptResponse>, 
     // crosses the JSON boundary it cannot be zeroized in serde's intermediate
     // buffer. We zeroize the source Zeroizing immediately after the clone.
     let descriptor = cleartext.as_str().to_string();
+
+    // Intentar recomponer descriptor canónico si el cleartext es JSONL Sparrow BIP329.
+    // Devuelve None para descriptores clásicos, JSON Liana, o cualquier otro formato.
+    let composed_descriptor = bed_core::compose_descriptor_if_sparrow_jsonl(cleartext.as_str());
+
     cleartext.zeroize();
     drop(cleartext);
 
-    Ok(Json(DecryptResponse { descriptor }))
+    Ok(Json(DecryptResponse {
+        descriptor,
+        composed_descriptor,
+    }))
 }
