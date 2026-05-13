@@ -8,10 +8,11 @@ ARG RUST_VERSION=1
 # ── Stage 1: Frontend (Vite + Svelte 5) ─────────────────────────────────
 FROM node:${NODE_VERSION}-alpine AS frontend-builder
 WORKDIR /app/frontend
-COPY frontend/package.json frontend/package-lock.json ./
-RUN npm ci
+RUN corepack enable && corepack prepare pnpm@9.12.0 --activate
+COPY frontend/package.json frontend/pnpm-lock.yaml frontend/.npmrc ./
+RUN pnpm install --frozen-lockfile
 COPY frontend/ ./
-RUN npm run build
+RUN pnpm run build
 # Output: /app/frontend/dist/
 
 # ── Stage 2: Rust workspace build ───────────────────────────────────────
